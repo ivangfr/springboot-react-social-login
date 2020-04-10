@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7.29
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=moviedb
+    healthcheck:
+      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+      start_period: 30s
+

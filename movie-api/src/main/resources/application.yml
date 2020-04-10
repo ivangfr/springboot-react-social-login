@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: movie-api
+  jpa:
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/moviedb?autoReconnect=true&useSSL=false&useUnicode=yes&characterEncoding=UTF-8&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: secret
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: my-client-id
+            clientSecret: my-client-secret
