@@ -1,6 +1,5 @@
 package com.mycompany.movieapi.rest;
 
-import com.mycompany.movieapi.exception.MovieNotFoundException;
 import com.mycompany.movieapi.model.Movie;
 import com.mycompany.movieapi.rest.dto.CreateMovieDto;
 import com.mycompany.movieapi.service.MovieService;
@@ -33,7 +32,7 @@ public class MovieController {
     }
 
     @GetMapping("/{imdb}")
-    public Movie getMovie(@PathVariable String imdb) throws MovieNotFoundException {
+    public Movie getMovie(@PathVariable String imdb) {
         return movieService.validateAndGetMovie(imdb);
     }
 
@@ -44,7 +43,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{imdb}")
-    public Movie deleteMovie(@PathVariable String imdb) throws MovieNotFoundException {
+    public Movie deleteMovie(@PathVariable String imdb) {
         Movie movie = movieService.validateAndGetMovie(imdb);
         movieService.deleteMovie(movie);
         return movie;
