@@ -1,13 +1,13 @@
 package com.mycompany.movieapi.rest;
 
 import com.mycompany.movieapi.exception.DuplicatedUserInfoException;
-import com.mycompany.movieapi.model.AuthProvider;
 import com.mycompany.movieapi.model.User;
 import com.mycompany.movieapi.rest.dto.AuthResponse;
 import com.mycompany.movieapi.rest.dto.LoginRequest;
 import com.mycompany.movieapi.rest.dto.SignUpRequest;
 import com.mycompany.movieapi.security.TokenProvider;
 import com.mycompany.movieapi.security.WebSecurityConfig;
+import com.mycompany.movieapi.security.oauth2.OAuth2Provider;
 import com.mycompany.movieapi.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -72,7 +72,7 @@ public class AuthController {
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setRole(WebSecurityConfig.USER);
-        user.setProvider(AuthProvider.local);
+        user.setProvider(OAuth2Provider.LOCAL);
         return user;
     }
 

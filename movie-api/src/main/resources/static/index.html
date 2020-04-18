@@ -26,27 +26,6 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
-<script type="text/javascript">
-$.get("/user", function(data) {
-    $("#user").html(data.name);
-    $(".unauthenticated").hide()
-    $(".authenticated").show()
-});
-function logout() {
-    $.post("/logout", function() {
-        $("#user").html('');
-        $(".unauthenticated").show();
-        $(".authenticated").hide();
-    })
-    return true;
-}
-$.ajaxSetup({
-    beforeSend : function(xhr, settings) {
-        if (settings.type == 'POST' || settings.type == 'PUT' || settings.type == 'DELETE' || settings.type == 'PATCH') {
-            xhr.setRequestHeader("X-XSRF-TOKEN", Cookies.get('XSRF-TOKEN'));
-        }
-    }
-});
-</script>
+<script type="text/javascript" src="script.js"></script>
 </body>
 </html>

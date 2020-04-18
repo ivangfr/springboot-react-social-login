@@ -13,8 +13,8 @@ spring:
       client:
         registration:
           github:
-            clientId: my-client-id
-            clientSecret: my-client-secret
+            clientId: ${GITHUB_CLIENT_ID}
+            clientSecret: ${GITHUB_CLIENT_SECRET}
 
 app:
   jwt:

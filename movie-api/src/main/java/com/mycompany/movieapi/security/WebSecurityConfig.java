@@ -1,5 +1,7 @@
 package com.mycompany.movieapi.security;
 
+import com.mycompany.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
+import com.mycompany.movieapi.security.oauth2.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,12 +11,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.web.HttpSessionOAuth2AuthorizationRequestRepository;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -22,18 +23,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
+    private final CustomOAuth2UserService customOauth2UserService;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    public WebSecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, TokenAuthenticationFilter tokenAuthenticationFilter) {
+    public WebSecurityConfig(UserDetailsService userDetailsService, CustomOAuth2UserService customOauth2UserService,
+                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
+                             TokenAuthenticationFilter tokenAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
+        this.customOauth2UserService = customOauth2UserService;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
         this.tokenAuthenticationFilter = tokenAuthenticationFilter;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -44,21 +49,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN)
                 .antMatchers("/api/users", "/api/users/**").hasAnyAuthority(ADMIN)
                 .antMatchers("/public/**", "/auth/**", "/oauth2/**").permitAll()
-                .antMatchers("/", "/error", "/favicon.ico", "/csrf", "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/", "/error", "/script.js", "/favicon.ico", "/csrf", "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated();
         http.oauth2Login()
-                .authorizationEndpoint().baseUri("/oauth2/authorization").authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
+                .userInfoEndpoint().userService(customOauth2UserService)
                 .and()
-//                .redirectionEndpoint().baseUri("/oauth2/callback/*")
-//                .and()
-//                .userInfoEndpoint().userService(customOAuth2UserService)
-//                .and()
-                .successHandler(new SimpleUrlAuthenticationSuccessHandler())
-                .failureHandler(new SimpleUrlAuthenticationFailureHandler());
+                .successHandler(customAuthenticationSuccessHandler);
         http.logout(l -> l.logoutSuccessUrl("/").permitAll());
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
     }
 
@@ -66,6 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     public static final String ADMIN = "ADMIN";

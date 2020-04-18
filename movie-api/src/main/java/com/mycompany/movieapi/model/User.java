@@ -1,6 +1,7 @@
 package com.mycompany.movieapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mycompany.movieapi.security.oauth2.OAuth2Provider;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,11 +38,11 @@ public class User {
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
-    private AuthProvider provider;
+    private OAuth2Provider provider;
 
     private String providerId;
 
-    public User(String username, String password, String name, String email, String role, String imageUrl, AuthProvider provider, String providerId) {
+    public User(String username, String password, String name, String email, String role, String imageUrl, OAuth2Provider provider, String providerId) {
         this.username = username;
         this.password = password;
         this.name = name;
