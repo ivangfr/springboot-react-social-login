@@ -47,7 +47,7 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 ## How Social Login Works?
 
-To explain how it works, we will use **Github** as OAuth2 provider example. However, this flow is similar to other providers. All the OAuth2 provider is done in the [application.yml](). The `oauth2Login` configuration is done in [`WebSecurityConfig`]()
+To explain how it works, we will use **Github** as OAuth2 provider example. However, this flow is similar to other providers. All the OAuth2 provider is done in the [application.yml](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/resources/application.yml). The `oauth2Login` configuration is done in [`WebSecurityConfig`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/WebSecurityConfig.java)
 
 1. The Social Login with Github starts by `movie-app` client redirecting the user to the following URL
    ```
@@ -74,7 +74,7 @@ To explain how it works, we will use **Github** as OAuth2 provider example. Howe
 
    - If **user denies permissions**, the OAuth2 provider will redirect the user to the callback URL registered when creating the `movie-app` with an error.
 
-     The component that handles it is the `Spring Boot` default [`SimpleUrlAuthenticationFailureHandler`](). It can be customized if needed.
+     The component that handles it is the `Spring Boot` default [`SimpleUrlAuthenticationFailureHandler`](https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/authentication/SimpleUrlAuthenticationFailureHandler.java). It can be customized if needed.
 
    - If **user allows permissions**, the OAuth2 provider will redirect the user to the callback URL registered when creating the `movie-app` with the `authorization_code`
    
@@ -83,9 +83,9 @@ To explain how it works, we will use **Github** as OAuth2 provider example. Howe
      http://localhost:8080/login/oauth2/code/github?code=<CODE>&state=<STATE>
      ```
 
-     Once received the redirect, Spring Security will exchange the `authorization_code` for an `access_token` and call [`CustomOAuth2UserService`]() that will check (by `username`) whether the user is present or not in the `movie-app` database. If it isn't present, a new entry for the user is created; otherwise, a few user information (like `imageUrl` and `email`) is updated.
+     Once received the redirect, Spring Security will exchange the `authorization_code` for an `access_token` and call [`CustomOAuth2UserService`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/oauth2/CustomOAuth2UserService.java) that will check (by `username`) whether the user is present or not in the `movie-app` database. If it isn't present, a new entry for the user is created; otherwise, a few user information (like `imageUrl` and `email`) is updated.
 
-     In the end, the component [`CustomAuthenticationSuccessHandler`](), extends [`SimpleUrlAuthenticationSuccessHandler`](), is invoked. It's responsible for creating a JWT access token and sending it to the user in the `redirect_uri`. We are using the default `redirect_uri` that is `/`. The JWT token informed in the `redirect_uri` as a query string, like it's shown below
+     In the end, the component [`CustomAuthenticationSuccessHandler`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/oauth2/CustomAuthenticationSuccessHandler.java), extends [`SimpleUrlAuthenticationSuccessHandler`](https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/authentication/SimpleUrlAuthenticationSuccessHandler.java), is invoked. It's responsible for creating a JWT access token and sending it to the user in the `redirect_uri`. We are using the default `redirect_uri` that is `/`. The JWT token informed in the `redirect_uri` as a query string, like it's shown below
      ```
      http://localhost:8080/?token=eyJ0eXAiOiJKV1QiLCJhbGc...xaY0KWdqG2JDDk-iIrgIPDZvcA7Q
      ```
