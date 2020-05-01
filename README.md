@@ -14,20 +14,19 @@ The goal of this project is to implement an application called `movie-app` to ma
 
   `movie-api` has the following endpoints
 
-  | Endpoint                                                     | Secured | Roles           |
-  | ------------------------------------------------------------ | ------- | --------------- |
-  | `POST /auth/login -d {"username","password","name","email"}` | No      |                 |
-  | `POST /auth/signup -d {"username","password"}`               | No      |                 |
-  | `GET /public/numberOfUsers`                                  | No      |                 |
-  | `GET /public/numberOfMovies`                                 | No      |                 |
-  | `GET /api/users/me`                                          | Yes     | `ADMIN`, `USER` |
-  | `GET /api/users`                                             | Yes     | `ADMIN`         |
-  | `GET /api/users/{username}`                                  | Yes     | `ADMIN`         |
-  | `DELETE /api/users/{username}`                               | Yes     | `ADMIN`         |
-  | `GET /api/movies`                                            | Yes     | `ADMIN`, `USER` |
-  | `GET /api/movies/{imdb}`                                     | Yes     | `ADMIN`, `USER` |
-  | `POST /api/movies -d {"imdb","description"}`                 | Yes     | `ADMIN`         |
-  | `DELETE /api/movies/{imdb}`                                  | Yes     | `ADMIN`         |
+  | Endpoint                                                      | Secured | Roles           |
+  | ------------------------------------------------------------- | ------- | --------------- |
+  | `POST /auth/authenticate -d {"username","password"}`          | No      |                 |
+  | `POST /auth/signup -d {"username","password","name","email"}` | No      |                 |
+  | `GET /public/numberOfUsers`                                   | No      |                 |
+  | `GET /public/numberOfMovies`                                  | No      |                 |
+  | `GET /api/users/me`                                           | Yes     | `ADMIN`, `USER` |
+  | `GET /api/users`                                              | Yes     | `ADMIN`         |
+  | `GET /api/users/{username}`                                   | Yes     | `ADMIN`         |
+  | `DELETE /api/users/{username}`                                | Yes     | `ADMIN`         |
+  | `GET /api/movies [?text]`                                     | Yes     | `ADMIN`, `USER` |
+  | `POST /api/movies -d {"imdb","description"}`                  | Yes     | `ADMIN`         |
+  | `DELETE /api/movies/{imdb}`                                   | Yes     | `ADMIN`         |
 
 - **movie-ui**
 
@@ -160,8 +159,8 @@ The gif below shows ...
     ```
     It should return something like the output below, where it shows the http code for different requests
     ```
-    GET auth/login
-    ==============
+    GET auth/authenticate
+    =====================
     admin access token
     ------------------
     eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1ODY2MjM1MjksImlhdCI6MTU4Nj..._ha2pM4LSSG3_d4exgA
@@ -190,8 +189,7 @@ The gif below shows ...
     ......................... + ............. + ........... + ............ |
               GET /api/movies |           401 |         200 |          200 |
              POST /api/movies |           401 |         403 |          201 |
-          GET /api/movies/def |           401 |         200 |          200 |
-       DELETE /api/movies/def |           401 |         403 |          200 |
+       DELETE /api/movies/abc |           401 |         403 |          200 |
     ------------------------------------------------------------------------
      [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden
     ```

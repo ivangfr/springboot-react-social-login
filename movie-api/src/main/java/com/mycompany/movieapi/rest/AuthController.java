@@ -38,10 +38,11 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/authenticate")
     public AuthResponse login(@Valid @RequestBody LoginRequest loginRequest) {
+        User user = userService.validateAndGetUserByUsername(loginRequest.getUsername());
         String token = authenticateAndGetToken(loginRequest.getUsername(), loginRequest.getPassword());
-        return new AuthResponse(token);
+        return new AuthResponse(user.getId(), user.getName(), user.getRole(), token);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -54,10 +55,10 @@ public class AuthController {
             throw new DuplicatedUserInfoException(String.format("Email %s already been used", signUpRequest.getEmail()));
         }
 
-        userService.saveUser(mapSignUpRequestToUser(signUpRequest));
+        User user = userService.saveUser(mapSignUpRequestToUser(signUpRequest));
 
         String token = authenticateAndGetToken(signUpRequest.getUsername(), signUpRequest.getPassword());
-        return new AuthResponse(token);
+        return new AuthResponse(user.getId(), user.getName(), user.getRole(), token);
     }
 
     private String authenticateAndGetToken(String username, String password) {

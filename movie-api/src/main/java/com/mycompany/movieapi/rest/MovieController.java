@@ -1,7 +1,7 @@
 package com.mycompany.movieapi.rest;
 
 import com.mycompany.movieapi.model.Movie;
-import com.mycompany.movieapi.rest.dto.CreateMovieDto;
+import com.mycompany.movieapi.rest.dto.CreateMovieRequest;
 import com.mycompany.movieapi.service.MovieService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,8 +38,8 @@ public class MovieController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Movie createMovie(@Valid @RequestBody CreateMovieDto createMovieDto) {
-        return movieService.saveMovie(new Movie(createMovieDto.getImdb(), createMovieDto.getTitle()));
+    public Movie createMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
+        return movieService.saveMovie(new Movie(createMovieRequest.getImdb(), createMovieRequest.getTitle()));
     }
 
     @DeleteMapping("/{imdb}")

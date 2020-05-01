@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class CreateMovieDto {
+public class CreateMovieRequest {
 
     @ApiModelProperty(example = "ghi")
     @NotBlank
