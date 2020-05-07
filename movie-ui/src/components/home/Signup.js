@@ -44,22 +44,20 @@ class Signup extends Component {
     const user = { username, password, name, email }
     movieApi.signup(user)
       .then(response => {
-        if (response.status === 201) {
-          const { accessToken } = response.data
-          const data = parseJwt(accessToken)
-          const user = { data, accessToken }
+        const { accessToken } = response.data
+        const data = parseJwt(accessToken)
+        const user = { data, accessToken }
 
-          const Auth = this.context
-          Auth.userLogin(user)
+        const Auth = this.context
+        Auth.userLogin(user)
 
-          this.setState({
-            username: '',
-            password: '',
-            isLoggedIn: true,
-            isError: false,
-            errorMessage: ''
-          })
-        }
+        this.setState({
+          username: '',
+          password: '',
+          isLoggedIn: true,
+          isError: false,
+          errorMessage: ''
+        })
       })
       .catch(error => {
         if (error.response && error.response.data) {
@@ -75,6 +73,8 @@ class Signup extends Component {
             isError: true,
             errorMessage
           })
+        } else {
+          console.log(error.message)
         }
       })
   }

@@ -18,12 +18,12 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getMovies() {
-        return movieRepository.findAllByOrderByCreatedAtDesc();
+        return movieRepository.findAllByOrderByTitle();
     }
 
     @Override
     public List<Movie> getMoviesContainingText(String text) {
-        return movieRepository.findByImdbContainingOrTitleContainingOrderByCreatedAt(text, text);
+        return movieRepository.findByImdbContainingOrTitleContainingOrderByTitle(text, text);
     }
 
     @Override

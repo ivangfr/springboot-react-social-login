@@ -46,7 +46,7 @@ class AdminPage extends Component {
         this.setState({ users: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ isUsersLoading: false })
@@ -62,7 +62,7 @@ class AdminPage extends Component {
         this.handleGetUsers()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
   }
 
@@ -73,16 +73,12 @@ class AdminPage extends Component {
     const username = this.state.userUsernameSearch
     movieApi.getUsers(user, username)
       .then(response => {
-        if (response.status === 200) {
-          const data = response.data;
-          const users = data instanceof Array ? data : [data]
-          this.setState({ users })
-        } else {
-          this.setState({ users: [] })
-        }
+        const data = response.data
+        const users = data instanceof Array ? data : [data]
+        this.setState({ users })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ users: [] })
       })
   }
@@ -97,7 +93,7 @@ class AdminPage extends Component {
         this.setState({ movies: response.data })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
       .finally(() => {
         this.setState({ isMoviesLoading: false })
@@ -113,7 +109,7 @@ class AdminPage extends Component {
         this.handleGetMovies()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
   }
 
@@ -136,7 +132,7 @@ class AdminPage extends Component {
         this.handleGetMovies()
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
       })
   }
 
@@ -147,17 +143,11 @@ class AdminPage extends Component {
     const text = this.state.movieTextSearch
     movieApi.getMovies(user, text)
       .then(response => {
-        console.log(response)
-        if (response.status === 200) {
-          const data = response.data;
-          const movies = data instanceof Array ? data : [data]
-          this.setState({ movies })
-        } else {
-          this.setState({ movies: [] })
-        }
+        const movies = response.data
+        this.setState({ movies })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ movies: [] })
       })
   }

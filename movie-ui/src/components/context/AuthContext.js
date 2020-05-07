@@ -17,7 +17,18 @@ class AuthProvider extends Component {
   }
 
   userIsAuthenticated = () => {
-    return localStorage.getItem('user') !== null
+    let user = localStorage.getItem('user')
+    if (!user) {
+      return false
+    }
+    user = JSON.parse(user)
+    
+    // if user has token expired, logout user
+    if (Date.now() > user.data.exp * 1000) {
+      this.userLogout()
+      return false
+    }
+    return true
   }
 
   userLogin = user => {

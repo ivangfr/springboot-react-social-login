@@ -8,7 +8,7 @@ The goal of this project is to implement an application called `movie-app` to ma
 
   `Spring Boot` Web Java backend application that exposes a Rest API to create, retrieve and delete movies. If a user has `ADMIN` role he/she can also retrieve information of other users or delete them. The application secured endpoints can just be accessed if a valid JWT access token is provided.
   
-  In order to get the JWT access token, the user can login using Github account or using the credentials (`username` and `password`) created when he/she signed up directly to the application.
+  In order to get the JWT access token, the user can login using the credentials (`username` and `password`) created when he/she signed up directly to the application.
   
   `movie-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
 
@@ -30,9 +30,9 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 - **movie-ui**
 
-  `ReactJS` frontend application where a user with role `USER` can retrieve the information of a specific movie or a list of movies. On the other hand, a user with role `ADMIN` has access to all secured endpoints.
+  `ReactJS` frontend application where a user with role `USER` can retrieve the information about movies. On the other hand, a user with role `ADMIN` has access to all secured endpoints, including endpoints to create and delete movies.
   
-  In order to access the application, a `user` or `admin` can login using his/her Github account or using the credentials (`username` and `password`) created when he/she signed up directly to the application. All the requests coming from `movie-ui` to secured endpoints in `movie-api` have the JWT access token. This token is generated when the `user` or `admin` logins.
+  In order to access the application, a `user` or `admin` can login using his/her `Github` account or using the credentials (`username` and `password`) created when he/she signed up directly to the application. All the requests coming from `movie-ui` to secured endpoints in `movie-api` have the JWT access token. This token is generated when the `user` or `admin` logins.
   
   `movie-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
 
@@ -42,13 +42,13 @@ The goal of this project is to implement an application called `movie-app` to ma
 
   In this [link](https://github.com/ivangfr/springboot-react-social-login/blob/master/create-github-oauth2-app.md) it's explained how to create a Github App
 
-> **Note:** Other providers like Google, Facebook, etc will be added soon
+> **Note:** Other providers like `Facebook`, `Twitter`, etc will be added later
 
 ## How Social Login Works?
 
-To explain how it works, we will use **Github** as OAuth2 provider example. However, this flow is similar to other providers. All the OAuth2 provider is done in the [application.yml](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/resources/application.yml). The `oauth2Login` configuration is done in [`WebSecurityConfig`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/WebSecurityConfig.java)
+To explain how it works, we will use `Github` as OAuth2 provider example. However, this flow is similar to other providers. All the OAuth2 provider configuration is done in the [application.yml](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/resources/application.yml). The `oauth2Login` configuration is done in [`WebSecurityConfig`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/WebSecurityConfig.java)
 
-1. The Social Login with Github starts by `movie-app` client redirecting the user to the following URL
+1. The Social Login with `Github` starts by `movie-app` client redirecting the user to the following URL
    ```
    http://localhost:8080/oauth2/authorization/github
    ```
@@ -58,7 +58,7 @@ To explain how it works, we will use **Github** as OAuth2 provider example. Howe
    https://github.com/login/oauth/authorize?response_type=code&client_id=<CLIENT_ID>&scope=read:user&state=<STATE>&redirect_uri=http://localhost:8080/login/oauth2/code/github
    ```
 
-1. The user is redirect to the OAuth2 provider login form
+1. The user is redirected to the OAuth2 provider login form
    ```
    https://github.com/login?client_id=<CLIENT_ID>&return_to=/login/oauth/authorize?client_id=<CLIENT_ID>&redirect_uri=http://localhost:8080/login/oauth2/code/github&response_type=code&scope=read:use&state=<STATE>
    ```
@@ -82,11 +82,11 @@ To explain how it works, we will use **Github** as OAuth2 provider example. Howe
      http://localhost:8080/login/oauth2/code/github?code=<CODE>&state=<STATE>
      ```
 
-     Once received the redirect, Spring Security will exchange the `authorization_code` for an `access_token` and call [`CustomOAuth2UserService`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/oauth2/CustomOAuth2UserService.java) that will check (by `username`) whether the user is present or not in the `movie-app` database. If it isn't present, a new entry for the user is created; otherwise, a few user information (like `imageUrl` and `email`) is updated.
+     Once received the redirect, Spring Security will exchange the `authorization_code` for an `access_token` and call [`CustomOAuth2UserService`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/oauth2/CustomOAuth2UserService.java) that will check (by `username`) whether the user is present or not in the `movie-app` database. If it is not present, a new entry for the user is created; otherwise, a few user information (like `imageUrl` and `email`) is updated.
 
-     In the end, the component [`CustomAuthenticationSuccessHandler`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/oauth2/CustomAuthenticationSuccessHandler.java), extends [`SimpleUrlAuthenticationSuccessHandler`](https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/authentication/SimpleUrlAuthenticationSuccessHandler.java), is invoked. It's responsible for creating a JWT access token and sending it to the user in the `redirect_uri`. We are using the default `redirect_uri` that is `/`. The JWT token informed in the `redirect_uri` as a query string, like it's shown below
+     In the end, the component [`CustomAuthenticationSuccessHandler`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/mycompany/movieapi/security/oauth2/CustomAuthenticationSuccessHandler.java), extends [`SimpleUrlAuthenticationSuccessHandler`](https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/authentication/SimpleUrlAuthenticationSuccessHandler.java), is invoked. It's responsible for creating a JWT access token and sending it to the user in the `redirect_uri`. We are using as `redirect_uri` a url present in `movie-ui`, `http://localhost:3000/oauth2/redirect`. The JWT token informed in the `redirect_uri` as a query string, like it's shown below
      ```
-     http://localhost:8080/?token=eyJ0eXAiOiJKV1QiLCJhbGc...xaY0KWdqG2JDDk-iIrgIPDZvcA7Q
+     http://localhost:3000/oauth2/redirect?token=eyJ0eXAiOiJKV1QiLCJhbGc...xaY0KWdqG2JDDk-iIrgIPDZvcA7Q
      ```
 
 ## Start Environment
@@ -134,10 +134,10 @@ To explain how it works, we will use **Github** as OAuth2 provider example. Howe
 
 ## Applications URLs
 
-| Application  | URL                   | Credentials |
-| ------------ | --------------------- | ----------- |
-| movie-api    | http://localhost:8080 |             |
-| movie-ui     | http://localhost:3000 |             |
+| Application  | URL                                   | Credentials                                         |
+| ------------ | ------------------------------------- | --------------------------------------------------- |
+| movie-api    | http://localhost:8080/swagger-ui.html |                                                     |
+| movie-ui     | http://localhost:3000                 | `admin/admin`, `user/user` or signing up a new user |
 
 ## Demo
 
@@ -145,9 +145,11 @@ The gif below shows ...
 
 ## Testing movie-api Endpoints
 
-- **Manual Endpoints Test using Swagger**
+- **Manual Test**
 
-- **Manual Endpoints Test using curl**
+  - Access `movie-ui` at http://localhost:3000
+
+  - Click on `Login` and provide your `Github` credentials
 
 - **Automatic Endpoints Test**
 

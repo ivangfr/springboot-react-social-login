@@ -37,26 +37,22 @@ class Login extends Component {
 
     movieApi.authenticate(username, password)
       .then(response => {
-        if (response.status === 200) {
-          const { accessToken } = response.data
-          const data = parseJwt(accessToken)
-          const user = { data, accessToken }
+        const { accessToken } = response.data
+        const data = parseJwt(accessToken)
+        const user = { data, accessToken }
 
-          const Auth = this.context
-          Auth.userLogin(user)
+        const Auth = this.context
+        Auth.userLogin(user)
 
-          this.setState({
-            username: '',
-            password: '',
-            isLoggedIn: true,
-            isError: false
-          })
-        } else {
-          this.setState({ isError: true })
-        }
+        this.setState({
+          username: '',
+          password: '',
+          isLoggedIn: true,
+          isError: false
+        })
       })
       .catch(error => {
-        console.log(error)
+        console.log(error.message)
         this.setState({ isError: true })
       })
   }

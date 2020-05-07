@@ -24,7 +24,7 @@ function MovieForm({ movieImdb, movieTitle, moviePoster, handleInputChange, hand
           value={moviePoster}
           onChange={handleInputChange}
         />
-        <Button icon labelPosition='right' color='blue' disabled={createBtnDisabled}>
+        <Button icon labelPosition='right' disabled={createBtnDisabled}>
           Create<Icon name='add' />
         </Button>
       </Form.Group>

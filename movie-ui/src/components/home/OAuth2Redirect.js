@@ -37,4 +37,4 @@ class OAuth2Redirect extends Component {
   }
 }
 
-export default OAuth2Redirect;
+export default OAuth2Redirect

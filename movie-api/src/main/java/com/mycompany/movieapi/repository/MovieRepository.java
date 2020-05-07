@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MovieRepository extends JpaRepository<Movie, String> {
 
-  List<Movie> findAllByOrderByCreatedAtDesc();
+  List<Movie> findAllByOrderByTitle();
 
-  List<Movie> findByImdbContainingOrTitleContainingOrderByCreatedAt(String imdb, String title);
+  List<Movie> findByImdbContainingOrTitleContainingOrderByTitle(String imdb, String title);
 
 }
