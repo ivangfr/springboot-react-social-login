@@ -141,7 +141,13 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 ## Demo
 
-The gif below shows ...
+- The gif below shows a `user` loging in using the `Github`
+
+  ![github-login](images/github-login.gif)
+
+- The gif below shows an `admin` loging in using his application account
+
+  ![admin-login](images/admin-login.gif)
 
 ## Testing movie-api Endpoints
 
