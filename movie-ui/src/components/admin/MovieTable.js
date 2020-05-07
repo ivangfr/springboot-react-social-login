@@ -1,12 +1,13 @@
 import React, { Fragment } from 'react'
-import { Grid, Form, Icon, Button, Image, Input, Table } from 'semantic-ui-react'
+import { Button, Form, Grid, Image, Input, Table } from 'semantic-ui-react'
+import MovieForm from './MovieForm'
 
-function MovieTable({ movies, movieImdb, movieTitle, movieTextSearch, handleChange, addMovie, deleteMovie, searchMovie }) {
+function MovieTable({ movies, movieImdb, movieTitle, moviePoster, movieTextSearch, handleInputChange, handleAddMovie, handleDeleteMovie, handleSearchMovie }) {
   let movieList
   if (movies.length === 0) {
     movieList = (
       <Table.Row key='no-movie'>
-        <Table.Cell collapsing textAlign='center' colSpan='4'>No movie</Table.Cell>
+        <Table.Cell collapsing textAlign='center' colSpan='5'>No movie</Table.Cell>
       </Table.Row>
     )
   } else {
@@ -19,14 +20,18 @@ function MovieTable({ movies, movieImdb, movieTitle, movieTextSearch, handleChan
               color='red'
               size='small'
               icon='trash'
-              onClick={() => deleteMovie(movie.imdb)}
+              onClick={() => handleDeleteMovie(movie.imdb)}
             />
           </Table.Cell>
           <Table.Cell>
-            <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='tiny' bordered rounded />
+            { movie.poster ?
+            <Image src={movie.poster} size='tiny' bordered rounded /> :
+            <Image src='/images/movie-poster.jpg' size='tiny' bordered rounded />
+            }
           </Table.Cell>
           <Table.Cell>{movie.imdb}</Table.Cell>
           <Table.Cell>{movie.title}</Table.Cell>
+          <Table.Cell>{movie.createdAt}</Table.Cell>
         </Table.Row>
       )
     })
@@ -37,46 +42,35 @@ function MovieTable({ movies, movieImdb, movieTitle, movieTextSearch, handleChan
       <Grid stackable divided>
         <Grid.Row columns='2'>
           <Grid.Column width='5'>
-            <Form onSubmit={searchMovie}>
+            <Form onSubmit={handleSearchMovie}>
               <Input
                 action={{ icon: 'search' }}
                 id='movieTextSearch'
                 placeholder='Search by Imdb or Title'
                 value={movieTextSearch}
-                onChange={handleChange}
+                onChange={handleInputChange}
               />
             </Form>
           </Grid.Column>
           <Grid.Column>
-            <Form onSubmit={addMovie}>
-              <Form.Group>
-                <Form.Input
-                  id='movieImdb'
-                  placeholder='IMDB'
-                  value={movieImdb}
-                  onChange={handleChange}
-                />
-                <Form.Input
-                  id='movieTitle'
-                  placeholder='Title'
-                  value={movieTitle}
-                  onChange={handleChange}
-                />
-                <Button icon>
-                  <Icon name='add' />
-                </Button>
-              </Form.Group>
-            </Form>
+            <MovieForm
+              movieImdb={movieImdb}
+              movieTitle={movieTitle}
+              moviePoster={moviePoster}
+              handleInputChange={handleInputChange}
+              handleAddMovie={handleAddMovie}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
       <Table compact striped selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell />
-            <Table.HeaderCell>Cover</Table.HeaderCell>
-            <Table.HeaderCell>IMDB</Table.HeaderCell>
-            <Table.HeaderCell>Title</Table.HeaderCell>
+            <Table.HeaderCell width={1}/>
+            <Table.HeaderCell width={4}>Poster</Table.HeaderCell>
+            <Table.HeaderCell width={3}>IMDB</Table.HeaderCell>
+            <Table.HeaderCell width={4}>Title</Table.HeaderCell>
+            <Table.HeaderCell width={4}>CreatedAt</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>

@@ -3,6 +3,7 @@ import { NavLink, Redirect } from 'react-router-dom'
 import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
+import { parseJwt } from '../misc/Helpers'
 
 class Signup extends Component {
   static contextType = AuthContext
@@ -23,7 +24,7 @@ class Signup extends Component {
     this.setState({ isLoggedIn })
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
@@ -44,8 +45,9 @@ class Signup extends Component {
     movieApi.signup(user)
       .then(response => {
         if (response.status === 201) {
-          const { id, name, role, accessToken } = response.data
-          const user = { id, name, role, accessToken }
+          const { accessToken } = response.data
+          const data = parseJwt(accessToken)
+          const user = { data, accessToken }
 
           const Auth = this.context
           Auth.userLogin(user)
@@ -94,7 +96,7 @@ class Signup extends Component {
                   icon='user'
                   iconPosition='left'
                   placeholder='Username'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -103,7 +105,7 @@ class Signup extends Component {
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -111,7 +113,7 @@ class Signup extends Component {
                   icon='address card'
                   iconPosition='left'
                   placeholder='Name'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -119,7 +121,7 @@ class Signup extends Component {
                   icon='at'
                   iconPosition='left'
                   placeholder='Email'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Button color='purple' fluid size='large'>Signup</Button>
               </Segment>

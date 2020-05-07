@@ -13,6 +13,7 @@ class AdminPage extends Component {
     movies: [],
     movieImdb: '',
     movieTitle: '',
+    moviePoster: '',
     movieTextSearch: '',
     userUsernameSearch: '',
     isAdmin: true,
@@ -23,19 +24,19 @@ class AdminPage extends Component {
   componentDidMount() {
     const Auth = this.context
     const user = Auth.getUser()
-    const isAdmin = user.role === 'ADMIN'
+    const isAdmin = user.data.rol[0] === 'ADMIN'
     this.setState({ isAdmin })
 
-    this.getUsers()
-    this.getMovies()
+    this.handleGetUsers()
+    this.handleGetMovies()
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
 
-  getUsers = () => {
+  handleGetUsers = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -52,20 +53,20 @@ class AdminPage extends Component {
       })
   }
 
-  deleteUser = (username) => {
+  handleDeleteUser = (username) => {
     const Auth = this.context
     const user = Auth.getUser()
 
     movieApi.deleteUser(user, username)
       .then(() => {
-        this.getUsers()
+        this.handleGetUsers()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  searchUser = () => {
+  handleSearchUser = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -86,7 +87,7 @@ class AdminPage extends Component {
       })
   }
 
-  getMovies = () => {
+  handleGetMovies = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
@@ -103,46 +104,50 @@ class AdminPage extends Component {
       })
   }
 
-  deleteMovie = (imdb) => {
+  handleDeleteMovie = (imdb) => {
     const Auth = this.context
     const user = Auth.getUser()
 
     movieApi.deleteMovie(user, imdb)
       .then(() => {
-        this.getMovies()
+        this.handleGetMovies()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  addMovie = () => {
+  handleAddMovie = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
-    const { movieImdb, movieTitle } = this.state
+    let { movieImdb, movieTitle, moviePoster } = this.state
+    movieImdb = movieImdb.trim()
+    movieTitle = movieTitle.trim()
+    moviePoster = moviePoster.trim()
     if (!(movieImdb && movieTitle)) {
       return
     }
 
-    const movie = { imdb: movieImdb, title: movieTitle }
+    const movie = { imdb: movieImdb, title: movieTitle, poster: moviePoster }
     movieApi.addMovie(user, movie)
       .then(() => {
         this.clearMovieForm()
-        this.getMovies()
+        this.handleGetMovies()
       })
       .catch(error => {
         console.log(error)
       })
   }
 
-  searchMovie = () => {
+  handleSearchMovie = () => {
     const Auth = this.context
     const user = Auth.getUser()
 
     const text = this.state.movieTextSearch
     movieApi.getMovies(user, text)
       .then(response => {
+        console.log(response)
         if (response.status === 200) {
           const data = response.data;
           const movies = data instanceof Array ? data : [data]
@@ -168,24 +173,25 @@ class AdminPage extends Component {
     if (!this.state.isAdmin) {
       return <Redirect to='/' />
     } else {
-      const { isUsersLoading, users, userUsernameSearch, isMoviesLoading, movies, movieImdb, movieTitle, movieTextSearch } = this.state
+      const { isUsersLoading, users, userUsernameSearch, isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch } = this.state
       return (
         <Container>
           <AdminTab
             isUsersLoading={isUsersLoading}
             users={users}
             userUsernameSearch={userUsernameSearch}
-            deleteUser={this.deleteUser}
-            searchUser={this.searchUser}
+            handleDeleteUser={this.handleDeleteUser}
+            handleSearchUser={this.handleSearchUser}
             isMoviesLoading={isMoviesLoading}
             movies={movies}
             movieImdb={movieImdb}
             movieTitle={movieTitle}
+            moviePoster={moviePoster}
             movieTextSearch={movieTextSearch}
-            addMovie={this.addMovie}
-            deleteMovie={this.deleteMovie}
-            searchMovie={this.searchMovie}
-            handleChange={this.handleChange}
+            handleAddMovie={this.handleAddMovie}
+            handleDeleteMovie={this.handleDeleteMovie}
+            handleSearchMovie={this.handleSearchMovie}
+            handleInputChange={this.handleInputChange}
           />
         </Container>
       )

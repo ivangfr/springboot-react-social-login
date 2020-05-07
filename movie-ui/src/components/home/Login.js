@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { NavLink, Redirect } from 'react-router-dom'
-import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
+import { Button, Form, Grid, Icon, Segment, Menu, Message, Divider } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
+import { parseJwt, getSocialLoginUrl } from '../misc/Helpers'
 
 class Login extends Component {
   static contextType = AuthContext
@@ -20,7 +21,7 @@ class Login extends Component {
     this.setState({ isLoggedIn })
   }
 
-  handleChange = (e) => {
+  handleInputChange = (e) => {
     const { id, value } = e.target
     this.setState({ [id]: value })
   }
@@ -37,8 +38,9 @@ class Login extends Component {
     movieApi.authenticate(username, password)
       .then(response => {
         if (response.status === 200) {
-          const { id, name, role, accessToken } = response.data
-          const user = { id, name, role, accessToken }
+          const { accessToken } = response.data
+          const data = parseJwt(accessToken)
+          const user = { data, accessToken }
 
           const Auth = this.context
           Auth.userLogin(user)
@@ -82,7 +84,7 @@ class Login extends Component {
                   icon='user'
                   iconPosition='left'
                   placeholder='Username'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Form.Input
                   fluid
@@ -91,7 +93,7 @@ class Login extends Component {
                   iconPosition='left'
                   placeholder='Password'
                   type='password'
-                  onChange={this.handleChange}
+                  onChange={this.handleInputChange}
                 />
                 <Button color='purple' fluid size='large'>Login</Button>
               </Segment>
@@ -100,6 +102,23 @@ class Login extends Component {
               <a href='/signup' color='purple' as={NavLink} to="/signup">Sign Up</a>
             </Message>
             {isError && <Message negative>The username or password provided are incorrect!</Message>}
+
+            <Divider horizontal>or connect with</Divider>
+
+            <Menu compact icon='labeled'>
+              <Menu.Item name='github' href={getSocialLoginUrl('github')}>
+                <Icon name='github' />Github
+              </Menu.Item>
+              <Menu.Item name='facebook'>
+                <Icon name='facebook' disabled />Facebook
+              </Menu.Item>
+              <Menu.Item name='twitter'>
+                <Icon name='twitter' disabled />Twitter
+              </Menu.Item>
+              <Menu.Item name='instagram'>
+                <Icon name='instagram' disabled />Instagram
+              </Menu.Item>
+            </Menu>
           </Grid.Column>
         </Grid>
       )

@@ -107,10 +107,10 @@ To explain how it works, we will use **Github** as OAuth2 provider example. Howe
 
   - Open a terminal and navigate to `springboot-react-social-login/movie-api` folder
 
-  - Create the following environment variables for the `Client ID` and `Client Secret` of the Social Apps (see how to get them in [Creating OAuth2 apps for Social Login](#creating-oauth2-apps-for-social-login))
+  - Export the following environment variables for the `Client ID` and `Client Secret` of the Social Apps (see how to get them in [Creating OAuth2 apps for Social Login](#creating-oauth2-apps-for-social-login))
     ```
-    GITHUB_CLIENT_ID=...
-    GITHUB_CLIENT_SECRET=...
+    export GITHUB_CLIENT_ID=...
+    export GITHUB_CLIENT_SECRET=...
     ```
 
   - Run the following `Maven` command to start the application
@@ -221,3 +221,7 @@ The gif below shows ...
   ncu -u
   npm install
   ```
+
+## References
+
+- https://www.callicoder.com/spring-boot-security-oauth2-social-login-part-1/

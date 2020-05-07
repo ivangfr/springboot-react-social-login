@@ -11,11 +11,11 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.getNumberOfUsers()
-    this.getNumberOfMovies()
+    this.handleGetNumberOfUsers()
+    this.handleGetNumberOfMovies()
   }
 
-  getNumberOfUsers = () => {
+  handleGetNumberOfUsers = () => {
     this.setState({ isLoadingNumberOfUsers: true })
     movieApi.numberOfUsers()
       .then(response => {
@@ -29,7 +29,7 @@ class Home extends Component {
       })
   }
 
-  getNumberOfMovies = () => {
+  handleGetNumberOfMovies = () => {
     this.setState({ getNumberOfMovies: true })
     movieApi.numberOfMovies()
       .then(response => {

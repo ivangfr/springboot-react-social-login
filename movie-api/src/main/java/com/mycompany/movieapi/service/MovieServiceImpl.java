@@ -18,7 +18,12 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getMovies() {
-        return movieRepository.findAll();
+        return movieRepository.findAllByOrderByCreatedAtDesc();
+    }
+
+    @Override
+    public List<Movie> getMoviesContainingText(String text) {
+        return movieRepository.findByImdbContainingOrTitleContainingOrderByCreatedAt(text, text);
     }
 
     @Override
@@ -36,4 +41,5 @@ public class MovieServiceImpl implements MovieService {
     public void deleteMovie(Movie movie) {
         movieRepository.delete(movie);
     }
+
 }

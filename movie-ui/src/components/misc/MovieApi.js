@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { config } from '../../Constants'
 
 export const movieApi = {
   authenticate,
@@ -70,8 +71,22 @@ function addMovie(user, movie) {
 // -- Axios
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: config.url.API_BASE_URL
 })
+
+instance.interceptors.response.use(function (response) {
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
+  return response;
+}, function (error) {
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  if (error.response && error.response.status === 401) {
+    window.location.href = "/login";
+  } else {
+    return Promise.reject(error);
+  }
+});
 
 // -- Helper functions
 

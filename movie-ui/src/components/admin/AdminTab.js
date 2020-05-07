@@ -4,9 +4,9 @@ import UserTable from './UserTable'
 import MovieTable from './MovieTable'
 
 function AdminTab(props) {
-  const { handleChange } = props
-  const { isUsersLoading, users, userUsernameSearch, deleteUser, searchUser } = props
-  const { isMoviesLoading, movies, movieImdb, movieTitle, movieTextSearch, addMovie, deleteMovie, searchMovie } = props
+  const { handleInputChange } = props
+  const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
+  const { isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch, handleAddMovie, handleDeleteMovie, handleSearchMovie } = props
 
   const panes = [
     {
@@ -16,9 +16,9 @@ function AdminTab(props) {
           <UserTable
             users={users}
             userUsernameSearch={userUsernameSearch}
-            handleChange={handleChange}
-            deleteUser={deleteUser}
-            searchUser={searchUser}
+            handleInputChange={handleInputChange}
+            handleDeleteUser={handleDeleteUser}
+            handleSearchUser={handleSearchUser}
           />
         </Tab.Pane>
       )
@@ -31,11 +31,12 @@ function AdminTab(props) {
             movies={movies}
             movieImdb={movieImdb}
             movieTitle={movieTitle}
+            moviePoster={moviePoster}
             movieTextSearch={movieTextSearch}
-            handleChange={handleChange}
-            addMovie={addMovie}
-            deleteMovie={deleteMovie}
-            searchMovie={searchMovie}
+            handleInputChange={handleInputChange}
+            handleAddMovie={handleAddMovie}
+            handleDeleteMovie={handleDeleteMovie}
+            handleSearchMovie={handleSearchMovie}
           />
         </Tab.Pane>
       )
@@ -43,7 +44,7 @@ function AdminTab(props) {
   ]
 
   return (
-    <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+    <Tab menu={{ attached: 'top' }} panes={panes} />
   )
 }
 
