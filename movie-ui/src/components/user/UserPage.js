@@ -4,6 +4,7 @@ import { Container } from 'semantic-ui-react'
 import MovieList from './MovieList'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
+import { handleLogError } from '../misc/Helpers'
 
 class UserPage extends Component {
   static contextType = AuthContext
@@ -24,9 +25,8 @@ class UserPage extends Component {
     this.handleGetMovies()
   }
 
-  handleInputChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
+  handleInputChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
   }
 
   handleGetMovies = () => {
@@ -39,7 +39,7 @@ class UserPage extends Component {
         this.setState({ movies: response.data })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
       .finally(() => {
         this.setState({ isMoviesLoading: false })
@@ -57,7 +57,7 @@ class UserPage extends Component {
         this.setState({ movies })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ movies: [] })
       })
   }

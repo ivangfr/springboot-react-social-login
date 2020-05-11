@@ -36,7 +36,7 @@ function MovieList({ isMoviesLoading, movieTextSearch, movies, handleInputChange
             <Form onSubmit={handleSearchMovie}>
               <Input
                 action={{ icon: 'search' }}
-                id='movieTextSearch'
+                name='movieTextSearch'
                 placeholder='Search by IMDB or Title'
                 value={movieTextSearch}
                 onChange={handleInputChange}

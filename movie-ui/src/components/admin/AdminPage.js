@@ -4,6 +4,7 @@ import { Container } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
 import AdminTab from './AdminTab'
+import { handleLogError } from '../misc/Helpers'
 
 class AdminPage extends Component {
   static contextType = AuthContext
@@ -31,9 +32,8 @@ class AdminPage extends Component {
     this.handleGetMovies()
   }
 
-  handleInputChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
+  handleInputChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
   }
 
   handleGetUsers = () => {
@@ -46,7 +46,7 @@ class AdminPage extends Component {
         this.setState({ users: response.data })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
       .finally(() => {
         this.setState({ isUsersLoading: false })
@@ -62,7 +62,7 @@ class AdminPage extends Component {
         this.handleGetUsers()
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
   }
 
@@ -78,7 +78,7 @@ class AdminPage extends Component {
         this.setState({ users })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ users: [] })
       })
   }
@@ -93,7 +93,7 @@ class AdminPage extends Component {
         this.setState({ movies: response.data })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
       .finally(() => {
         this.setState({ isMoviesLoading: false })
@@ -109,7 +109,7 @@ class AdminPage extends Component {
         this.handleGetMovies()
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
   }
 
@@ -132,7 +132,7 @@ class AdminPage extends Component {
         this.handleGetMovies()
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
       })
   }
 
@@ -147,7 +147,7 @@ class AdminPage extends Component {
         this.setState({ movies })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ movies: [] })
       })
   }

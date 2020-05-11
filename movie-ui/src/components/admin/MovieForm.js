@@ -7,19 +7,19 @@ function MovieForm({ movieImdb, movieTitle, moviePoster, handleInputChange, hand
     <Form onSubmit={handleAddMovie}>
       <Form.Group>
         <Form.Input
-          id='movieImdb'
+          name='movieImdb'
           placeholder='IMDB *'
           value={movieImdb}
           onChange={handleInputChange}
         />
         <Form.Input
-          id='movieTitle'
+          name='movieTitle'
           placeholder='Title *'
           value={movieTitle}
           onChange={handleInputChange}
         />
         <Form.Input
-          id='moviePoster'
+          name='moviePoster'
           placeholder='Poster'
           value={moviePoster}
           onChange={handleInputChange}

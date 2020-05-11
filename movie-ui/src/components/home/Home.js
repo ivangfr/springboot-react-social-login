@@ -1,77 +1,72 @@
 import React, { Component } from 'react'
-import { Statistic, Icon, Grid, Container, Image, Segment } from 'semantic-ui-react'
+import { Statistic, Icon, Grid, Container, Image, Segment, Dimmer, Loader } from 'semantic-ui-react'
 import { movieApi } from '../misc/MovieApi'
+import { handleLogError } from '../misc/Helpers'
 
 class Home extends Component {
   state = {
     numberOfUsers: 0,
     numberOfMovies: 0,
-    isLoadingNumberOfUsers: false,
-    isLoadingNumberOfMovies: false,
+    isLoading: false
   }
 
-  componentDidMount() {
-    this.handleGetNumberOfUsers()
-    this.handleGetNumberOfMovies()
-  }
+  async componentDidMount() {
+    this.setState({ isLoading: true })
+    try {
+      let response = await movieApi.numberOfUsers()
+      const numberOfUsers = response.data
 
-  handleGetNumberOfUsers = () => {
-    this.setState({ isLoadingNumberOfUsers: true })
-    movieApi.numberOfUsers()
-      .then(response => {
-        this.setState({ numberOfUsers: response.data })
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
-      .finally(() => {
-        this.setState({ isLoadingNumberOfUsers: false })
-      })
-  }
+      response = await movieApi.numberOfMovies()
+      const numberOfMovies = response.data
 
-  handleGetNumberOfMovies = () => {
-    this.setState({ getNumberOfMovies: true })
-    movieApi.numberOfMovies()
-      .then(response => {
-        this.setState({ numberOfMovies: response.data })
-      })
-      .catch(error => {
-        console.log(error.message)
-      })
-      .finally(() => {
-        this.setState({ getNumberOfMovies: false })
-      })
+      this.setState({ numberOfUsers, numberOfMovies })
+    } catch (error) {
+      handleLogError(error)
+    } finally {
+      this.setState({ isLoading: false })
+    }
   }
 
   render() {
-    const { isLoadingNumberOfUsers, numberOfUsers, isLoadingNumberOfMovies, numberOfMovies } = this.state
-    return (
-      <Container text>
-        <Grid stackable columns={2}>
-          <Grid.Row>
-            <Grid.Column textAlign='center'>
-              <Segment color='purple' loading={isLoadingNumberOfUsers}>
-                <Statistic>
-                  <Statistic.Value><Icon name='user' color='grey' />{numberOfUsers}</Statistic.Value>
-                  <Statistic.Label>Users</Statistic.Label>
-                </Statistic>
-              </Segment>
-            </Grid.Column>
-            <Grid.Column textAlign='center'>
-              <Segment color='purple' loading={isLoadingNumberOfMovies}>
-                <Statistic>
-                  <Statistic.Value><Icon name='laptop' color='grey' />{numberOfMovies}</Statistic.Value>
-                  <Statistic.Label>Movies</Statistic.Label>
-                </Statistic>
-              </Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+    const { isLoading } = this.state
+    if (isLoading) {
+      return (
+        <Segment basic style={{ marginTop: window.innerHeight / 2 }}>
+          <Dimmer active inverted>
+            <Loader inverted size='huge'>Loading</Loader>
+          </Dimmer>
+        </Segment>
+      )
+    } else {
+      const { numberOfUsers, numberOfMovies } = this.state
+      return (
+        <Container text>
+          <Grid stackable columns={2}>
+            <Grid.Row>
+              <Grid.Column textAlign='center'>
+                <Segment color='purple'>
+                  <Statistic>
+                    <Statistic.Value><Icon name='user' color='grey' />{numberOfUsers}</Statistic.Value>
+                    <Statistic.Label>Users</Statistic.Label>
+                  </Statistic>
+                </Segment>
+              </Grid.Column>
+              <Grid.Column textAlign='center'>
+                <Segment color='purple'>
+                  <Statistic>
+                    <Statistic.Value><Icon name='laptop' color='grey' />{numberOfMovies}</Statistic.Value>
+                    <Statistic.Label>Movies</Statistic.Label>
+                  </Statistic>
+                </Segment>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
 
-        <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
-        <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-      </Container>
-    )
+          <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
+          <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
+        </Container>
+      )
+    }
   }
 }
 

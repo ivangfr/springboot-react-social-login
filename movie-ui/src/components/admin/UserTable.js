@@ -37,7 +37,7 @@ function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteU
       <Form onSubmit={handleSearchUser}>
         <Input
           action={{ icon: 'search' }}
-          id='userUsernameSearch'
+          name='userUsernameSearch'
           placeholder='Search by username'
           value={userUsernameSearch}
           onChange={handleInputChange}

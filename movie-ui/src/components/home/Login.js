@@ -3,7 +3,7 @@ import { NavLink, Redirect } from 'react-router-dom'
 import { Button, Form, Grid, Icon, Segment, Menu, Message, Divider } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
-import { parseJwt, getSocialLoginUrl } from '../misc/Helpers'
+import { parseJwt, getSocialLoginUrl, handleLogError } from '../misc/Helpers'
 
 class Login extends Component {
   static contextType = AuthContext
@@ -21,9 +21,8 @@ class Login extends Component {
     this.setState({ isLoggedIn })
   }
 
-  handleInputChange = (e) => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
+  handleInputChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
   }
 
   handleSubmit = (e) => {
@@ -52,7 +51,7 @@ class Login extends Component {
         })
       })
       .catch(error => {
-        console.log(error.message)
+        handleLogError(error)
         this.setState({ isError: true })
       })
   }
@@ -76,7 +75,7 @@ class Login extends Component {
                 <Form.Input
                   fluid
                   autoFocus
-                  id='username'
+                  name='username'
                   icon='user'
                   iconPosition='left'
                   placeholder='Username'
@@ -84,7 +83,7 @@ class Login extends Component {
                 />
                 <Form.Input
                   fluid
-                  id='password'
+                  name='password'
                   icon='lock'
                   iconPosition='left'
                   placeholder='Password'

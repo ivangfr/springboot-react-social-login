@@ -45,7 +45,7 @@ function MovieTable({ movies, movieImdb, movieTitle, moviePoster, movieTextSearc
             <Form onSubmit={handleSearchMovie}>
               <Input
                 action={{ icon: 'search' }}
-                id='movieTextSearch'
+                name='movieTextSearch'
                 placeholder='Search by Imdb or Title'
                 value={movieTextSearch}
                 onChange={handleInputChange}
