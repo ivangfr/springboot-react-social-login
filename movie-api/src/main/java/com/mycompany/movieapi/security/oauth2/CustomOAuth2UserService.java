@@ -45,14 +45,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 user.setName(githubOAuth2User.getName());
                 user.setEmail(githubOAuth2User.getEmail());
                 user.setRole(WebSecurityConfig.USER);
-                user.setImageUrl(githubOAuth2User.getAvatar_url());
+                user.setImageUrl(githubOAuth2User.getAvatarUrl());
                 user.setProvider(OAuth2Provider.GITHUB);
                 user.setProviderId(githubOAuth2User.getId());
                 user = userService.saveUser(user);
             } else {
                 user = userOptional.get();
                 user.setEmail(githubOAuth2User.getEmail());
-                user.setImageUrl(githubOAuth2User.getAvatar_url());
+                user.setImageUrl(githubOAuth2User.getAvatarUrl());
             }
 
             CustomUserDetails customUserDetails = new CustomUserDetails();

@@ -3,18 +3,16 @@ package com.mycompany.movieapi.service;
 import com.mycompany.movieapi.exception.MovieNotFoundException;
 import com.mycompany.movieapi.model.Movie;
 import com.mycompany.movieapi.repository.MovieRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class MovieServiceImpl implements MovieService {
 
     private final MovieRepository movieRepository;
-
-    public MovieServiceImpl(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
 
     @Override
     public List<Movie> getMovies() {

@@ -1,18 +1,18 @@
 package com.mycompany.movieapi.rest.dto;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-
 import javax.validation.constraints.NotBlank;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 @Data
 public class LoginRequest {
 
-    @ApiModelProperty(example = "user")
+    @Schema(example = "user")
     @NotBlank
     private String username;
 
-    @ApiModelProperty(position = 1, example = "user")
+    @Schema(example = "user")
     @NotBlank
     private String password;
 

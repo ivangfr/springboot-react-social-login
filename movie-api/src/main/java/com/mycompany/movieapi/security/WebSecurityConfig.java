@@ -2,6 +2,7 @@ package com.mycompany.movieapi.security;
 
 import com.mycompany.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
 import com.mycompany.movieapi.security.oauth2.CustomOAuth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,15 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService customOauth2UserService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
-
-    public WebSecurityConfig(UserDetailsService userDetailsService, CustomOAuth2UserService customOauth2UserService,
-                             CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler,
-                             TokenAuthenticationFilter tokenAuthenticationFilter) {
-        this.userDetailsService = userDetailsService;
-        this.customOauth2UserService = customOauth2UserService;
-        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
-        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -49,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN)
                 .antMatchers("/api/users", "/api/users/**").hasAnyAuthority(ADMIN)
                 .antMatchers("/public/**", "/auth/**", "/oauth2/**").permitAll()
-                .antMatchers("/", "/error", "/script.js", "/favicon.ico", "/csrf", "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
+                .antMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated();
         http.oauth2Login()
                 .userInfoEndpoint().userService(customOauth2UserService)

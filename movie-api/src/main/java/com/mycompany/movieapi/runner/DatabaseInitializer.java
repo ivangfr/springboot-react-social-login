@@ -1,22 +1,22 @@
 package com.mycompany.movieapi.runner;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.mycompany.movieapi.model.Movie;
 import com.mycompany.movieapi.model.User;
 import com.mycompany.movieapi.security.WebSecurityConfig;
 import com.mycompany.movieapi.security.oauth2.OAuth2Provider;
 import com.mycompany.movieapi.service.MovieService;
 import com.mycompany.movieapi.service.UserService;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class DatabaseInitializer implements CommandLineRunner {
 
@@ -24,31 +24,25 @@ public class DatabaseInitializer implements CommandLineRunner {
     private final MovieService movieService;
     private final PasswordEncoder passwordEncoder;
 
-    public DatabaseInitializer(UserService userService, MovieService movieService, PasswordEncoder passwordEncoder) {
-        this.userService = userService;
-        this.movieService = movieService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Override
     public void run(String... args) {
         if (!userService.getUsers().isEmpty()) {
             return;
         }
-        users.forEach(user -> {
+        USERS.forEach(user -> {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.saveUser(user);
         });
-        movies.forEach(movieService::saveMovie);
+        MOVIES.forEach(movieService::saveMovie);
         log.info("Database initialized");
     }
 
-    private final List<User> users = Arrays.asList(
+    private static final List<User> USERS = Arrays.asList(
             new User("admin", "admin", "Admin", "admin@mycompany.com", WebSecurityConfig.ADMIN, null, OAuth2Provider.LOCAL, "1"),
             new User("user", "user", "User", "user@mycompany.com", WebSecurityConfig.USER, null, OAuth2Provider.LOCAL, "2")
     );
 
-    private final List<Movie> movies = Arrays.asList(
+    private static final List<Movie> MOVIES = Arrays.asList(
             new Movie("tt5580036", "I, Tonya", "https://m.media-amazon.com/images/M/MV5BMjI5MDY1NjYzMl5BMl5BanBnXkFtZTgwNjIzNDAxNDM@._V1_SX300.jpg"),
             new Movie("tt0163651", "American Pie", "https://m.media-amazon.com/images/M/MV5BMTg3ODY5ODI1NF5BMl5BanBnXkFtZTgwMTkxNTYxMTE@._V1_SX300.jpg"),
             new Movie("tt0480249", "I Am Legend", "https://m.media-amazon.com/images/M/MV5BYTE1ZTBlYzgtNmMyNS00ZTQ2LWE4NjEtZjUxNDJkNTg2MzlhXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg"),

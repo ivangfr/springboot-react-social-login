@@ -89,6 +89,13 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
      http://localhost:3000/oauth2/redirect?token=eyJ0eXAiOiJKV1QiLCJhbGc...xaY0KWdqG2JDDk-iIrgIPDZvcA7Q
      ```
 
+## Prerequisites
+
+- `Java 11+`
+- `Docker`
+- `Docker-Compose`
+- [`jq`](https://stedolan.github.io/jq)
+
 ## Start Environment
 
 - Open a terminal and inside `springboot-react-social-login` root folder run

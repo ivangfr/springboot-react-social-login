@@ -3,19 +3,17 @@ package com.mycompany.movieapi.service;
 import com.mycompany.movieapi.exception.UserNotFoundException;
 import com.mycompany.movieapi.model.User;
 import com.mycompany.movieapi.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public List<User> getUsers() {

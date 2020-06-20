@@ -1,5 +1,6 @@
 package com.mycompany.movieapi.security;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,16 +19,12 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final UserDetailsService userDetailsService;
     private final TokenProvider tokenProvider;
-
-    public TokenAuthenticationFilter(UserDetailsService userDetailsService, TokenProvider tokenProvider) {
-        this.userDetailsService = userDetailsService;
-        this.tokenProvider = tokenProvider;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
