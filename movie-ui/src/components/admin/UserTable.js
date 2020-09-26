@@ -19,6 +19,7 @@ function UserTable({ users, userUsernameSearch, handleInputChange, handleDeleteU
               color='red'
               size='small'
               icon='trash'
+              disabled={user.username === 'admin'}
               onClick={() => handleDeleteUser(user.username)}
             />
           </Table.Cell>
