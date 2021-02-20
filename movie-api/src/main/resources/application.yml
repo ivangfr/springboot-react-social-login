@@ -25,3 +25,5 @@ app:
       minutes: 10
   oauth2:
     redirectUri: http://localhost:3000/oauth2/redirect
+  cors:
+    allowed-origins: http://localhost:3000

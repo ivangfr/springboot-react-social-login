@@ -4,7 +4,7 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 ## Applications
 
-- **movie-api**
+- ### movie-api
 
   `Spring Boot` Web Java backend application that exposes a Rest API to create, retrieve and delete movies. If a user has `ADMIN` role he/she can also retrieve information of other users or delete them. The application secured endpoints can just be accessed if a valid JWT access token is provided.
   
@@ -28,7 +28,7 @@ The goal of this project is to implement an application called `movie-app` to ma
   | `POST /api/movies -d {"imdb","description"}`                  | Yes     | `ADMIN`         |
   | `DELETE /api/movies/{imdb}`                                   | Yes     | `ADMIN`         |
 
-- **movie-ui**
+- ### movie-ui
 
   `ReactJS` frontend application where a user with role `USER` can retrieve the information about movies. On the other hand, a user with role `ADMIN` has access to all secured endpoints, including endpoints to create and delete movies.
   
