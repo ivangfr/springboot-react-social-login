@@ -163,7 +163,9 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
   - Access `movie-ui` at http://localhost:3000
 
-  - Click on `Login` and provide your `Github` credentials
+  - Click `Login` and then, connect with `Github`
+  
+  - Provide your `Github` credentials
 
 - **Automatic Endpoints Test**
 
@@ -175,8 +177,8 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
     ```
     It should return something like the output below, where it shows the http code for different requests
     ```
-    GET auth/authenticate
-    =====================
+    POST auth/authenticate
+    ======================
     admin access token
     ------------------
     eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1ODY2MjM1MjksImlhdCI6MTU4Nj..._ha2pM4LSSG3_d4exgA
@@ -185,8 +187,8 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
     -----------------
     eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1ODY2MjM1MjksImlhdCIyOSwian...Y3z9uwhuW_nwaGX3cc5A
     
-    GET auth/signup
-    ===============
+    POST auth/signup
+    ================
     user2 access token
     ------------------
     eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1ODY2MjM1MjksImanRpIjoiYTMw...KvhQbsMGAlFov1Q480qg
@@ -220,9 +222,9 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 ## Shutdown
 
-- Go to `movie-api` and `movie-ui` terminals and press `Ctrl+C` on each one
+- Go to `movie-api` and `movie-ui` terminals and press `Ctrl+C`
 
-- Stop and remove docker-compose containers, networks and volumes, run the command below in `springboot-react-social-login` root folder
+- Stop and remove docker-compose containers, network and volumes, run the command below in `springboot-react-social-login` root folder
   ```
   docker-compose down -v
   ```
