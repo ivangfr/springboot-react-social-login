@@ -3,7 +3,7 @@
 
 1. Login to your Github account
 
-1. At the top-right corner of the screen, there's a dropdown menu how it's showing in the picture below
+1. At the top-right corner of the screen, there's a dropdown menu as it's showing in the picture below
 
    ![github-dropdown-menu](images/github-dropdown-menu.png)
 
@@ -13,7 +13,7 @@
 
 1. In `Settings / Developer settings` page, click `OAuth Apps`
 
-1. Add a new app by clicking on `Register a new application` button or, if you already have apps created, click `New OAuth App` button present on the right of the screen
+1. Add a new app by clicking `Register a new application` button or, if you already have apps created, click `New OAuth App` button present on the right of the screen
 
    ![github-create-new-app](images/github-create-new-app.png)
 
