@@ -222,9 +222,9 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 ## Shutdown
 
-- Go to `movie-api` and `movie-ui` terminals and press `Ctrl+C`
+- To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`
 
-- Stop and remove docker-compose containers, network and volumes, run the command below in `springboot-react-social-login` root folder
+- To stop and remove docker-compose containers, network and volumes, go to a terminal and, inside `springboot-react-social-login` root folder, run the command below
   ```
   docker-compose down -v
   ```
