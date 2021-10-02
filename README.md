@@ -104,7 +104,7 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
   docker-compose up -d
   ```
 
-- Wait a little bit until `mysql` container is Up (healthy). You can check their status running
+- Wait for `mysql` container to be with status `running (healthy)`. To check it, run
   ```
   docker-compose ps
   ```
