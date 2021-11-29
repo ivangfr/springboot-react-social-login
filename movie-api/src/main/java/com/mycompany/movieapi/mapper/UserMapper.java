@@ -17,5 +17,4 @@ import org.mapstruct.ReportingPolicy;
 public interface UserMapper {
 
   UserDto toUserDto(User user);
-
 }

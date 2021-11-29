@@ -12,5 +12,4 @@ public class ObjectMapperConfig {
     ObjectMapper objectMapper() {
         return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
-
 }

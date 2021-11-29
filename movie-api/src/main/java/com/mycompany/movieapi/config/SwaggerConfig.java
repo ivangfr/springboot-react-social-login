@@ -24,5 +24,4 @@ public class SwaggerConfig {
     }
 
     public static final String BEARER_KEY_SECURITY_SCHEME = "bearer-key";
-
 }

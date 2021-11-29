@@ -56,5 +56,4 @@ public class UserController {
         userService.deleteUser(user);
         return userMapper.toUserDto(user);
     }
-    
 }

@@ -13,5 +13,4 @@ public class GithubOAuth2User {
 
     @JsonProperty("avatar_url")
     private String avatarUrl;
-
 }

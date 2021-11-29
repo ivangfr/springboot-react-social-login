@@ -9,5 +9,4 @@ public class MovieDto {
   private String title;
   private String poster;
   private String createdAt;
-
 }

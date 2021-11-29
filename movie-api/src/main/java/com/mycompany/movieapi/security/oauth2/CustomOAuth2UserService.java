@@ -67,5 +67,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             throw new InternalAuthenticationServiceException(String.format("The OAuth2 provider %s is not supported yet", providerName));
         }
     }
-
 }

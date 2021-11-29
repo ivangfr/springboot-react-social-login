@@ -40,7 +40,7 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 - **Github**
 
-  In this [link](https://github.com/ivangfr/springboot-react-social-login/blob/master/create-github-oauth2-app.md) it's explained how to create a Github App
+  In this [link](https://github.com/ivangfr/springboot-react-social-login/blob/master/create-github-oauth2-app.md), it's explained how to create a Github App
 
 > **Note:** Other providers like `Facebook`, `Twitter`, etc will be added later
 
@@ -65,11 +65,11 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 1. User provide his/her credentials
 
-   ![github-provide-credentials](images/github-provide-credentials.png)
+   ![github-provide-credentials](documentation/github-provide-credentials.png)
 
 1. User allows or denies the permissions to `movie-app`
 
-   ![github-authorize-permissions](images/github-authorize-permissions.png)
+   ![github-authorize-permissions](documentation/github-authorize-permissions.png)
 
    - If **user denies permissions**, the OAuth2 provider will redirect the user to the callback URL registered when creating the `movie-app` with an error.
 
@@ -91,8 +91,8 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 ## Prerequisites
 
-- [`npm`](https://www.npmjs.com/get-npm)
-- [`Java 11+`](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [`Java 11+`](https://www.oracle.com/java/technologies/downloads/#java11)
 - [`Docker`](https://www.docker.com/)
 - [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
@@ -104,7 +104,7 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
   docker-compose up -d
   ```
 
-- Wait for `mysql` container to be with status `running (healthy)`. To check it, run
+- Wait for `mysql` Docker container to be up and running. To check it, run
   ```
   docker-compose ps
   ```
@@ -151,11 +151,11 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 - The gif below shows a `user` loging in using the `Github`
 
-  ![github-login](images/github-login.gif)
+  ![github-login](documentation/github-login.gif)
 
 - The gif below shows an `admin` loging in using his application account
 
-  ![admin-login](images/admin-login.gif)
+  ![admin-login](documentation/admin-login.gif)
 
 ## Testing movie-api Endpoints
 

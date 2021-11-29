@@ -36,5 +36,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         customUserDetails.setAuthorities(authorities);
         return customUserDetails;
     }
-
 }

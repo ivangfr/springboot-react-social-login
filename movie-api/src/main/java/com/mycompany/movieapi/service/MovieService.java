@@ -15,5 +15,4 @@ public interface MovieService {
     Movie saveMovie(Movie movie);
 
     void deleteMovie(Movie movie);
-
 }

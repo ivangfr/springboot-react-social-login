@@ -24,5 +24,4 @@ public class PublicController {
     public Integer getNumberOfMovies() {
         return movieService.getMovies().size();
     }
-
 }

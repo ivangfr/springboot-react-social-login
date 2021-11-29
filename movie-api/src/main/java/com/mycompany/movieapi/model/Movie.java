@@ -34,5 +34,4 @@ public class Movie {
     public void onPrePersist() {
         createdAt = ZonedDateTime.now();
     }
-    
 }

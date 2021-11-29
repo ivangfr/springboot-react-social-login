@@ -16,5 +16,4 @@ public interface MovieMapper {
 
   @Mapping(target = "createdAt", dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
   MovieDto toMovieDto(Movie movie);
-
 }

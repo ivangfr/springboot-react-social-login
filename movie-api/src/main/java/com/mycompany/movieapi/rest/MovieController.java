@@ -57,5 +57,4 @@ public class MovieController {
         movieService.deleteMovie(movie);
         return movieMapper.toMovieDto(movie);
     }
-
 }

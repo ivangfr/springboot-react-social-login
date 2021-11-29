@@ -70,5 +70,4 @@ public class AuthController {
         user.setProvider(OAuth2Provider.LOCAL);
         return user;
     }
-
 }
