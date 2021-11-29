@@ -1,14 +1,13 @@
 package com.mycompany.movieapi.model;
 
-import java.time.ZonedDateTime;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.time.ZonedDateTime;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +20,7 @@ public class Movie {
 
     private String title;
     private String poster;
-    
+
     private ZonedDateTime createdAt;
 
     public Movie(String imdb, String title, String poster) {

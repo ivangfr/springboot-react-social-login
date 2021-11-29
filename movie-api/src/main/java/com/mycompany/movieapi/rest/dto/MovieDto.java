@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class MovieDto {
 
-  private String imdb;
-  private String title;
-  private String poster;
-  private String createdAt;
+    private String imdb;
+    private String title;
+    private String poster;
+    private String createdAt;
 }

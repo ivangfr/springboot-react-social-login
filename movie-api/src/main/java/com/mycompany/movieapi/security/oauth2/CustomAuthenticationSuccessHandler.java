@@ -8,7 +8,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,13 +22,13 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private String redirectUri;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         handle(request, response, authentication);
         super.clearAuthenticationAttributes(request);
     }
 
     @Override
-    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         String targetUrl = redirectUri.isEmpty() ?
                 determineTargetUrl(request, response, authentication) : redirectUri;
 

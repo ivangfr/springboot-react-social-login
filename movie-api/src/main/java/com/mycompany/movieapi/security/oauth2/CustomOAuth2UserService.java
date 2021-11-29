@@ -39,7 +39,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
             Optional<User> userOptional = userService.getUserByUsername(githubOAuth2User.getLogin());
             User user;
-            if (!userOptional.isPresent()) {
+            if (userOptional.isEmpty()) {
                 user = new User();
                 user.setUsername(githubOAuth2User.getLogin());
                 user.setName(githubOAuth2User.getName());
