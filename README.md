@@ -235,6 +235,7 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 - Run the following commands
   ```
+  npm upgrade
   npm i -g npm-check-updates
   ncu -u
   npm install
