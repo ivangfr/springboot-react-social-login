@@ -9,7 +9,7 @@
 
 1. Click `Settings`
 
-1. In the new page, there's a menu on the left. Click `Developer settings`
+1. In the next page, there's a menu on the left. Click `Developer settings`
 
 1. In `Settings / Developer settings` page, click `OAuth Apps`
 
