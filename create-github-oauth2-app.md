@@ -3,11 +3,7 @@
 
 1. Login to your Github account
 
-1. At the top-right corner of the screen, there's a dropdown menu as it's showing in the picture below
-
-   ![github-dropdown-menu](documentation/github-dropdown-menu.png)
-
-1. Click `Settings`
+1. At the top-right corner of the screen, there's a dropdown menu. Click `Settings`
 
 1. In the next page, there's a menu on the left. Click `Developer settings`
 

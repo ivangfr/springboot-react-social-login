@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
 
+    @Mapping(target = "createdAt", ignore = true)
     Movie toMovie(CreateMovieRequest createMovieRequest);
 
     @Mapping(target = "createdAt", dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")

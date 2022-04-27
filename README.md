@@ -216,7 +216,7 @@ To explain how it works, we will use `Github` as OAuth2 provider example. Howeve
 
 - **MySQL**
   ```
-  docker exec -it mysql mysql -uroot -psecret --database=moviedb
+  docker exec -it -e MYSQL_PWD=secret mysql mysql -uroot --database moviedb
   show tables;
   ```
 
