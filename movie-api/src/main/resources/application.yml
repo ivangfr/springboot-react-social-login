@@ -27,3 +27,7 @@ app:
     redirectUri: http://localhost:3000/oauth2/redirect
   cors:
     allowed-origins: http://localhost:3000
+
+logging:
+  level:
+    org.springframework.security: DEBUG
