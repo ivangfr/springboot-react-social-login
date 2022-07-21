@@ -11,7 +11,7 @@
 
 1. Add a new app by clicking `Register a new application` button or, if you already have apps created, click `New OAuth App` button present on the right of the screen
 
-   ![github-create-new-app](documentation/github-create-new-app.png)
+   ![github-create-new-app](documentation/github-create-new-app.jpeg)
 
 1. On `Register a new OAuth application` form, set the following mandatory fields
 
@@ -25,6 +25,6 @@
 
 1. In the following page, it's shown the application `Client ID`
 
-   ![github-app-created-successfully](documentation/github-app-created-successfully.png)
+   ![github-app-created-successfully](documentation/github-app-created-successfully.jpeg)
 
 1. Click `Generate a new client secret` button. Copy the new `Client Secret` now as it won't be shown again.
