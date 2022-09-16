@@ -1,13 +1,4 @@
 package com.ivanfranchin.movieapi.rest.dto;
 
-import lombok.Data;
-
-@Data
-public class UserDto {
-
-    private Long id;
-    private String username;
-    private String name;
-    private String email;
-    private String role;
+public record UserDto(Long id, String username, String name, String email, String role) {
 }

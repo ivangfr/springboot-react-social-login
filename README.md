@@ -92,7 +92,7 @@ To explain how it works, we will use `Github` as OAuth2 provider example. By the
 ## Prerequisites
 
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [`Java 11+`](https://www.oracle.com/java/technologies/downloads/#java11)
+- [`Java 17+`](https://www.oracle.com/java/technologies/downloads/#java17)
 - [`Docker`](https://www.docker.com/)
 - [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
@@ -142,10 +142,10 @@ To explain how it works, we will use `Github` as OAuth2 provider example. By the
 
 ## Applications URLs
 
-| Application  | URL                                         | Credentials                                         |
-| ------------ | ------------------------------------------- | --------------------------------------------------- |
-| movie-api    | http://localhost:8080/swagger-ui/index.html |                                                     |
-| movie-ui     | http://localhost:3000                       | `admin/admin`, `user/user` or signing up a new user |
+| Application  | URL                                   | Credentials                                         |
+| ------------ | ------------------------------------- | --------------------------------------------------- |
+| movie-api    | http://localhost:8080/swagger-ui.html |                                                     |
+| movie-ui     | http://localhost:3000                 | `admin/admin`, `user/user` or signing up a new user |
 
 ## Demo
 

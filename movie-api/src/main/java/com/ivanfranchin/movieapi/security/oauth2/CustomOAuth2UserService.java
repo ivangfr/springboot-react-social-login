@@ -37,29 +37,29 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (providerName.equalsIgnoreCase(OAuth2Provider.GITHUB.name())) {
             GithubOAuth2User githubOAuth2User = objectMapper.convertValue(oAuth2User.getAttributes(), GithubOAuth2User.class);
 
-            Optional<User> userOptional = userService.getUserByUsername(githubOAuth2User.getLogin());
+            Optional<User> userOptional = userService.getUserByUsername(githubOAuth2User.login());
             User user;
             if (userOptional.isEmpty()) {
                 user = new User();
-                user.setUsername(githubOAuth2User.getLogin());
-                user.setName(githubOAuth2User.getName());
-                user.setEmail(githubOAuth2User.getEmail());
+                user.setUsername(githubOAuth2User.login());
+                user.setName(githubOAuth2User.name());
+                user.setEmail(githubOAuth2User.email());
                 user.setRole(WebSecurityConfig.USER);
-                user.setImageUrl(githubOAuth2User.getAvatarUrl());
+                user.setImageUrl(githubOAuth2User.avatarUrl());
                 user.setProvider(OAuth2Provider.GITHUB);
-                user.setProviderId(githubOAuth2User.getId());
+                user.setProviderId(githubOAuth2User.id());
                 user = userService.saveUser(user);
             } else {
                 user = userOptional.get();
-                user.setEmail(githubOAuth2User.getEmail());
-                user.setImageUrl(githubOAuth2User.getAvatarUrl());
+                user.setEmail(githubOAuth2User.email());
+                user.setImageUrl(githubOAuth2User.avatarUrl());
             }
 
             CustomUserDetails customUserDetails = new CustomUserDetails();
             customUserDetails.setId(user.getId());
-            customUserDetails.setUsername(githubOAuth2User.getLogin());
-            customUserDetails.setName(githubOAuth2User.getName());
-            customUserDetails.setEmail(githubOAuth2User.getEmail());
+            customUserDetails.setUsername(githubOAuth2User.login());
+            customUserDetails.setName(githubOAuth2User.name());
+            customUserDetails.setEmail(githubOAuth2User.email());
             customUserDetails.setAttributes(oAuth2User.getAttributes());
             customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
             return customUserDetails;
