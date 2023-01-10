@@ -4,6 +4,7 @@ import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHand
 import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
+@Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
@@ -32,13 +34,13 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN, USER)
-                .antMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
-                .antMatchers("/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN)
-                .antMatchers("/api/users", "/api/users/**").hasAnyAuthority(ADMIN)
-                .antMatchers("/public/**", "/auth/**", "/oauth2/**").permitAll()
-                .antMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN, USER)
+                .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
+                .requestMatchers("/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN)
+                .requestMatchers("/api/users", "/api/users/**").hasAnyAuthority(ADMIN)
+                .requestMatchers("/public/**", "/auth/**", "/oauth2/**").permitAll()
+                .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated();
         http.oauth2Login()
                 .userInfoEndpoint().userService(customOauth2UserService)
