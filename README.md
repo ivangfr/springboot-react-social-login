@@ -1,6 +1,6 @@
 # springboot-react-social-login
 
-The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end application called `movie-api` using [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) and a font-end application called `movie-ui` using [ReactJS](https://reactjs.org/). Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
+The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `movie-api` and a font-end [ReactJS](https://reactjs.org/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
 ## Applications
 
@@ -10,7 +10,7 @@ The goal of this project is to implement an application called `movie-app` to ma
   
   In order to get the JWT access token, the user can login using the credentials (`username` and `password`) created when he/she signed up directly to the application.
   
-  `movie-api` stores its data in [`MySQL`](https://www.mysql.com/) database.
+  `movie-api` stores its data in [`Postgres`](https://www.postgresql.org/) database.
 
   `movie-api` has the following endpoints
 
@@ -99,14 +99,11 @@ To explain how it works, we will use `Github` as OAuth2 provider example. By the
 
 ## Start Environment
 
-- Open a terminal and inside `springboot-react-social-login` root folder run
+- In a terminal, make sure you are inside `springboot-react-social-login` root folder
+
+- Run the following command to start docker-compose containers
   ```
   docker-compose up -d
-  ```
-
-- Wait for `mysql` Docker container to be up and running. To check it, run
-  ```
-  docker-compose ps
   ```
 
 ## Running movie-app using Maven & Npm
@@ -214,10 +211,10 @@ To explain how it works, we will use `Github` as OAuth2 provider example. By the
 
 ## Util Commands
 
-- **MySQL**
+- **Postgres**
   ```
-  docker exec -it -e MYSQL_PWD=secret mysql mysql -uroot --database moviedb
-  show tables;
+  docker exec -it postgres psql -U postgres -d moviedb
+  \dt
   ```
 
 ## Shutdown

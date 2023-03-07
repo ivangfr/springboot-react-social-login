@@ -21,7 +21,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getMoviesContainingText(String text) {
-        return movieRepository.findByImdbContainingOrTitleContainingOrderByTitle(text, text);
+        return movieRepository.findByImdbContainingOrTitleContainingIgnoreCaseOrderByTitle(text, text);
     }
 
     @Override

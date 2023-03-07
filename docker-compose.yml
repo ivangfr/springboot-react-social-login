@@ -2,13 +2,14 @@ version: '3.8'
 
 services:
 
-  mysql:
-    image: mysql:8.0.32
-    container_name: mysql
+  postgres:
+    image: postgres:15.2
+    container_name: postgres
     ports:
-      - "3306:3306"
+      - "5432:5432"
     environment:
-      - MYSQL_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=moviedb
+      - POSTGRES_DB=moviedb
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
     healthcheck:
-      test: "mysqladmin ping -u root -p$${MYSQL_ROOT_PASSWORD}"
+      test: "pg_isready -U postgres"

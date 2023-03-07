@@ -11,5 +11,5 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
 
     List<Movie> findAllByOrderByTitle();
 
-    List<Movie> findByImdbContainingOrTitleContainingOrderByTitle(String imdb, String title);
+    List<Movie> findByImdbContainingOrTitleContainingIgnoreCaseOrderByTitle(String imdb, String title);
 }
