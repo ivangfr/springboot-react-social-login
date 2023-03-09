@@ -2,6 +2,10 @@
 
 The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `movie-api` and a font-end [ReactJS](https://reactjs.org/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
+## Project Diagram
+
+![project-diagram](documentation/project-diagram.png)
+
 ## Applications
 
 - ### movie-api
