@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
@@ -161,7 +161,7 @@ class AdminPage extends Component {
 
   render() {
     if (!this.state.isAdmin) {
-      return <Redirect to='/' />
+      return <Navigate to='/' />
     } else {
       const { isUsersLoading, users, userUsernameSearch, isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch } = this.state
       return (

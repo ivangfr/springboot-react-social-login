@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
+import { NavLink, Navigate } from 'react-router-dom'
 import { Button, Form, Grid, Icon, Segment, Menu, Message, Divider } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
@@ -56,16 +56,10 @@ class Login extends Component {
       })
   }
 
-  getReferer = () => {
-    const locationState = this.props.location.state
-    return locationState && locationState.referer ? locationState.referer : '/'
-  }
-
   render() {
     const { isLoggedIn, isError } = this.state
-    const referer = this.getReferer()
     if (isLoggedIn) {
-      return <Redirect to={referer} />
+      return <Navigate to={'/'} />
     } else {
       return (
         <Grid textAlign='center'>

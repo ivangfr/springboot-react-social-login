@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import { parseJwt } from '../misc/Helpers'
+
+function withLocation(Component) {
+  return props => <Component {...props} location={useLocation()} />;
+}
 
 class OAuth2Redirect extends Component {
   static contextType = AuthContext
@@ -12,7 +16,6 @@ class OAuth2Redirect extends Component {
 
   componentDidMount() {
     const accessToken = this.extractUrlParameter('token')
-    // const error = this.extractUrlParameter('error')
     if (accessToken) {
       this.handleLogin(accessToken)
       const redirect = "/"
@@ -33,8 +36,8 @@ class OAuth2Redirect extends Component {
   }
 
   render() {
-    return <Redirect to={this.state.redirectTo} />
+    return <Navigate to={this.state.redirectTo} />
   }
 }
 
-export default OAuth2Redirect
+export default withLocation(OAuth2Redirect)

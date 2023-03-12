@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink, Redirect } from 'react-router-dom'
+import { NavLink, Navigate } from 'react-router-dom'
 import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
 import AuthContext from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
@@ -79,7 +79,7 @@ class Signup extends Component {
   render() {
     const { isLoggedIn, isError, errorMessage } = this.state
     if (isLoggedIn) {
-      return <Redirect to='/' />
+      return <Navigate to='/' />
     } else {
       return (
         <Grid textAlign='center'>
