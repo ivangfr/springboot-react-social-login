@@ -2,6 +2,12 @@
 
 The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `movie-api` and a font-end [ReactJS](https://reactjs.org/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
+## Tutorials
+
+> **I Would Appreciate Your Support**: I’m embarking on a writing journey on [Medium](https://medium.com/@ivangfr) and I would be grateful for your support. If you enjoy my content, please consider [following me](https://medium.com/@ivangfr). **I am committed to following you back**, and together we can share our knowledge and experiences on the platform.
+
+- \[**Medium**\] [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c)
+
 ## Project Diagram
 
 ![project-diagram](documentation/project-diagram.jpeg)
@@ -50,48 +56,7 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 ## How Social Login Works?
 
-To explain how it works, we will use `Github` as OAuth2 provider example. By the way, this flow is similar to other providers. All the OAuth2 provider configuration is done in the [application.yml](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/resources/application.yml). The `oauth2Login` configuration is done in [`WebSecurityConfig`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/ivanfranchin/movieapi/security/WebSecurityConfig.java)
-
-1. The Social Login with `Github` starts with `movie-app` client redirecting the user to the following URL
-   ```
-   http://localhost:8080/oauth2/authorization/github
-   ```
-
-1. The OAuth2 provider will receive the request similar to
-   ```
-   https://github.com/login/oauth/authorize?response_type=code&client_id=<CLIENT_ID>&scope=read:user&state=<STATE>&redirect_uri=http://localhost:8080/login/oauth2/code/github
-   ```
-
-1. The user is redirected to the OAuth2 provider login form
-   ```
-   https://github.com/login?client_id=<CLIENT_ID>&return_to=/login/oauth/authorize?client_id=<CLIENT_ID>&redirect_uri=http://localhost:8080/login/oauth2/code/github&response_type=code&scope=read:use&state=<STATE>
-   ```
-
-1. User provides his/her credentials
-
-   ![github-provide-credentials](documentation/github-provide-credentials.jpeg)
-
-1. User allows or denies the permissions to `movie-app`
-
-   ![github-authorize-permissions](documentation/github-authorize-permissions.jpeg)
-
-   - If **user denies permissions**, the OAuth2 provider will redirect the user to the callback URL registered when creating the `movie-app` with an error.
-
-     The component that handles it is the `Spring Boot` default [`SimpleUrlAuthenticationFailureHandler`](https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/authentication/SimpleUrlAuthenticationFailureHandler.java). It can be customized if needed.
-
-   - If **user allows permissions**, the OAuth2 provider will redirect the user to the callback URL registered when creating the `movie-app` with the `authorization_code`
-   
-     The redirect URL will be similar to
-     ```
-     http://localhost:8080/login/oauth2/code/github?code=<CODE>&state=<STATE>
-     ```
-
-     Once received the redirect, Spring Security will exchange the `authorization_code` for an `access_token` and call [`CustomOAuth2UserService`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/ivanfranchin/movieapi/security/oauth2/CustomOAuth2UserService.java) that will check (by `username`) whether the user is present or not in the `movie-app` database. If it is not present, a new entry for the user is created; otherwise, a few user information (like `imageUrl` and `email`) is updated.
-
-     In the end, the component [`CustomAuthenticationSuccessHandler`](https://github.com/ivangfr/springboot-react-social-login/blob/master/movie-api/src/main/java/com/ivanfranchin/movieapi/security/oauth2/CustomAuthenticationSuccessHandler.java), extends [`SimpleUrlAuthenticationSuccessHandler`](https://github.com/spring-projects/spring-security/blob/master/web/src/main/java/org/springframework/security/web/authentication/SimpleUrlAuthenticationSuccessHandler.java), is invoked. It's responsible for creating a JWT access token and sending it to the user in the `redirect_uri`. We are using as `redirect_uri` a url present in `movie-ui`, `http://localhost:3000/oauth2/redirect`. The JWT token informed in the `redirect_uri` as a query string, like it's shown below
-     ```
-     http://localhost:3000/oauth2/redirect?token=eyJ0eXAiOiJKV1QiLCJhbGc...xaY0KWdqG2JDDk-iIrgIPDZvcA7Q
-     ```
+In this **Medium** article, [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c), we show the complete Social Login flow, covering the request and redirections among `movie-ui`, `movie-api` and `GitHub` provider.
 
 ## Prerequisites
 
