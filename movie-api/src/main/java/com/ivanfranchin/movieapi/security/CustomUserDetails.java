@@ -1,5 +1,6 @@
 package com.ivanfranchin.movieapi.security;
 
+import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,8 @@ public class CustomUserDetails implements OAuth2User, UserDetails {
     private String password;
     private String name;
     private String email;
+    private String avatarUrl;
+    private OAuth2Provider provider;
     private Collection<? extends GrantedAuthority> authorities;
     private Map<String, Object> attributes;
 

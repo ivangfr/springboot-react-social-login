@@ -1,70 +1,63 @@
 package com.ivanfranchin.movieapi.security.oauth2;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanfranchin.movieapi.model.User;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
 import com.ivanfranchin.movieapi.security.WebSecurityConfig;
 import com.ivanfranchin.movieapi.service.UserService;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Component
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserService userService;
-    private final ObjectMapper objectMapper;
+    private final List<OAuth2UserInfoExtractor> oAuth2UserInfoExtractors;
 
-    public CustomOAuth2UserService(UserService userService, ObjectMapper objectMapper) {
+    public CustomOAuth2UserService(UserService userService, List<OAuth2UserInfoExtractor> oAuth2UserInfoExtractors) {
         this.userService = userService;
-        this.objectMapper = objectMapper;
+        this.oAuth2UserInfoExtractors = oAuth2UserInfoExtractors;
     }
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        return getOAuth2UserInfo(userRequest, oAuth2User);
+
+        Optional<OAuth2UserInfoExtractor> oAuth2UserInfoExtractorOptional = oAuth2UserInfoExtractors.stream()
+                .filter(oAuth2UserInfoExtractor -> oAuth2UserInfoExtractor.accepts(userRequest))
+                .findFirst();
+        if (oAuth2UserInfoExtractorOptional.isEmpty()) {
+            throw new InternalAuthenticationServiceException("The OAuth2 provider is not supported yet");
+        }
+
+        CustomUserDetails customUserDetails = oAuth2UserInfoExtractorOptional.get().extractUserInfo(oAuth2User);
+        User user = upsertUser(customUserDetails);
+        customUserDetails.setId(user.getId());
+        return customUserDetails;
     }
 
-    private CustomUserDetails getOAuth2UserInfo(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
-        String providerName = userRequest.getClientRegistration().getRegistrationId();
-        if (providerName.equalsIgnoreCase(OAuth2Provider.GITHUB.name())) {
-            GithubOAuth2User githubOAuth2User = objectMapper.convertValue(oAuth2User.getAttributes(), GithubOAuth2User.class);
-
-            Optional<User> userOptional = userService.getUserByUsername(githubOAuth2User.login());
-            User user;
-            if (userOptional.isEmpty()) {
-                user = new User();
-                user.setUsername(githubOAuth2User.login());
-                user.setName(githubOAuth2User.name());
-                user.setEmail(githubOAuth2User.email());
-                user.setRole(WebSecurityConfig.USER);
-                user.setImageUrl(githubOAuth2User.avatarUrl());
-                user.setProvider(OAuth2Provider.GITHUB);
-                user.setProviderId(githubOAuth2User.id());
-                user = userService.saveUser(user);
-            } else {
-                user = userOptional.get();
-                user.setEmail(githubOAuth2User.email());
-                user.setImageUrl(githubOAuth2User.avatarUrl());
-            }
-
-            CustomUserDetails customUserDetails = new CustomUserDetails();
-            customUserDetails.setId(user.getId());
-            customUserDetails.setUsername(githubOAuth2User.login());
-            customUserDetails.setName(githubOAuth2User.name());
-            customUserDetails.setEmail(githubOAuth2User.email());
-            customUserDetails.setAttributes(oAuth2User.getAttributes());
-            customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(user.getRole())));
-            return customUserDetails;
+    private User upsertUser(CustomUserDetails customUserDetails) {
+        Optional<User> userOptional = userService.getUserByUsername(customUserDetails.getUsername());
+        User user;
+        if (userOptional.isEmpty()) {
+            user = new User();
+            user.setUsername(customUserDetails.getUsername());
+            user.setName(customUserDetails.getName());
+            user.setEmail(customUserDetails.getEmail());
+            user.setImageUrl(customUserDetails.getAvatarUrl());
+            user.setProvider(customUserDetails.getProvider());
+            user.setRole(WebSecurityConfig.USER);
+            user = userService.saveUser(user);
         } else {
-            throw new InternalAuthenticationServiceException(String.format("The OAuth2 provider %s is not supported yet", providerName));
+            user = userOptional.get();
+            user.setEmail(customUserDetails.getEmail());
+            user.setImageUrl(customUserDetails.getAvatarUrl());
         }
+        return user;
     }
 }

@@ -4,8 +4,6 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 ## Tutorials
 
-> **I Would Appreciate Your Support**: I’m embarking on a writing journey on [Medium](https://medium.com/@ivangfr) and I would be grateful for your support. If you enjoy my content, please consider [following me](https://medium.com/@ivangfr). **I am committed to following you back**, and together we can share our knowledge and experiences on the platform.
-
 - \[**Medium**\] [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c)
 
 ## Project Diagram
