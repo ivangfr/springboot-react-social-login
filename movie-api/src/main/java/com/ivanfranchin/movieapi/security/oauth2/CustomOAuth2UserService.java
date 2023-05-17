@@ -52,12 +52,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setImageUrl(customUserDetails.getAvatarUrl());
             user.setProvider(customUserDetails.getProvider());
             user.setRole(WebSecurityConfig.USER);
-            user = userService.saveUser(user);
         } else {
             user = userOptional.get();
             user.setEmail(customUserDetails.getEmail());
             user.setImageUrl(customUserDetails.getAvatarUrl());
         }
-        return user;
+        return userService.saveUser(user);
     }
 }

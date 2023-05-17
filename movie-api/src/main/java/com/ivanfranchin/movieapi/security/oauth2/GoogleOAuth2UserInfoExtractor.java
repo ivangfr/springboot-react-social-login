@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
+public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     @Override
     public CustomUserDetails extractUserInfo(OAuth2User oAuth2User) {
         CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.setUsername(retrieveAttr("login", oAuth2User));
+        customUserDetails.setUsername(retrieveAttr("email", oAuth2User));
         customUserDetails.setName(retrieveAttr("name", oAuth2User));
         customUserDetails.setEmail(retrieveAttr("email", oAuth2User));
-        customUserDetails.setAvatarUrl(retrieveAttr("avatar_url", oAuth2User));
-        customUserDetails.setProvider(OAuth2Provider.GITHUB);
+        customUserDetails.setAvatarUrl(retrieveAttr("picture", oAuth2User));
+        customUserDetails.setProvider(OAuth2Provider.GOOGLE);
         customUserDetails.setAttributes(oAuth2User.getAttributes());
         customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(WebSecurityConfig.USER)));
         return customUserDetails;
@@ -27,7 +27,7 @@ public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     @Override
     public boolean accepts(OAuth2UserRequest userRequest) {
-        return "github".equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
+        return "google".equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
     }
 
     private String retrieveAttr(String attr, OAuth2User oAuth2User) {
