@@ -5,6 +5,8 @@ The goal of this project is to implement an application called `movie-app` to ma
 ## Tutorials
 
 - \[**Medium**\] [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c)
+- \[**Medium**\] [**How to Create an OAuth2 App in GitHub**](https://medium.com/@ivangfr/how-to-create-an-oauth2-app-in-github-8e273e376408)
+- \[**Medium**\] [**How to Create an OAuth2 App in Google**](https://medium.com/@ivangfr/how-to-create-an-oauth2-app-in-google-10e846d23adb)
 
 ## Project Diagram
 
@@ -48,13 +50,15 @@ The goal of this project is to implement an application called `movie-app` to ma
 
 - **Github**
 
-  In this [link](https://github.com/ivangfr/springboot-react-social-login/blob/master/create-github-oauth2-app.md), it's explained how to create a Github App
+  In the **Medium** article, [**How to Create an OAuth2 App in GitHub**](https://medium.com/@ivangfr/how-to-create-an-oauth2-app-in-github-8e273e376408), we will walk you through the process of creating an OAuth2 app in `GitHub`.
 
-> **Note**: Other providers like `Facebook`, `Twitter`, etc will be added later
+- **Google**
+
+  In the **Medium** article, [**How to Create an OAuth2 App in Google**](https://medium.com/@ivangfr/how-to-create-an-oauth2-app-in-google-10e846d23adb), we will show in details how to create an OAuth2 app in `Google`.
 
 ## How Social Login Works?
 
-In this **Medium** article, [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c), we show the complete Social Login flow, covering the request and redirections among `movie-ui`, `movie-api` and `GitHub` provider.
+In the **Medium** article, [**Implementing Social Login in a Spring Boot and React App**](https://medium.com/@ivangfr/implementing-social-login-in-a-spring-boot-and-react-app-6ce073c9983c), we show the complete Social Login flow, covering the request and redirections among `movie-ui`, `movie-api` and `GitHub` provider.
 
 ## Prerequisites
 
