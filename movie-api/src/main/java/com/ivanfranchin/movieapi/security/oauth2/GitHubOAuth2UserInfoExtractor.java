@@ -27,7 +27,7 @@ public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     @Override
     public boolean accepts(OAuth2UserRequest userRequest) {
-        return "github".equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
+        return OAuth2Provider.GITHUB.name().equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
     }
 
     private String retrieveAttr(String attr, OAuth2User oAuth2User) {
