@@ -162,30 +162,30 @@ class AdminPage extends Component {
   render() {
     if (!this.state.isAdmin) {
       return <Navigate to='/' />
-    } else {
-      const { isUsersLoading, users, userUsernameSearch, isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch } = this.state
-      return (
-        <Container>
-          <AdminTab
-            isUsersLoading={isUsersLoading}
-            users={users}
-            userUsernameSearch={userUsernameSearch}
-            handleDeleteUser={this.handleDeleteUser}
-            handleSearchUser={this.handleSearchUser}
-            isMoviesLoading={isMoviesLoading}
-            movies={movies}
-            movieImdb={movieImdb}
-            movieTitle={movieTitle}
-            moviePoster={moviePoster}
-            movieTextSearch={movieTextSearch}
-            handleAddMovie={this.handleAddMovie}
-            handleDeleteMovie={this.handleDeleteMovie}
-            handleSearchMovie={this.handleSearchMovie}
-            handleInputChange={this.handleInputChange}
-          />
-        </Container>
-      )
     }
+    
+    const { isUsersLoading, users, userUsernameSearch, isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch } = this.state
+    return (
+      <Container>
+        <AdminTab
+          isUsersLoading={isUsersLoading}
+          users={users}
+          userUsernameSearch={userUsernameSearch}
+          handleDeleteUser={this.handleDeleteUser}
+          handleSearchUser={this.handleSearchUser}
+          isMoviesLoading={isMoviesLoading}
+          movies={movies}
+          movieImdb={movieImdb}
+          movieTitle={movieTitle}
+          moviePoster={moviePoster}
+          movieTextSearch={movieTextSearch}
+          handleAddMovie={this.handleAddMovie}
+          handleDeleteMovie={this.handleDeleteMovie}
+          handleSearchMovie={this.handleSearchMovie}
+          handleInputChange={this.handleInputChange}
+        />
+      </Container>
+    )
   }
 }
 

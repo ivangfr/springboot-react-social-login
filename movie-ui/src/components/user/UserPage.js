@@ -65,20 +65,20 @@ class UserPage extends Component {
   render() {
     if (!this.state.isUser) {
       return <Navigate to='/' />
-    } else {
-      const { isMoviesLoading, movies, movieTextSearch } = this.state
-      return (
-        <Container>
-          <MovieList
-            isMoviesLoading={isMoviesLoading}
-            movieTextSearch={movieTextSearch}
-            movies={movies}
-            handleInputChange={this.handleInputChange}
-            handleSearchMovie={this.handleSearchMovie}
-          />
-        </Container>
-      )
     }
+    
+    const { isMoviesLoading, movies, movieTextSearch } = this.state
+    return (
+      <Container>
+        <MovieList
+          isMoviesLoading={isMoviesLoading}
+          movieTextSearch={movieTextSearch}
+          movies={movies}
+          handleInputChange={this.handleInputChange}
+          handleSearchMovie={this.handleSearchMovie}
+        />
+      </Container>
+    )
   }
 }
 

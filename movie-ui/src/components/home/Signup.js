@@ -80,57 +80,57 @@ class Signup extends Component {
     const { isLoggedIn, isError, errorMessage } = this.state
     if (isLoggedIn) {
       return <Navigate to='/' />
-    } else {
-      return (
-        <Grid textAlign='center'>
-          <Grid.Column style={{ maxWidth: 450 }}>
-            <Form size='large' onSubmit={this.handleSubmit}>
-              <Segment>
-                <Form.Input
-                  fluid
-                  autoFocus
-                  name='username'
-                  icon='user'
-                  iconPosition='left'
-                  placeholder='Username'
-                  onChange={this.handleInputChange}
-                />
-                <Form.Input
-                  fluid
-                  name='password'
-                  icon='lock'
-                  iconPosition='left'
-                  placeholder='Password'
-                  type='password'
-                  onChange={this.handleInputChange}
-                />
-                <Form.Input
-                  fluid
-                  name='name'
-                  icon='address card'
-                  iconPosition='left'
-                  placeholder='Name'
-                  onChange={this.handleInputChange}
-                />
-                <Form.Input
-                  fluid
-                  name='email'
-                  icon='at'
-                  iconPosition='left'
-                  placeholder='Email'
-                  onChange={this.handleInputChange}
-                />
-                <Button color='purple' fluid size='large'>Signup</Button>
-              </Segment>
-            </Form>
-            <Message>{`Already have an account? `}
-              <a href='/login' color='purple' as={NavLink} to="/login">Login</a>
-            </Message>
-            {isError && <Message negative>{errorMessage}</Message>}
-          </Grid.Column>
-        </Grid>
-      )
     }
+    
+    return (
+      <Grid textAlign='center'>
+        <Grid.Column style={{ maxWidth: 450 }}>
+          <Form size='large' onSubmit={this.handleSubmit}>
+            <Segment>
+              <Form.Input
+                fluid
+                autoFocus
+                name='username'
+                icon='user'
+                iconPosition='left'
+                placeholder='Username'
+                onChange={this.handleInputChange}
+              />
+              <Form.Input
+                fluid
+                name='password'
+                icon='lock'
+                iconPosition='left'
+                placeholder='Password'
+                type='password'
+                onChange={this.handleInputChange}
+              />
+              <Form.Input
+                fluid
+                name='name'
+                icon='address card'
+                iconPosition='left'
+                placeholder='Name'
+                onChange={this.handleInputChange}
+              />
+              <Form.Input
+                fluid
+                name='email'
+                icon='at'
+                iconPosition='left'
+                placeholder='Email'
+                onChange={this.handleInputChange}
+              />
+              <Button color='purple' fluid size='large'>Signup</Button>
+            </Segment>
+          </Form>
+          <Message>{`Already have an account? `}
+            <a href='/login' color='purple' as={NavLink} to="/login">Login</a>
+          </Message>
+          {isError && <Message negative>{errorMessage}</Message>}
+        </Grid.Column>
+      </Grid>
+    )
   }
 }
 

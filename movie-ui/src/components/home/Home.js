@@ -37,36 +37,36 @@ class Home extends Component {
           </Dimmer>
         </Segment>
       )
-    } else {
-      const { numberOfUsers, numberOfMovies } = this.state
-      return (
-        <Container text>
-          <Grid stackable columns={2}>
-            <Grid.Row>
-              <Grid.Column textAlign='center'>
-                <Segment color='purple'>
-                  <Statistic>
-                    <Statistic.Value><Icon name='user' color='grey' />{numberOfUsers}</Statistic.Value>
-                    <Statistic.Label>Users</Statistic.Label>
-                  </Statistic>
-                </Segment>
-              </Grid.Column>
-              <Grid.Column textAlign='center'>
-                <Segment color='purple'>
-                  <Statistic>
-                    <Statistic.Value><Icon name='laptop' color='grey' />{numberOfMovies}</Statistic.Value>
-                    <Statistic.Label>Movies</Statistic.Label>
-                  </Statistic>
-                </Segment>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-
-          <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
-          <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
-        </Container>
-      )
     }
+    
+    const { numberOfUsers, numberOfMovies } = this.state
+    return (
+      <Container text>
+        <Grid stackable columns={2}>
+          <Grid.Row>
+            <Grid.Column textAlign='center'>
+              <Segment color='purple'>
+                <Statistic>
+                  <Statistic.Value><Icon name='user' color='grey' />{numberOfUsers}</Statistic.Value>
+                  <Statistic.Label>Users</Statistic.Label>
+                </Statistic>
+              </Segment>
+            </Grid.Column>
+            <Grid.Column textAlign='center'>
+              <Segment color='purple'>
+                <Statistic>
+                  <Statistic.Value><Icon name='laptop' color='grey' />{numberOfMovies}</Statistic.Value>
+                  <Statistic.Label>Movies</Statistic.Label>
+                </Statistic>
+              </Segment>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
+        <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
+        <Image src='https://react.semantic-ui.com/images/wireframe/paragraph.png' style={{ marginTop: '2em' }} />
+      </Container>
+    )
   }
 }
 
