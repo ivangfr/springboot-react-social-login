@@ -72,16 +72,15 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Java 17+`](https://www.oracle.com/java/technologies/downloads/#java17)
 - [`Docker`](https://www.docker.com/)
-- [`Docker-Compose`](https://docs.docker.com/compose/install/)
 - [`jq`](https://stedolan.github.io/jq)
 
 ## Start Environment
 
 - In a terminal, make sure you are inside `springboot-react-social-login` root folder
 
-- Run the following command to start docker-compose containers
+- Run the following command to start docker compose containers
   ```
-  docker-compose up -d
+  docker compose up -d
   ```
 
 ## Running movie-app using Maven & Npm
@@ -201,9 +200,9 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`
 
-- To stop and remove docker-compose containers, network and volumes, go to a terminal and, inside `springboot-react-social-login` root folder, run the command below
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-social-login` root folder, run the command below
   ```
-  docker-compose down -v
+  docker compose down -v
   ```
 
 ## How to upgrade movie-ui dependencies to latest version
