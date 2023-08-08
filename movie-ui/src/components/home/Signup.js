@@ -28,7 +28,7 @@ class Signup extends Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
 
     const { username, password, name, email } = this.state
@@ -41,47 +41,48 @@ class Signup extends Component {
     }
 
     const user = { username, password, name, email }
-    movieApi.signup(user)
-      .then(response => {
-        const { accessToken } = response.data
-        const data = parseJwt(accessToken)
-        const user = { data, accessToken }
 
-        const Auth = this.context
-        Auth.userLogin(user)
+    try {
+      const response = await movieApi.signup(user)
+      const { accessToken } = response.data
+      const data = parseJwt(accessToken)
+      const authenticatedUser = { data, accessToken }
 
-        this.setState({
-          username: '',
-          password: '',
-          isLoggedIn: true,
-          isError: false,
-          errorMessage: ''
-        })
+      const Auth = this.context
+      Auth.userLogin(authenticatedUser)
+
+      this.setState({
+        username: '',
+        password: '',
+        isLoggedIn: true,
+        isError: false,
+        errorMessage: ''
       })
-      .catch(error => {
-        handleLogError(error)
-        if (error.response && error.response.data) {
-          const errorData = error.response.data
-          let errorMessage = 'Invalid fields'
-          if (errorData.status === 409) {
-            errorMessage = errorData.message
-          } else if (errorData.status === 400) {
-            errorMessage = errorData.errors[0].defaultMessage
-          }
-          this.setState({
-            isError: true,
-            errorMessage
-          })
+    } catch (error) {
+      handleLogError(error)
+      if (error.response && error.response.data) {
+        const errorData = error.response.data
+        let errorMessage = 'Invalid fields'
+        if (errorData.status === 409) {
+          errorMessage = errorData.message
+        } else if (errorData.status === 400) {
+          errorMessage = errorData.errors[0].defaultMessage
         }
-      })
+        this.setState({
+          isError: true,
+          errorMessage
+        })
+      }
+    }
   }
+
 
   render() {
     const { isLoggedIn, isError, errorMessage } = this.state
     if (isLoggedIn) {
       return <Navigate to='/' />
     }
-    
+
     return (
       <Grid textAlign='center'>
         <Grid.Column style={{ maxWidth: 450 }}>

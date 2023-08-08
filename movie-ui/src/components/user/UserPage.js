@@ -29,38 +29,36 @@ class UserPage extends Component {
     this.setState({ [name]: value })
   }
 
-  handleGetMovies = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-
+  handleGetMovies = async () => {
+    const user = this.context.getUser()
+  
     this.setState({ isMoviesLoading: true })
-    movieApi.getMovies(user)
-      .then(response => {
-        this.setState({ movies: response.data })
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
-      .finally(() => {
-        this.setState({ isMoviesLoading: false })
-      })
+  
+    try {
+      const response = await movieApi.getMovies(user)
+      this.setState({ movies: response.data })
+    } catch (error) {
+      handleLogError(error)
+    } finally {
+      this.setState({ isMoviesLoading: false })
+    }
   }
 
-  handleSearchMovie = () => {
+  handleSearchMovie = async () => {
     const Auth = this.context
     const user = Auth.getUser()
-
+  
     const text = this.state.movieTextSearch
-    movieApi.getMovies(user, text)
-      .then(response => {
-        const movies = response.data
-        this.setState({ movies })
-      })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ movies: [] })
-      })
-  }
+  
+    try {
+      const response = await movieApi.getMovies(user, text)
+      const movies = response.data
+      this.setState({ movies })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ movies: [] })
+    }
+  }  
 
   render() {
     if (!this.state.isUser) {

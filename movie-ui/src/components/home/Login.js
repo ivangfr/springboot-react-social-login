@@ -25,7 +25,7 @@ class Login extends Component {
     this.setState({ [name]: value })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault()
 
     const { username, password } = this.state
@@ -34,26 +34,25 @@ class Login extends Component {
       return
     }
 
-    movieApi.authenticate(username, password)
-      .then(response => {
-        const { accessToken } = response.data
-        const data = parseJwt(accessToken)
-        const user = { data, accessToken }
+    try {
+      const response = await movieApi.authenticate(username, password)
+      const { accessToken } = response.data
+      const data = parseJwt(accessToken)
+      const authenticatedUser = { data, accessToken }
 
-        const Auth = this.context
-        Auth.userLogin(user)
+      const Auth = this.context
+      Auth.userLogin(authenticatedUser)
 
-        this.setState({
-          username: '',
-          password: '',
-          isLoggedIn: true,
-          isError: false
-        })
+      this.setState({
+        username: '',
+        password: '',
+        isLoggedIn: true,
+        isError: false
       })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ isError: true })
-      })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ isError: true })
+    }
   }
 
   render() {
@@ -61,7 +60,7 @@ class Login extends Component {
     if (isLoggedIn) {
       return <Navigate to={'/'} />
     }
-    
+
     return (
       <Grid textAlign='center'>
         <Grid.Column style={{ maxWidth: 450 }}>

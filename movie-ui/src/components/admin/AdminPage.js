@@ -36,86 +36,75 @@ class AdminPage extends Component {
     this.setState({ [name]: value })
   }
 
-  handleGetUsers = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
+  handleGetUsers = async () => {
+    try {
+      const user = this.context.getUser()
 
-    this.setState({ isUsersLoading: true })
-    movieApi.getUsers(user)
-      .then(response => {
-        this.setState({ users: response.data })
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
-      .finally(() => {
-        this.setState({ isUsersLoading: false })
-      })
+      this.setState({ isUsersLoading: true })
+
+      const response = await movieApi.getUsers(user)
+      this.setState({ users: response.data })
+    } catch (error) {
+      handleLogError(error)
+    } finally {
+      this.setState({ isUsersLoading: false })
+    }
   }
 
-  handleDeleteUser = (username) => {
-    const Auth = this.context
-    const user = Auth.getUser()
+  handleDeleteUser = async (username) => {
+    const user = this.context.getUser()
 
-    movieApi.deleteUser(user, username)
-      .then(() => {
-        this.handleGetUsers()
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
+    try {
+      await movieApi.deleteUser(user, username)
+      this.handleGetUsers()
+    } catch (error) {
+      handleLogError(error)
+    }
   }
 
-  handleSearchUser = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
+  handleSearchUser = async () => {
+    const user = this.context.getUser()
 
     const username = this.state.userUsernameSearch
-    movieApi.getUsers(user, username)
-      .then(response => {
-        const data = response.data
-        const users = data instanceof Array ? data : [data]
-        this.setState({ users })
-      })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ users: [] })
-      })
+    try {
+      const response = await movieApi.getUsers(user, username)
+      const data = response.data
+      const users = data instanceof Array ? data : [data]
+      this.setState({ users })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ users: [] })
+    }
   }
 
-  handleGetMovies = () => {
+  handleGetMovies = async () => {
     const Auth = this.context
     const user = Auth.getUser()
 
     this.setState({ isMoviesLoading: true })
-    movieApi.getMovies(user)
-      .then(response => {
-        this.setState({ movies: response.data })
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
-      .finally(() => {
-        this.setState({ isMoviesLoading: false })
-      })
+    try {
+      const response = await movieApi.getMovies(user)
+      this.setState({ movies: response.data })
+    } catch (error) {
+      handleLogError(error)
+    } finally {
+      this.setState({ isMoviesLoading: false })
+    }
   }
 
-  handleDeleteMovie = (imdb) => {
-    const Auth = this.context
-    const user = Auth.getUser()
+  handleDeleteMovie = async (imdb) => {
+    const user = this.context.getUser()
 
-    movieApi.deleteMovie(user, imdb)
-      .then(() => {
-        this.handleGetMovies()
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
+    try {
+      await movieApi.deleteMovie(user, imdb)
+      await this.handleGetMovies()
+    } catch (error) {
+      handleLogError(error)
+    }
   }
 
-  handleAddMovie = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
+  handleAddMovie = async () => {
+    const user = this.context.getUser()
 
     let { movieImdb, movieTitle, moviePoster } = this.state
     movieImdb = movieImdb.trim()
@@ -126,30 +115,28 @@ class AdminPage extends Component {
     }
 
     const movie = { imdb: movieImdb, title: movieTitle, poster: moviePoster }
-    movieApi.addMovie(user, movie)
-      .then(() => {
-        this.clearMovieForm()
-        this.handleGetMovies()
-      })
-      .catch(error => {
-        handleLogError(error)
-      })
+
+    try {
+      await movieApi.addMovie(user, movie)
+      this.clearMovieForm()
+      await this.handleGetMovies()
+    } catch (error) {
+      handleLogError(error)
+    }
   }
 
-  handleSearchMovie = () => {
-    const Auth = this.context
-    const user = Auth.getUser()
+  handleSearchMovie = async () => {
+    const user = this.context.getUser()
 
     const text = this.state.movieTextSearch
-    movieApi.getMovies(user, text)
-      .then(response => {
-        const movies = response.data
-        this.setState({ movies })
-      })
-      .catch(error => {
-        handleLogError(error)
-        this.setState({ movies: [] })
-      })
+    try {
+      const response = await movieApi.getMovies(user, text)
+      const movies = response.data
+      this.setState({ movies })
+    } catch (error) {
+      handleLogError(error)
+      this.setState({ movies: [] })
+    }
   }
 
   clearMovieForm = () => {
@@ -163,7 +150,7 @@ class AdminPage extends Component {
     if (!this.state.isAdmin) {
       return <Navigate to='/' />
     }
-    
+
     const { isUsersLoading, users, userUsernameSearch, isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch } = this.state
     return (
       <Container>

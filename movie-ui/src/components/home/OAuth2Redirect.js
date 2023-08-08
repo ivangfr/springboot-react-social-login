@@ -4,7 +4,7 @@ import AuthContext from '../context/AuthContext'
 import { parseJwt } from '../misc/Helpers'
 
 function withLocation(Component) {
-  return props => <Component {...props} location={useLocation()} />;
+  return props => <Component {...props} location={useLocation()} />
 }
 
 class OAuth2Redirect extends Component {
