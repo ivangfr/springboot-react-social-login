@@ -1,43 +1,35 @@
-import React, { Component } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import { parseJwt } from '../misc/Helpers'
 
-function withLocation(Component) {
-  return props => <Component {...props} location={useLocation()} />
-}
+function OAuth2Redirect() {
+  const { userLogin } = useContext(AuthContext)
+  const [redirectTo, setRedirectTo] = useState('/login')
 
-class OAuth2Redirect extends Component {
-  static contextType = AuthContext
+  const location = useLocation()
 
-  state = {
-    redirectTo: '/login'
-  }
-
-  componentDidMount() {
-    const accessToken = this.extractUrlParameter('token')
+  useEffect(() => {
+    const accessToken = extractUrlParameter('token')
     if (accessToken) {
-      this.handleLogin(accessToken)
-      const redirect = "/"
-      this.setState({ redirect })
+      handleLogin(accessToken)
+      const redirect = '/'
+      setRedirectTo(redirect)
     }
+  }, [])
+
+  const extractUrlParameter = (key) => {
+    return new URLSearchParams(location.search).get(key)
   }
 
-  extractUrlParameter = (key) => {
-    return new URLSearchParams(this.props.location.search).get(key)
-  }
-
-  handleLogin = (accessToken) => {
+  const handleLogin = (accessToken) => {
     const data = parseJwt(accessToken)
     const user = { data, accessToken }
 
-    const Auth = this.context
-    Auth.userLogin(user)
-  }
+    userLogin(user)
+  };
 
-  render() {
-    return <Navigate to={this.state.redirectTo} />
-  }
+  return <Navigate to={redirectTo} />
 }
 
-export default withLocation(OAuth2Redirect)
+export default OAuth2Redirect

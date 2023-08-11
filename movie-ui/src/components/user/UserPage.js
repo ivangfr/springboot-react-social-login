@@ -1,83 +1,68 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import MovieList from './MovieList'
-import AuthContext from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
 import { handleLogError } from '../misc/Helpers'
 
-class UserPage extends Component {
-  static contextType = AuthContext
+function UserPage() {
+  const Auth = useAuth()
+  const user = Auth.getUser()
+  const isUser = user.data.rol[0] === 'USER'
 
-  state = {
-    movies: [],
-    movieTextSearch: '',
-    isUser: true,
-    isMoviesLoading: false
+  const [movies, setMovies] = useState([])
+  const [movieTextSearch, setMovieTextSearch] = useState('')
+  const [isMoviesLoading, setIsMoviesLoading] = useState(false)
+
+  useEffect(() => {
+    handleGetMovies()
+  }, [])
+
+  const handleInputChange = (e, { name, value }) => {
+    if (name === 'movieTextSearch') {
+      setMovieTextSearch(value)
+    }
   }
 
-  componentDidMount() {
-    const Auth = this.context
-    const user = Auth.getUser()
-    const isUser = user.data.rol[0] === 'USER'
-    this.setState({ isUser })
-
-    this.handleGetMovies()
-  }
-
-  handleInputChange = (e, { name, value }) => {
-    this.setState({ [name]: value })
-  }
-
-  handleGetMovies = async () => {
-    const user = this.context.getUser()
-  
-    this.setState({ isMoviesLoading: true })
-  
+  const handleGetMovies = async () => {
+    setIsMoviesLoading(true)
     try {
       const response = await movieApi.getMovies(user)
-      this.setState({ movies: response.data })
+      setMovies(response.data)
     } catch (error) {
       handleLogError(error)
     } finally {
-      this.setState({ isMoviesLoading: false })
+      setIsMoviesLoading(false)
     }
   }
 
-  handleSearchMovie = async () => {
-    const Auth = this.context
-    const user = Auth.getUser()
-  
-    const text = this.state.movieTextSearch
-  
+  const handleSearchMovie = async () => {
     try {
-      const response = await movieApi.getMovies(user, text)
+      const response = await movieApi.getMovies(user, movieTextSearch)
       const movies = response.data
-      this.setState({ movies })
+      setMovies(movies)
     } catch (error) {
       handleLogError(error)
-      this.setState({ movies: [] })
+      setMovies([])
     }
-  }  
-
-  render() {
-    if (!this.state.isUser) {
-      return <Navigate to='/' />
-    }
-    
-    const { isMoviesLoading, movies, movieTextSearch } = this.state
-    return (
-      <Container>
-        <MovieList
-          isMoviesLoading={isMoviesLoading}
-          movieTextSearch={movieTextSearch}
-          movies={movies}
-          handleInputChange={this.handleInputChange}
-          handleSearchMovie={this.handleSearchMovie}
-        />
-      </Container>
-    )
   }
+
+  if (!isUser) {
+    return <Navigate to='/' />
+  }
+
+  return (
+    <Container>
+      <MovieList
+        isMoviesLoading={isMoviesLoading}
+        movieTextSearch={movieTextSearch}
+        movies={movies}
+        handleInputChange={handleInputChange}
+        handleSearchMovie={handleSearchMovie}
+      />
+    </Container>
+  )
 }
 
 export default UserPage

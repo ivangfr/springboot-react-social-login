@@ -1,42 +1,39 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
 import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
-import AuthContext from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
 import { parseJwt, handleLogError } from '../misc/Helpers'
 
-class Signup extends Component {
-  static contextType = AuthContext
+function Signup() {
+  const Auth = useAuth()
+  const isLoggedIn = Auth.userIsAuthenticated()
 
-  state = {
-    username: '',
-    password: '',
-    name: '',
-    email: '',
-    isLoggedIn: false,
-    isError: false,
-    errorMessage: ''
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [isError, setIsError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const handleInputChange = (e, { name, value }) => {
+    if (name === 'username') {
+      setUsername(value)
+    } else if (name === 'password') {
+      setPassword(value)
+    } else if (name === 'name') {
+      setName(value)
+    } else if (name === 'email') {
+      setEmail(value)
+    }
   }
 
-  componentDidMount() {
-    const Auth = this.context
-    const isLoggedIn = Auth.userIsAuthenticated()
-    this.setState({ isLoggedIn })
-  }
-
-  handleInputChange = (e, { name, value }) => {
-    this.setState({ [name]: value })
-  }
-
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const { username, password, name, email } = this.state
     if (!(username && password && name && email)) {
-      this.setState({
-        isError: true,
-        errorMessage: 'Please, inform all fields!'
-      })
+      setIsError(true)
+      setErrorMessage('Please, inform all fields!')
       return
     }
 
@@ -48,16 +45,12 @@ class Signup extends Component {
       const data = parseJwt(accessToken)
       const authenticatedUser = { data, accessToken }
 
-      const Auth = this.context
       Auth.userLogin(authenticatedUser)
 
-      this.setState({
-        username: '',
-        password: '',
-        isLoggedIn: true,
-        isError: false,
-        errorMessage: ''
-      })
+      setUsername('')
+      setPassword('')
+      setIsError(false)
+      setErrorMessage('')
     } catch (error) {
       handleLogError(error)
       if (error.response && error.response.data) {
@@ -68,71 +61,65 @@ class Signup extends Component {
         } else if (errorData.status === 400) {
           errorMessage = errorData.errors[0].defaultMessage
         }
-        this.setState({
-          isError: true,
-          errorMessage
-        })
+        setIsError(true)
+        setErrorMessage(errorMessage)
       }
     }
   }
 
-
-  render() {
-    const { isLoggedIn, isError, errorMessage } = this.state
-    if (isLoggedIn) {
-      return <Navigate to='/' />
-    }
-
-    return (
-      <Grid textAlign='center'>
-        <Grid.Column style={{ maxWidth: 450 }}>
-          <Form size='large' onSubmit={this.handleSubmit}>
-            <Segment>
-              <Form.Input
-                fluid
-                autoFocus
-                name='username'
-                icon='user'
-                iconPosition='left'
-                placeholder='Username'
-                onChange={this.handleInputChange}
-              />
-              <Form.Input
-                fluid
-                name='password'
-                icon='lock'
-                iconPosition='left'
-                placeholder='Password'
-                type='password'
-                onChange={this.handleInputChange}
-              />
-              <Form.Input
-                fluid
-                name='name'
-                icon='address card'
-                iconPosition='left'
-                placeholder='Name'
-                onChange={this.handleInputChange}
-              />
-              <Form.Input
-                fluid
-                name='email'
-                icon='at'
-                iconPosition='left'
-                placeholder='Email'
-                onChange={this.handleInputChange}
-              />
-              <Button color='purple' fluid size='large'>Signup</Button>
-            </Segment>
-          </Form>
-          <Message>{`Already have an account? `}
-            <a href='/login' color='purple' as={NavLink} to="/login">Login</a>
-          </Message>
-          {isError && <Message negative>{errorMessage}</Message>}
-        </Grid.Column>
-      </Grid>
-    )
+  if (isLoggedIn) {
+    return <Navigate to='/' />
   }
+
+  return (
+    <Grid textAlign='center'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Form size='large' onSubmit={handleSubmit}>
+          <Segment>
+            <Form.Input
+              fluid
+              autoFocus
+              name='username'
+              icon='user'
+              iconPosition='left'
+              placeholder='Username'
+              onChange={handleInputChange}
+            />
+            <Form.Input
+              fluid
+              name='password'
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password'
+              type='password'
+              onChange={handleInputChange}
+            />
+            <Form.Input
+              fluid
+              name='name'
+              icon='address card'
+              iconPosition='left'
+              placeholder='Name'
+              onChange={handleInputChange}
+            />
+            <Form.Input
+              fluid
+              name='email'
+              icon='at'
+              iconPosition='left'
+              placeholder='Email'
+              onChange={handleInputChange}
+            />
+            <Button color='purple' fluid size='large'>Signup</Button>
+          </Segment>
+        </Form>
+        <Message>{`Already have an account? `}
+          <NavLink to="/login" color='purple'>Login</NavLink>
+        </Message>
+        {isError && <Message negative>{errorMessage}</Message>}
+      </Grid.Column>
+    </Grid>
+  )
 }
 
 export default Signup
