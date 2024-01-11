@@ -5,7 +5,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -43,14 +42,16 @@ public class TokenProvider {
         byte[] signingKey = jwtSecret.getBytes();
 
         return Jwts.builder()
-                .setHeaderParam("typ", TOKEN_TYPE)
-                .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant()))
-                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-                .setId(UUID.randomUUID().toString())
-                .setIssuer(TOKEN_ISSUER)
-                .setAudience(TOKEN_AUDIENCE)
-                .setSubject(user.getUsername())
+                .header().add("typ", TOKEN_TYPE)
+                .and()
+                .signWith(Keys.hmacShaKeyFor(signingKey), Jwts.SIG.HS512)
+                .expiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant()))
+                .issuedAt(Date.from(ZonedDateTime.now().toInstant()))
+                .id(UUID.randomUUID().toString())
+                .issuer(TOKEN_ISSUER)
+                .audience().add(TOKEN_AUDIENCE)
+                .and()
+                .subject(user.getUsername())
                 .claim("rol", roles)
                 .claim("name", user.getName())
                 .claim("preferred_username", user.getUsername())
@@ -62,10 +63,10 @@ public class TokenProvider {
         try {
             byte[] signingKey = jwtSecret.getBytes();
 
-            Jws<Claims> jws = Jwts.parserBuilder()
-                    .setSigningKey(signingKey)
+            Jws<Claims> jws = Jwts.parser()
+                    .verifyWith(Keys.hmacShaKeyFor(signingKey))
                     .build()
-                    .parseClaimsJws(token);
+                    .parseSignedClaims(token);
 
             return Optional.of(jws);
         } catch (ExpiredJwtException exception) {
