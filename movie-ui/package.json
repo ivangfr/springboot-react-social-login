@@ -3,15 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^6.2.0",
-    "@testing-library/react": "^14.1.2",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^3.5.1",
-    "axios": "^1.6.5",
-    "react-router-dom": "^6.21.2",
+    "web-vitals": "^3.5.2",
+    "axios": "^1.6.7",
+    "react-router-dom": "^6.22.0",
     "semantic-ui-react": "^2.1.5"
   },
   "scripts": {
