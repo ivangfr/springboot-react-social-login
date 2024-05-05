@@ -1,6 +1,6 @@
 # springboot-react-social-login
 
-The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
+The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://spring.io/projects/spring-boot) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -29,7 +29,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   
   `movie-api` stores its data in [`Postgres`](https://www.postgresql.org/) database.
 
-  `movie-api` has the following endpoints
+  `movie-api` has the following endpoints:
 
   | Endpoint                                                      | Secured | Roles           |
   | ------------------------------------------------------------- | ------- | --------------- |
@@ -76,9 +76,9 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## Start Environment
 
-- In a terminal, make sure you are inside `springboot-react-social-login` root folder
+- In a terminal, make sure you are inside `springboot-react-social-login` root folder;
 
-- Run the following command to start docker compose containers
+- Run the following command to start docker compose services:
   ```
   docker compose up -d
   ```
@@ -87,9 +87,9 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - **movie-api**
 
-  - Open a terminal and navigate to `springboot-react-social-login/movie-api` folder
+  - Open a terminal and navigate to `springboot-react-social-login/movie-api` folder;
 
-  - Export the following environment variables for the `Client ID` and `Client Secret` of the Social Apps (see how to get them in [Creating OAuth2 apps for Social Login](#creating-oauth2-apps-for-social-login))
+  - Export the following environment variables for the `Client ID` and `Client Secret` of the Social Apps (see how to get them in [Creating OAuth2 apps for Social Login](#creating-oauth2-apps-for-social-login)):
     ```
     export GITHUB_CLIENT_ID=...
     export GITHUB_CLIENT_SECRET=...
@@ -97,21 +97,21 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
     export GOOGLE_CLIENT_SECRET=...
     ```
 
-  - Run the following `Maven` command to start the application
+  - Run the following `Maven` command to start the application:
     ```
     ./mvnw clean spring-boot:run
     ```
 
 - **movie-ui**
 
-  - Open another terminal and navigate to `springboot-react-social-login/movie-ui` folder
+  - Open another terminal and navigate to `springboot-react-social-login/movie-ui` folder;
 
-  - Run the command below if you are running the application for the first time
+  - Run the command below if you are running the application for the first time:
     ```
     npm install
     ```
 
-  - Run the `npm` command below to start the application
+  - Run the `npm` command below to start the application:
     ```
     npm start
     ```
@@ -125,11 +125,11 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## Demo
 
-- The gif below shows a `user` loging in using the `Github`
+- The gif below shows a `user` loging in using the `Github`:
 
   ![github-login](documentation/github-login.gif)
 
-- The gif below shows an `admin` loging in using his application account
+- The gif below shows an `admin` loging in using his application account:
 
   ![admin-login](documentation/admin-login.gif)
 
@@ -137,21 +137,21 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - **Manual Test**
 
-  - Access `movie-ui` at http://localhost:3000
+  - Access `movie-ui` at http://localhost:3000;
 
-  - Click `Login` and then, connect with `Github`
+  - Click `Login` and then, connect with `Github`;
   
-  - Provide your `Github` credentials
+  - Provide your `Github` credentials.
 
 - **Automatic Endpoints Test**
 
-  - Open a terminal and make sure you are in `springboot-react-social-login` root folder
+  - Open a terminal and make sure you are in `springboot-react-social-login` root folder;
 
-  - Run the following script
+  - Run the following script:
     ```
     ./movie-api/test-endpoints.sh
     ```
-    It should return something like the output below, where it shows the http code for different requests
+    It should return something like the output below, where it shows the http code for different requests:
     ```
     POST auth/authenticate
     ======================
@@ -198,18 +198,18 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## Shutdown
 
-- To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`
+- To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-social-login` root folder, run the command below
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-social-login` root folder, run the command below:
   ```
   docker compose down -v
   ```
 
 ## How to upgrade movie-ui dependencies to latest version
 
-- In a terminal, make sure you are in `springboot-react-social-login/movie-ui` folder
+- In a terminal, make sure you are in `springboot-react-social-login/movie-ui` folder;
 
-- Run the following commands
+- Run the following commands:
   ```
   npm upgrade
   npm i -g npm-check-updates
