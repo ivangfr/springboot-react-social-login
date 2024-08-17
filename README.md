@@ -1,6 +1,6 @@
 # springboot-react-social-login
 
-The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/html/documentation.html) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
+The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -72,7 +72,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [`Java 17+`](https://www.oracle.com/java/technologies/downloads/#java17)
 - [`Docker`](https://www.docker.com/)
-- [`jq`](https://stedolan.github.io/jq)
+- [`jq`](https://jqlang.github.io/jq/)
 
 ## Start Environment
 
