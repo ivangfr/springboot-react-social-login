@@ -4,7 +4,7 @@ services:
     image: 'postgres:17.2'
     container_name: 'postgres'
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       - 'POSTGRES_DB=moviedb'
       - 'POSTGRES_PASSWORD=postgres'
