@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class Movie {
     private String title;
     private String poster;
 
-    private ZonedDateTime createdAt;
+    private Instant createdAt;
 
     public Movie(String imdb, String title, String poster) {
         this.imdb = imdb;
@@ -31,6 +31,6 @@ public class Movie {
 
     @PrePersist
     public void onPrePersist() {
-        createdAt = ZonedDateTime.now();
+        createdAt = Instant.now();
     }
 }

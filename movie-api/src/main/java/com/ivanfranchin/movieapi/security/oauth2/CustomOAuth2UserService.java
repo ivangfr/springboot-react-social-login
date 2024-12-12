@@ -2,7 +2,7 @@ package com.ivanfranchin.movieapi.security.oauth2;
 
 import com.ivanfranchin.movieapi.model.User;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
-import com.ivanfranchin.movieapi.security.WebSecurityConfig;
+import com.ivanfranchin.movieapi.security.SecurityConfig;
 import com.ivanfranchin.movieapi.service.UserService;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -51,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             user.setEmail(customUserDetails.getEmail());
             user.setImageUrl(customUserDetails.getAvatarUrl());
             user.setProvider(customUserDetails.getProvider());
-            user.setRole(WebSecurityConfig.USER);
+            user.setRole(SecurityConfig.USER);
         } else {
             user = userOptional.get();
             user.setEmail(customUserDetails.getEmail());

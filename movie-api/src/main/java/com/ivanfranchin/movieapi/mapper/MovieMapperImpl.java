@@ -5,6 +5,7 @@ import com.ivanfranchin.movieapi.rest.dto.CreateMovieRequest;
 import com.ivanfranchin.movieapi.rest.dto.MovieDto;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 @Service
@@ -23,6 +24,7 @@ public class MovieMapperImpl implements MovieMapper {
         if (movie == null) {
             return null;
         }
-        return new MovieDto(movie.getImdb(), movie.getTitle(), movie.getPoster(), DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(movie.getCreatedAt()));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.systemDefault());
+        return new MovieDto(movie.getImdb(), movie.getTitle(), movie.getPoster(), formatter.format(movie.getCreatedAt()));
     }
 }

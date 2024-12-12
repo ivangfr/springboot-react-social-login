@@ -3,7 +3,7 @@ package com.ivanfranchin.movieapi.runner;
 import com.ivanfranchin.movieapi.model.Movie;
 import com.ivanfranchin.movieapi.model.User;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
-import com.ivanfranchin.movieapi.security.WebSecurityConfig;
+import com.ivanfranchin.movieapi.security.SecurityConfig;
 import com.ivanfranchin.movieapi.service.MovieService;
 import com.ivanfranchin.movieapi.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +38,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private static final List<User> USERS = Arrays.asList(
-            new User("admin", "admin", "Admin", "admin@mycompany.com", WebSecurityConfig.ADMIN, null, OAuth2Provider.LOCAL, "1"),
-            new User("user", "user", "User", "user@mycompany.com", WebSecurityConfig.USER, null, OAuth2Provider.LOCAL, "2")
+            new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN, null, OAuth2Provider.LOCAL, "1"),
+            new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER, null, OAuth2Provider.LOCAL, "2")
     );
 
     private static final List<Movie> MOVIES = Arrays.asList(

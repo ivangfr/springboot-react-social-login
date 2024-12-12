@@ -76,7 +76,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## Start Environment
 
-- In a terminal, make sure you are inside `springboot-react-social-login` root folder;
+- In a terminal, make sure you are inside the `springboot-react-social-login` root folder;
 
 - Run the following command to start docker compose containers:
   ```
@@ -87,7 +87,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - **movie-api**
 
-  - Open a terminal and navigate to `springboot-react-social-login/movie-api` folder;
+  - Open a terminal and navigate to the `springboot-react-social-login/movie-api` folder;
 
   - Export the following environment variables for the `Client ID` and `Client Secret` of the Social Apps (see how to get them in [Creating OAuth2 apps for Social Login](#creating-oauth2-apps-for-social-login)):
     ```
@@ -104,7 +104,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - **movie-ui**
 
-  - Open another terminal and navigate to `springboot-react-social-login/movie-ui` folder;
+  - Open another terminal and navigate to the `springboot-react-social-login/movie-ui` folder;
 
   - Run the command below if you are running the application for the first time:
     ```
@@ -145,7 +145,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - **Automatic Endpoints Test**
 
-  - Open a terminal and make sure you are in `springboot-react-social-login` root folder;
+  - Open a terminal and make sure you are in the `springboot-react-social-login` root folder;
 
   - Run the following script:
     ```
@@ -200,14 +200,14 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside `springboot-react-social-login` root folder, run the command below:
+- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside the `springboot-react-social-login` root folder, run the command below:
   ```
   docker compose down -v
   ```
 
 ## How to upgrade movie-ui dependencies to latest version
 
-- In a terminal, make sure you are in `springboot-react-social-login/movie-ui` folder;
+- In a terminal, make sure you are in the `springboot-react-social-login/movie-ui` folder;
 
 - Run the following commands:
   ```

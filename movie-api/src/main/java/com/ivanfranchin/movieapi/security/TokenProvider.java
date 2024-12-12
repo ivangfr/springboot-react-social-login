@@ -14,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,12 +41,14 @@ public class TokenProvider {
 
         byte[] signingKey = jwtSecret.getBytes();
 
+        Instant now = Instant.now();
+
         return Jwts.builder()
                 .header().add("typ", TOKEN_TYPE)
                 .and()
                 .signWith(Keys.hmacShaKeyFor(signingKey), Jwts.SIG.HS512)
-                .expiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant()))
-                .issuedAt(Date.from(ZonedDateTime.now().toInstant()))
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plusSeconds(60 * jwtExpirationMinutes)))
                 .id(UUID.randomUUID().toString())
                 .issuer(TOKEN_ISSUER)
                 .audience().add(TOKEN_AUDIENCE)

@@ -1,7 +1,7 @@
 package com.ivanfranchin.movieapi.security.oauth2;
 
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
-import com.ivanfranchin.movieapi.security.WebSecurityConfig;
+import com.ivanfranchin.movieapi.security.SecurityConfig;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -21,7 +21,7 @@ public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
         customUserDetails.setAvatarUrl(retrieveAttr("picture", oAuth2User));
         customUserDetails.setProvider(OAuth2Provider.GOOGLE);
         customUserDetails.setAttributes(oAuth2User.getAttributes());
-        customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(WebSecurityConfig.USER)));
+        customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(SecurityConfig.USER)));
         return customUserDetails;
     }
 
