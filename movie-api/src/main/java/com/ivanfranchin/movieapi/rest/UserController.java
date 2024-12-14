@@ -1,6 +1,5 @@
 package com.ivanfranchin.movieapi.rest;
 
-import com.ivanfranchin.movieapi.mapper.UserMapper;
 import com.ivanfranchin.movieapi.model.User;
 import com.ivanfranchin.movieapi.rest.dto.UserDto;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
@@ -26,27 +25,26 @@ import static com.ivanfranchin.movieapi.config.SwaggerConfig.BEARER_KEY_SECURITY
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/me")
     public UserDto getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) {
         User user = userService.validateAndGetUserByUsername(currentUser.getUsername());
-        return userMapper.toUserDto(user);
+        return toUserDto(user);
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping
     public List<UserDto> getUsers() {
         return userService.getUsers().stream()
-                .map(userMapper::toUserDto)
+                .map(this::toUserDto)
                 .collect(Collectors.toList());
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/{username}")
     public UserDto getUser(@PathVariable String username) {
-        return userMapper.toUserDto(userService.validateAndGetUserByUsername(username));
+        return toUserDto(userService.validateAndGetUserByUsername(username));
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
@@ -54,6 +52,10 @@ public class UserController {
     public UserDto deleteUser(@PathVariable String username) {
         User user = userService.validateAndGetUserByUsername(username);
         userService.deleteUser(user);
-        return userMapper.toUserDto(user);
+        return toUserDto(user);
+    }
+
+    private UserDto toUserDto(User user) {
+        return new UserDto(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getRole());
     }
 }
