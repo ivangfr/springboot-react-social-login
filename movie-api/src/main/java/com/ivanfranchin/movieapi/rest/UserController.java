@@ -1,9 +1,9 @@
 package com.ivanfranchin.movieapi.rest;
 
-import com.ivanfranchin.movieapi.model.User;
+import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.rest.dto.UserDto;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
-import com.ivanfranchin.movieapi.service.UserService;
+import com.ivanfranchin.movieapi.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

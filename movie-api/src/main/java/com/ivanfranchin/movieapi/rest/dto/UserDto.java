@@ -1,6 +1,6 @@
 package com.ivanfranchin.movieapi.rest.dto;
 
-import com.ivanfranchin.movieapi.model.User;
+import com.ivanfranchin.movieapi.user.User;
 
 public record UserDto(Long id, String username, String name, String email, String role) {
 

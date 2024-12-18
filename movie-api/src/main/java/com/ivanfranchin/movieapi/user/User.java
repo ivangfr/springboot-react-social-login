@@ -1,4 +1,4 @@
-package com.ivanfranchin.movieapi.model;
+package com.ivanfranchin.movieapi.user;
 
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import jakarta.persistence.Entity;

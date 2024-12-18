@@ -1,6 +1,5 @@
-package com.ivanfranchin.movieapi.repository;
+package com.ivanfranchin.movieapi.movie;
 
-import com.ivanfranchin.movieapi.model.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

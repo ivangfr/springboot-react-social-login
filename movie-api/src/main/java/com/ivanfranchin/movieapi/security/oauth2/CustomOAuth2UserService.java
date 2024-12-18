@@ -1,9 +1,9 @@
 package com.ivanfranchin.movieapi.security.oauth2;
 
-import com.ivanfranchin.movieapi.model.User;
+import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
 import com.ivanfranchin.movieapi.security.SecurityConfig;
-import com.ivanfranchin.movieapi.service.UserService;
+import com.ivanfranchin.movieapi.user.UserService;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

@@ -1,7 +1,7 @@
 package com.ivanfranchin.movieapi.security;
 
-import com.ivanfranchin.movieapi.model.User;
-import com.ivanfranchin.movieapi.service.UserService;
+import com.ivanfranchin.movieapi.user.User;
+import com.ivanfranchin.movieapi.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

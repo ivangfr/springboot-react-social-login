@@ -1,14 +1,14 @@
 package com.ivanfranchin.movieapi.rest;
 
-import com.ivanfranchin.movieapi.exception.DuplicatedUserInfoException;
-import com.ivanfranchin.movieapi.model.User;
+import com.ivanfranchin.movieapi.user.DuplicatedUserInfoException;
+import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.rest.dto.AuthResponse;
 import com.ivanfranchin.movieapi.rest.dto.LoginRequest;
 import com.ivanfranchin.movieapi.rest.dto.SignUpRequest;
 import com.ivanfranchin.movieapi.security.SecurityConfig;
 import com.ivanfranchin.movieapi.security.TokenProvider;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
-import com.ivanfranchin.movieapi.service.UserService;
+import com.ivanfranchin.movieapi.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

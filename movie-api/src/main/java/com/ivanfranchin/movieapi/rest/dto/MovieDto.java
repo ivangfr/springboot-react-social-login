@@ -1,6 +1,6 @@
 package com.ivanfranchin.movieapi.rest.dto;
 
-import com.ivanfranchin.movieapi.model.Movie;
+import com.ivanfranchin.movieapi.movie.Movie;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;

@@ -1,8 +1,5 @@
-package com.ivanfranchin.movieapi.service;
+package com.ivanfranchin.movieapi.user;
 
-import com.ivanfranchin.movieapi.exception.UserNotFoundException;
-import com.ivanfranchin.movieapi.model.User;
-import com.ivanfranchin.movieapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

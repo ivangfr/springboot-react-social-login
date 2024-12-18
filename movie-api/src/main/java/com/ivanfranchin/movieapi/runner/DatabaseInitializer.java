@@ -1,11 +1,11 @@
 package com.ivanfranchin.movieapi.runner;
 
-import com.ivanfranchin.movieapi.model.Movie;
-import com.ivanfranchin.movieapi.model.User;
+import com.ivanfranchin.movieapi.movie.Movie;
+import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import com.ivanfranchin.movieapi.security.SecurityConfig;
-import com.ivanfranchin.movieapi.service.MovieService;
-import com.ivanfranchin.movieapi.service.UserService;
+import com.ivanfranchin.movieapi.movie.MovieService;
+import com.ivanfranchin.movieapi.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

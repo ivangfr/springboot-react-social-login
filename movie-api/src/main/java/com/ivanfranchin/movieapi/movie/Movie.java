@@ -1,4 +1,4 @@
-package com.ivanfranchin.movieapi.model;
+package com.ivanfranchin.movieapi.movie;
 
 import com.ivanfranchin.movieapi.rest.dto.CreateMovieRequest;
 import jakarta.persistence.Entity;

@@ -1,9 +1,9 @@
 package com.ivanfranchin.movieapi.rest;
 
-import com.ivanfranchin.movieapi.model.Movie;
+import com.ivanfranchin.movieapi.movie.Movie;
 import com.ivanfranchin.movieapi.rest.dto.CreateMovieRequest;
 import com.ivanfranchin.movieapi.rest.dto.MovieDto;
-import com.ivanfranchin.movieapi.service.MovieService;
+import com.ivanfranchin.movieapi.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;

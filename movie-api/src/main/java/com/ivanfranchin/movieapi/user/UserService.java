@@ -1,6 +1,4 @@
-package com.ivanfranchin.movieapi.service;
-
-import com.ivanfranchin.movieapi.model.User;
+package com.ivanfranchin.movieapi.user;
 
 import java.util.List;
 import java.util.Optional;

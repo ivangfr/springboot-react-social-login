@@ -1,7 +1,7 @@
 package com.ivanfranchin.movieapi.rest;
 
-import com.ivanfranchin.movieapi.service.MovieService;
-import com.ivanfranchin.movieapi.service.UserService;
+import com.ivanfranchin.movieapi.movie.MovieService;
+import com.ivanfranchin.movieapi.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
