@@ -1,6 +1,6 @@
 # springboot-react-social-login
 
-The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Besides, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
+The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Additionally, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -70,15 +70,15 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 ## Prerequisites
 
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [`Java 21+`](https://www.oracle.com/java/technologies/downloads/#java21)
-- Some containerization tool [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.
+- [`Java 21`](https://www.oracle.com/java/technologies/downloads/#java21) or higher
+- A containerization tool (e.g., [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.)
 - [`jq`](https://jqlang.github.io/jq/)
 
 ## Start Environment
 
 - In a terminal, make sure you are inside the `springboot-react-social-login` root folder;
 
-- Run the following command to start docker compose containers:
+- Run the following command to start Docker Compose containers:
   ```
   docker compose up -d
   ```
@@ -125,11 +125,11 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## Demo
 
-- The gif below shows a `user` loging in using the `Github`:
+- The gif below shows a `user` logging in using `Github`:
 
   ![github-login](documentation/github-login.gif)
 
-- The gif below shows an `admin` loging in using his application account:
+- The gif below shows an `admin` logging in using his application account:
 
   ![admin-login](documentation/admin-login.gif)
 
@@ -200,7 +200,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 - To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
-- To stop and remove docker compose containers, network and volumes, go to a terminal and, inside the `springboot-react-social-login` root folder, run the command below:
+- To stop and remove Docker Compose containers, network, and volumes, go to a terminal and, inside the `springboot-react-social-login` root folder, run the following command:
   ```
   docker compose down -v
   ```
