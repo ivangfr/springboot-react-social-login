@@ -79,7 +79,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 - In a terminal, make sure you are inside the `springboot-react-social-login` root folder;
 
 - Run the following command to start Docker Compose containers:
-  ```
+  ```bash
   docker compose up -d
   ```
 
@@ -90,7 +90,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
   - Open a terminal and navigate to the `springboot-react-social-login/movie-api` folder;
 
   - Export the following environment variables for the `Client ID` and `Client Secret` of the Social Apps (see how to get them in [Creating OAuth2 apps for Social Login](#creating-oauth2-apps-for-social-login)):
-    ```
+    ```bash
     export GITHUB_CLIENT_ID=...
     export GITHUB_CLIENT_SECRET=...
     export GOOGLE_CLIENT_ID=...
@@ -98,7 +98,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
     ```
 
   - Run the following `Maven` command to start the application:
-    ```
+    ```bash
     ./mvnw clean spring-boot:run
     ```
 
@@ -107,12 +107,12 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
   - Open another terminal and navigate to the `springboot-react-social-login/movie-ui` folder;
 
   - Run the command below if you are running the application for the first time:
-    ```
+    ```bash
     npm install
     ```
 
   - Run the `npm` command below to start the application:
-    ```
+    ```bash
     npm start
     ```
 
@@ -148,11 +148,11 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
   - Open a terminal and make sure you are in the `springboot-react-social-login` root folder;
 
   - Run the following script:
-    ```
+    ```bash
     ./movie-api/test-endpoints.sh
     ```
     It should return something like the output below, where it shows the http code for different requests:
-    ```
+    ```text
     POST auth/authenticate
     ======================
     admin access token
@@ -191,7 +191,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 ## Util Commands
 
 - **Postgres**
-  ```
+  ```bash
   docker exec -it postgres psql -U postgres -d moviedb
   \dt
   ```
@@ -201,7 +201,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 - To stop `movie-api` and `movie-ui`, go to the terminals where they are running and press `Ctrl+C`;
 
 - To stop and remove Docker Compose containers, network, and volumes, go to a terminal and, inside the `springboot-react-social-login` root folder, run the following command:
-  ```
+  ```bash
   docker compose down -v
   ```
 
@@ -210,7 +210,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 - In a terminal, make sure you are in the `springboot-react-social-login/movie-ui` folder;
 
 - Run the following commands:
-  ```
+  ```bash
   npm upgrade
   npm i -g npm-check-updates
   ncu -u
