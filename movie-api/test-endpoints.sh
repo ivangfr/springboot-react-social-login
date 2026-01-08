@@ -1,16 +1,16 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-declare -A public_number_of_users
-declare -A public_number_of_movies
+typeset -A public_number_of_users
+typeset -A public_number_of_movies
 
-declare -A user_get_me
-declare -A user_get_users
-declare -A user_get_user
-declare -A user_delete_user
+typeset -A user_get_me
+typeset -A user_get_users
+typeset -A user_get_user
+typeset -A user_delete_user
 
-declare -A movie_get_movies
-declare -A movie_create_movie
-declare -A movie_delete_movie
+typeset -A movie_get_movies
+typeset -A movie_create_movie
+typeset -A movie_delete_movie
 
 ADMIN_ACCESS_TOKEN=$(curl -s -X POST localhost:8080/auth/authenticate -H 'Content-Type: application/json' -d '{"username": "admin", "password": "admin"}' | jq -r .accessToken)
 USER_ACCESS_TOKEN=$(curl -s -X POST localhost:8080/auth/authenticate -H 'Content-Type: application/json' -d '{"username": "user", "password": "user"}' | jq -r .accessToken)

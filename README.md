@@ -70,7 +70,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 ## Prerequisites
 
 - [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [`Java 21`](https://www.oracle.com/java/technologies/downloads/#java21) or higher
+- [`Java 25`](https://www.oracle.com/java/technologies/downloads/#java25) or higher
 - A containerization tool (e.g., [`Docker`](https://www.docker.com), [`Podman`](https://podman.io), etc.)
 - [`jq`](https://jqlang.github.io/jq/)
 
