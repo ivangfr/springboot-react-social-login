@@ -48,10 +48,9 @@ public class MovieController {
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{imdb}")
-    public MovieDto deleteMovie(@PathVariable String imdb) {
-        Movie movie = movieService.validateAndGetMovie(imdb);
-        movieService.deleteMovie(movie);
-        return MovieDto.from(movie);
+    public void deleteMovie(@PathVariable String imdb) {
+        movieService.deleteMovie(movieService.validateAndGetMovie(imdb));
     }
 }

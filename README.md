@@ -1,6 +1,6 @@
 # springboot-react-social-login
 
-The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `movie-api` and a font-end [React](https://react.dev/) application called `movie-ui`. Additionally, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
+The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `movie-api` and a front-end [React](https://react.dev/) application called `movie-ui`. Additionally, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
 ## Proof-of-Concepts & Articles
 
@@ -179,13 +179,13 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
             GET /api/users/me |           401 |         200 |          200 |
                GET /api/users |           401 |         403 |          200 |
          GET /api/users/user2 |           401 |         403 |          200 |
-      DELETE /api/users/user2 |           401 |         403 |          200 |
+      DELETE /api/users/user2 |           401 |         403 |          204 |
     ......................... + ............. + ........... + ............ |
               GET /api/movies |           401 |         200 |          200 |
              POST /api/movies |           401 |         403 |          201 |
-       DELETE /api/movies/abc |           401 |         403 |          200 |
+       DELETE /api/movies/abc |           401 |         403 |          204 |
     ------------------------------------------------------------------------
-     [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden
+     [200] Success -  [201] Created -  [204] No Content -  [401] Unauthorized -  [403] Forbidden
     ```
 
 ## Util Commands

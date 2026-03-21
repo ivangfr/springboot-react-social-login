@@ -146,14 +146,12 @@ class MovieControllerTest {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
-    void deleteMovie_asAdmin_movieExists_returns200() throws Exception {
+    void deleteMovie_asAdmin_movieExists_returns204() throws Exception {
         Movie movie = createMovie("tt001", "Alpha");
         when(movieService.validateAndGetMovie("tt001")).thenReturn(movie);
 
         mockMvc.perform(delete("/api/movies/tt001"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.imdb").value("tt001"))
-                .andExpect(jsonPath("$.title").value("Alpha"));
+                .andExpect(status().isNoContent());
     }
 
     @Test
