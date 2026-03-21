@@ -11,6 +11,7 @@ import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import com.ivanfranchin.movieapi.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,7 +49,11 @@ public class AuthController {
             throw new DuplicatedUserInfoException(String.format("Email %s is already in use", signUpRequest.email()));
         }
 
-        userService.saveUser(mapSignUpRequestToUser(signUpRequest));
+        try {
+            userService.saveUser(mapSignUpRequestToUser(signUpRequest));
+        } catch (DataIntegrityViolationException ex) {
+            throw new DuplicatedUserInfoException("Username or email already in use");
+        }
 
         String token = authenticateAndGetToken(signUpRequest.username(), signUpRequest.password());
         return new AuthResponse(token);
