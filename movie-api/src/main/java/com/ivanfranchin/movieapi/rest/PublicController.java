@@ -16,12 +16,12 @@ public class PublicController {
     private final MovieService movieService;
 
     @GetMapping("/numberOfUsers")
-    public Integer getNumberOfUsers() {
-        return userService.getUsers().size();
+    public long getNumberOfUsers() {
+        return userService.countUsers();
     }
 
     @GetMapping("/numberOfMovies")
-    public Integer getNumberOfMovies() {
-        return movieService.getMovies().size();
+    public long getNumberOfMovies() {
+        return movieService.countMovies();
     }
 }

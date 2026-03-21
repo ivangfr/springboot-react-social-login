@@ -42,10 +42,10 @@ public class AuthController {
     @PostMapping("/signup")
     public AuthResponse signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (userService.hasUserWithUsername(signUpRequest.username())) {
-            throw new DuplicatedUserInfoException(String.format("Username %s already been used", signUpRequest.username()));
+            throw new DuplicatedUserInfoException(String.format("Username %s is already in use", signUpRequest.username()));
         }
         if (userService.hasUserWithEmail(signUpRequest.email())) {
-            throw new DuplicatedUserInfoException(String.format("Email %s already been used", signUpRequest.email()));
+            throw new DuplicatedUserInfoException(String.format("Email %s is already in use", signUpRequest.email()));
         }
 
         userService.saveUser(mapSignUpRequestToUser(signUpRequest));

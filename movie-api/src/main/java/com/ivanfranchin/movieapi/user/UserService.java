@@ -7,6 +7,8 @@ public interface UserService {
 
     List<User> getUsers();
 
+    long countUsers();
+
     Optional<User> getUserByUsername(String username);
 
     Optional<User> getUserByEmail(String email);

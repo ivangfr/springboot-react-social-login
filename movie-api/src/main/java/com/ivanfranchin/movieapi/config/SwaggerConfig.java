@@ -11,17 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    @Value("${spring.application.name}")
-    private String applicationName;
+    public static final String BEARER_KEY_SECURITY_SCHEME = "bearer-key";
 
     @Bean
-    OpenAPI customOpenAPI() {
+    OpenAPI customOpenAPI(@Value("${spring.application.name}") String applicationName) {
         return new OpenAPI()
                 .components(
                         new Components().addSecuritySchemes(BEARER_KEY_SECURITY_SCHEME,
                                 new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")))
                 .info(new Info().title(applicationName));
     }
-
-    public static final String BEARER_KEY_SECURITY_SCHEME = "bearer-key";
 }

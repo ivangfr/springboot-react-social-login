@@ -1,6 +1,6 @@
 package com.ivanfranchin.movieapi.movie;
 
-import com.ivanfranchin.movieapi.rest.dto.CreateMovieRequest;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
@@ -19,9 +19,10 @@ public class Movie {
     @Id
     private String imdb;
 
+    @Column(nullable = false)
     private String title;
-    private String poster;
 
+    private String poster;
     private Instant createdAt;
 
     public Movie(String imdb, String title, String poster) {
@@ -33,9 +34,5 @@ public class Movie {
     @PrePersist
     public void onPrePersist() {
         createdAt = Instant.now();
-    }
-
-    public static Movie from(CreateMovieRequest createMovieRequest) {
-        return new Movie(createMovieRequest.imdb(), createMovieRequest.title(), createMovieRequest.poster());
     }
 }
