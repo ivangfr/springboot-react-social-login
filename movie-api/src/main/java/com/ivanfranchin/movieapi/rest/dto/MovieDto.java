@@ -13,7 +13,7 @@ public record MovieDto(String imdb, String title, String poster, String createdA
                 movie.getImdb(),
                 movie.getTitle(),
                 movie.getPoster(),
-                formatter.format(movie.getCreatedAt())
+                movie.getCreatedAt() != null ? formatter.format(movie.getCreatedAt()) : null
         );
     }
 }

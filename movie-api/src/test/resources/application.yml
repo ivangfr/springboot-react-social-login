@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: movie-api
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        boot:
+          allow_jdbc_metadata_access: false
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: test-github-client-id
+            client-secret: test-github-client-secret
+          google:
+            client-id: test-google-client-id
+            client-secret: test-google-client-secret
+
+app:
+  cors:
+    allowed-origins: http://localhost:3000
