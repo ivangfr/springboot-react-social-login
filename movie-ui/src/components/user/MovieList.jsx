@@ -8,7 +8,7 @@ function MovieList({ isMoviesLoading, movieTextSearch, movies, handleInputChange
       <Card key={i} withBorder padding='sm' radius='md'>
         <Grid align='center'>
           <Grid.Col span='content'>
-            <Skeleton w={100} h={140} radius='sm' animate={false} />
+            <Skeleton w={160} h={220} radius='sm' animate={false} />
           </Grid.Col>
           <Grid.Col span='auto'>
             <Stack gap='xs'>
@@ -16,6 +16,11 @@ function MovieList({ isMoviesLoading, movieTextSearch, movies, handleInputChange
               <Skeleton height={12} width='60%' radius='xl' animate={false} />
               <Skeleton height={8} mt={4} radius='xl' animate={false} />
               <Skeleton height={8} mt={4} radius='xl' width='70%' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' width='85%' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' width='50%' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' width='40%' animate={false} />
             </Stack>
           </Grid.Col>
         </Grid>
@@ -30,8 +35,8 @@ function MovieList({ isMoviesLoading, movieTextSearch, movies, handleInputChange
           <Grid.Col span='content'>
             <Image
               src={movie.poster || '/images/movie-poster.jpg'}
-              w={100}
-              h={140}
+              w={160}
+              h={220}
               fit='cover'
               radius='sm'
             />
@@ -42,6 +47,11 @@ function MovieList({ isMoviesLoading, movieTextSearch, movies, handleInputChange
               <Text size='sm' c='dimmed'>{movie.imdb}</Text>
               <Skeleton height={8} mt={4} radius='xl' animate={false} />
               <Skeleton height={8} mt={4} radius='xl' width='70%' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' width='85%' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' width='50%' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' animate={false} />
+              <Skeleton height={8} mt={4} radius='xl' width='40%' animate={false} />
             </Stack>
           </Grid.Col>
         </Grid>

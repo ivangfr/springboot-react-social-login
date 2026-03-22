@@ -1,5 +1,8 @@
 # springboot-react-social-login
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-ivan.franchin-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/ivan.franchin)
+
 The goal of this project is to implement an application called `movie-app` to manage movies. For it, we will implement a back-end [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) application called `movie-api` and a front-end [React](https://react.dev/) application called `movie-ui`. Additionally, we will use [`OAuth2`](https://en.wikipedia.org/wiki/OAuth#OAuth_2.0) (Social Login) to secure both applications.
 
 ## Proof-of-Concepts & Articles
@@ -17,7 +20,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Project Diagram
 
-![project-diagram](documentation/project-diagram.jpeg)
+![project-diagram](documentation/project-diagram.png)
 
 ## Applications
 
@@ -51,7 +54,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   
   In order to access the application, a `user` or `admin` can login using his/her `Github` account or using the credentials (`username` and `password`) created when he/she signed up directly to the application. All the requests coming from `movie-ui` to secured endpoints in `movie-api` have the JWT access token. This token is generated when the `user` or `admin` logins.
   
-  `movie-ui` uses [`Semantic UI React`](https://react.semantic-ui.com/) as CSS-styled framework.
+  `movie-ui` uses [`Mantine`](https://mantine.dev/) as a UI component library, with [`Tabler Icons`](https://tabler.io/icons) for icons.
 
 ## Creating OAuth2 apps for Social Login
 
@@ -205,6 +208,26 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
   docker compose down -v
   ```
 
+## Running Tests
+
+- **movie-api**
+
+  - Open a terminal and navigate to the `springboot-react-social-login/movie-api` folder;
+
+  - Run the following command to execute all tests:
+    ```bash
+    ./mvnw clean test
+    ```
+
+- **movie-ui**
+
+  - Open a terminal and navigate to the `springboot-react-social-login/movie-ui` folder;
+
+  - Run the following command to execute all tests:
+    ```bash
+    npm test
+    ```
+
 ## How to upgrade movie-ui dependencies to latest version
 
 - In a terminal, make sure you are in the `springboot-react-social-login/movie-ui` folder;
@@ -216,6 +239,20 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
   ncu -u
   npm install
   ```
+
+## How to optimize GIFs and PNGs in documentation folder
+
+\[**Medium**\] [**How I Reduce GIF and Screenshot Sizes for My Technical Articles on macOS**](https://medium.com/itnext/how-i-reduce-gif-and-screenshot-sizes-for-my-technical-articles-on-macos-7fea331afc68)
+
+## Support
+
+If you find this useful, consider buying me a coffee:
+
+<a href="https://buymeacoffee.com/ivan.franchin"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="50"></a>
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
 
 ## References
 
