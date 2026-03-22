@@ -1,34 +1,39 @@
-import React from 'react'
-import { Form, Icon, Button } from 'semantic-ui-react'
+import { TextInput, Button, Group } from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
 
 function MovieForm({ movieImdb, movieTitle, moviePoster, handleInputChange, handleAddMovie }) {
   const createBtnDisabled = movieImdb.trim() === '' || movieTitle.trim() === ''
   return (
-    <Form onSubmit={handleAddMovie}>
-      <Form.Group>
-        <Form.Input
+    <form onSubmit={(e) => { e.preventDefault(); handleAddMovie() }}>
+      <Group gap='sm' wrap='wrap'>
+        <TextInput
           name='movieImdb'
           placeholder='IMDB *'
           value={movieImdb}
           onChange={handleInputChange}
         />
-        <Form.Input
+        <TextInput
           name='movieTitle'
           placeholder='Title *'
           value={movieTitle}
           onChange={handleInputChange}
         />
-        <Form.Input
+        <TextInput
           name='moviePoster'
           placeholder='Poster'
           value={moviePoster}
           onChange={handleInputChange}
         />
-        <Button icon labelPosition='right' disabled={createBtnDisabled}>
-          Create<Icon name='add' />
+        <Button
+          type='submit'
+          color='grape'
+          leftSection={<IconPlus size={16} />}
+          disabled={createBtnDisabled}
+        >
+          Create
         </Button>
-      </Form.Group>
-    </Form>
+      </Group>
+    </form>
   )
 }
 

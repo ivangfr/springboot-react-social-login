@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container } from '@mantine/core'
 import { useAuth } from '../context/AuthContext'
 import AdminTab from './AdminTab'
 import { movieApi } from '../misc/MovieApi'
@@ -24,9 +24,10 @@ function AdminPage() {
   useEffect(() => {
     handleGetUsers()
     handleGetMovies()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleInputChange = (e, { name, value }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
     if (name === 'movieImdb') {
       setMovieImdb(value)
     } else if (name === 'movieTitle') {
@@ -63,6 +64,7 @@ function AdminPage() {
 
   const handleSearchUser = async () => {
     try {
+      setIsUsersLoading(true)
       const response = await movieApi.getUsers(user, userUsernameSearch)
       const data = response.data
       const users = Array.isArray(data) ? data : [data]
@@ -70,6 +72,8 @@ function AdminPage() {
     } catch (error) {
       handleLogError(error)
       setUsers([])
+    } finally {
+      setIsUsersLoading(false)
     }
   }
 
@@ -116,12 +120,15 @@ function AdminPage() {
 
   const handleSearchMovie = async () => {
     try {
+      setIsMoviesLoading(true)
       const response = await movieApi.getMovies(user, movieTextSearch)
       const movies = response.data
       setMovies(movies)
     } catch (error) {
       handleLogError(error)
       setMovies([])
+    } finally {
+      setIsMoviesLoading(false)
     }
   }
 
@@ -136,7 +143,7 @@ function AdminPage() {
   }
 
   return (
-    <Container>
+    <Container p='md'>
       <AdminTab
         isUsersLoading={isUsersLoading}
         users={users}
