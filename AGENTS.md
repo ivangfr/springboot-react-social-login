@@ -211,7 +211,7 @@ Group and order imports as follows (blank line between groups):
 - Unit tests: `@ExtendWith(MockitoExtension.class)` + Mockito mocks.
 - Controller slice tests: `@WebMvcTest` + `MockMvc`.
 - Use AssertJ (`assertThat(...)`) for assertions.
-- Note: `MovieApiApplicationTests` is currently `@Disabled`. When adding tests, remove the annotation.
+- `MovieApiApplicationTests` uses `@SpringBootTest(webEnvironment = NONE)` with `@MockitoBean` for all infrastructure beans — it is fully active (not `@Disabled`).
 
 ### Frontend (Jest + React Testing Library)
 - Test files named `ComponentName.test.js` co-located with the component.
