@@ -8,7 +8,7 @@ This file documents conventions, commands, and patterns for agentic coding agent
 
 Full-stack social login application:
 - **Backend:** `movie-api/` — Spring Boot 4.0.1, Java 25, PostgreSQL
-- **Frontend:** `movie-ui/` — React 18 (Create React App), JavaScript (no TypeScript)
+- **Frontend:** `movie-ui/` — React 19, Vite + Vitest, JavaScript (no TypeScript)
 - **Infrastructure:** Docker Compose (PostgreSQL 18.0)
 
 Default URLs: backend `http://localhost:8080`, frontend `http://localhost:3000`.
@@ -71,17 +71,14 @@ npm start
 # Production build
 npm run build
 
-# Run all tests (watch mode)
+# Run all tests (non-interactive)
 npm test
 
-# Run tests non-interactively (CI)
-CI=true npm test
+# Run tests for a specific file
+npm test -- src/components/home/Login.test.jsx
 
-# Run tests matching a file/name pattern
-npm test -- --watchAll=false --testPathPattern="Login"
-
-# Run a specific test file
-npm test -- --watchAll=false src/components/home/Login.test.js
+# Run tests matching a name pattern
+npm test -- --reporter=verbose Login
 ```
 
 ---
@@ -170,14 +167,14 @@ Group and order imports as follows (blank line between groups):
 - **Indentation:** 2 spaces (no tabs).
 - **Quotes:** Single quotes for all strings and imports.
 - **Semicolons:** Omitted (no semicolons at end of statements).
-- No Prettier configuration; no custom ESLint rules beyond the CRA default (`react-app`, `react-app/jest`).
+- No Prettier configuration; no custom ESLint rules beyond the Vite default (ESLint flat config via `eslint.config.js` using `eslint-plugin-react` and `eslint-plugin-react-hooks`).
 
 ### Naming Conventions
 
 | Artifact | Convention | Example |
 |---|---|---|
 | Components | `PascalCase` function declaration | `function AdminPage()` |
-| Component files | `PascalCase.js` | `AdminPage.js` |
+| Component files | `PascalCase.jsx` | `AdminPage.jsx` |
 | Custom hooks | `useX` | `useAuth()` |
 | Context objects | `PascalCase` + `Context` | `AuthContext` |
 | State variables | `camelCase`; boolean with `is`/`has` prefix | `isLoading`, `isError` |
@@ -213,11 +210,15 @@ Group and order imports as follows (blank line between groups):
 - Use AssertJ (`assertThat(...)`) for assertions.
 - `MovieApiApplicationTests` uses `@SpringBootTest(webEnvironment = NONE)` with `@MockitoBean` for all infrastructure beans — it is fully active (not `@Disabled`).
 
-### Frontend (Jest + React Testing Library)
-- Test files named `ComponentName.test.js` co-located with the component.
-- `setupTests.js` imports `@testing-library/jest-dom` — matchers like `toBeInTheDocument()` are available globally.
+### Frontend (Vitest + React Testing Library)
+- Test runner: **Vitest** (`vitest run`), jsdom environment, globals mode.
+- Test files named `ComponentName.test.jsx` co-located with the component.
+- `setupTests.js` uses `import * as matchers from '@testing-library/jest-dom/matchers'` + `expect.extend(matchers)`. Matchers like `toBeInTheDocument()` are available globally.
+- `src/test-utils.jsx` exports a `renderWithProviders` helper (re-exported as `render`) that wraps components with `MantineProvider`, `MemoryRouter`, and `AuthProvider`. All test files import `render` from this file instead of directly from `@testing-library/react`.
 - Use `@testing-library/user-event` for simulating interactions.
-- No test files exist yet; `setupTests.js` is the only testing boilerplate.
+- Mock API calls with `vi.mock('../misc/MovieApi')`. Reset mocks in `beforeEach` with `vi.resetAllMocks()`.
+- Simulate authentication by writing a user object to `localStorage` before rendering: `localStorage.setItem('user', JSON.stringify({ data: { exp, name, rol: ['ROLE'] }, accessToken: 'token' }))`.
+- `Navbar` requires an `<AppShell>` ancestor — wrap it in `<AppShell header={{ height: 60 }}>` in tests.
 
 ---
 
