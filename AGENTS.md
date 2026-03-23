@@ -7,7 +7,7 @@ This file documents conventions, commands, and patterns for agentic coding agent
 ## Project Overview
 
 Full-stack social login application:
-- **Backend:** `movie-api/` — Spring Boot 4.0.1, Java 25, PostgreSQL
+- **Backend:** `movie-api/` — Spring Boot 4.0.3, Java 25, PostgreSQL
 - **Frontend:** `movie-ui/` — React 19, Vite + Vitest, JavaScript (no TypeScript)
 - **Infrastructure:** Docker Compose (PostgreSQL 18.0)
 
@@ -121,6 +121,7 @@ Group and order imports as follows (blank line between groups):
 ### Lombok Usage
 - `@Data` + `@NoArgsConstructor` on JPA entities.
 - `@RequiredArgsConstructor` on Spring beans (controllers, services, filters) — inject `final` fields; never use `@AllArgsConstructor` on beans.
+- Exception: `CustomOAuth2UserService` uses a manual constructor (not `@RequiredArgsConstructor`) because Lombok cannot cleanly handle a `List<OAuth2UserInfoExtractor>` generic-collection dependency.
 - `@Getter` + `@AllArgsConstructor(access = AccessLevel.PRIVATE)` on immutable non-bean classes (e.g. `CustomUserDetails`); expose construction via named static factory methods, never via the raw constructor.
 - `@Slf4j` on any class that logs.
 
@@ -134,6 +135,7 @@ Group and order imports as follows (blank line between groups):
 - Domain packages co-locate entity, repository, service interface, impl, and exceptions: `movie/`, `user/`.
 - REST layer is in `rest/` with a `dto/` sub-package.
 - Cross-cutting concerns live in `security/`, `config/`, `runner/`.
+- Note: `CorsConfig` lives in `security/`, not `config/`, because it is tightly coupled to the security filter chain.
 
 ### Error Handling
 - Custom domain exceptions extend `RuntimeException` and carry `@ResponseStatus(HttpStatus.*)`.
@@ -143,6 +145,7 @@ Group and order imports as follows (blank line between groups):
 - `Optional<T>` is returned from repositories and consumed with `.orElseThrow(...)` at the service layer; controllers never receive `Optional`.
 - Within service-layer helpers, prefer `.map(...).orElseGet(...)` over `if (optional.isEmpty()) { ... } else { ... }` blocks when branching on Optional presence.
 - In filters and token providers, catch exceptions per-type, log them with `log.error(...)`, and return a safe fallback (`Optional.empty()`, continue filter chain) rather than propagating.
+- Existing domain exceptions: `MovieNotFoundException` (`NOT_FOUND`), `UserNotFoundException` (`NOT_FOUND`), `DuplicatedUserInfoException` (`CONFLICT`), `UserDeletionNotAllowedException` (`BAD_REQUEST`).
 
 ### Service Conventions
 - Prefer `repository.count()` over fetching a full list and calling `.size()` when only a count is needed (e.g. seed guards, public stats endpoints). Expose this as a `count*()` method on the service interface returning `long`.
@@ -157,7 +160,7 @@ Group and order imports as follows (blank line between groups):
 
 ### Jackson / ObjectMapper
 - Uses `tools.jackson.databind.*` (Jackson 3.x, packaged under `tools.jackson`).
-- ObjectMapper bean customised in `ObjectMapperConfig`.
+- `ObjectMapperConfig` registers a `JsonMapper` bean (`tools.jackson.databind.json.JsonMapper`) built with `JsonMapper.builder()`, not a raw `ObjectMapper`.
 
 ---
 
@@ -197,7 +200,8 @@ Group and order imports as follows (blank line between groups):
 
 ### API Communication
 - All HTTP calls use **Axios** via `movieApi` (from `MovieApi.js`).
-- Bearer token is injected via an Axios request interceptor; expiry is validated before each request.
+- Bearer token is injected **per-call** in each function's `headers` option (not via a global Axios interceptor).
+- An Axios request interceptor validates JWT expiry before each request; if the token is expired it redirects to `/login` rather than rejecting the promise.
 
 ---
 
@@ -206,15 +210,18 @@ Group and order imports as follows (blank line between groups):
 ### Backend (JUnit 5 + Spring Boot Test)
 - Test classes use `@SpringBootTest` for integration context tests.
 - Unit tests: `@ExtendWith(MockitoExtension.class)` + Mockito mocks.
-- Controller slice tests: `@WebMvcTest` + `MockMvc`.
+- Controller slice tests: `@WebMvcTest` + `MockMvc`. Every controller test also adds `@Import(SecurityConfig.class)` to load the security filter chain.
 - Use AssertJ (`assertThat(...)`) for assertions.
 - `MovieApiApplicationTests` uses `@SpringBootTest(webEnvironment = NONE)` with `@MockitoBean` for all infrastructure beans — it is fully active (not `@Disabled`).
+- Use `@MockitoBean` (from `org.springframework.test.context.bean.override.mockito`) — this is the Spring Boot 4.x replacement for the removed `@MockBean`.
 
 ### Frontend (Vitest + React Testing Library)
 - Test runner: **Vitest** (`vitest run`), jsdom environment, globals mode.
 - Test files named `ComponentName.test.jsx` co-located with the component.
 - `setupTests.js` uses `import * as matchers from '@testing-library/jest-dom/matchers'` + `expect.extend(matchers)`. Matchers like `toBeInTheDocument()` are available globally.
+- `setupTests.js` also installs: an `afterEach(() => cleanup())` call, a `window.matchMedia` mock (required by Mantine), and a complete in-memory `localStorage` mock that replaces jsdom's stub, cleared in `beforeEach`.
 - `src/test-utils.jsx` exports a `renderWithProviders` helper (re-exported as `render`) that wraps components with `MantineProvider`, `MemoryRouter`, and `AuthProvider`. All test files import `render` from this file instead of directly from `@testing-library/react`.
+- Exception: `AuthContext.test.jsx` imports `render` directly from `@testing-library/react` to avoid double-Router nesting when testing the `AuthProvider` itself.
 - Use `@testing-library/user-event` for simulating interactions.
 - Mock API calls with `vi.mock('../misc/MovieApi')`. Reset mocks in `beforeEach` with `vi.resetAllMocks()`.
 - Simulate authentication by writing a user object to `localStorage` before rendering: `localStorage.setItem('user', JSON.stringify({ data: { exp, name, rol: ['ROLE'] }, accessToken: 'token' }))`.
