@@ -67,7 +67,7 @@ function Login() {
           </Paper>
         </form>
         <Paper withBorder p='sm' radius='md' mt='sm' ta='center' shadow='sm'>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Anchor component={NavLink} to='/signup'>Sign Up</Anchor>
         </Paper>
         {isError && (

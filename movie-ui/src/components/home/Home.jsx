@@ -28,7 +28,7 @@ function Home() {
       }
     }
     fetchData()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Container size='sm' mt='xl'>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
 const AuthContext = createContext()
 
@@ -10,11 +10,16 @@ function AuthProvider({ children }) {
     setUser(storedUser)
   }, [])
 
-  const getUser = () => {
+  const getUser = useCallback(() => {
     return JSON.parse(localStorage.getItem('user'))
-  }
+  }, [])
 
-  const userIsAuthenticated = () => {
+  const userLogout = useCallback(() => {
+    localStorage.removeItem('user')
+    setUser(null)
+  }, [])
+
+  const userIsAuthenticated = useCallback(() => {
     let storedUser = localStorage.getItem('user')
     if (!storedUser) {
       return false
@@ -27,17 +32,12 @@ function AuthProvider({ children }) {
       return false
     }
     return true
-  }
+  }, [userLogout])
 
-  const userLogin = user => {
+  const userLogin = useCallback(user => {
     localStorage.setItem('user', JSON.stringify(user))
     setUser(user)
-  }
-
-  const userLogout = () => {
-    localStorage.removeItem('user')
-    setUser(null)
-  }
+  }, [])
 
   const contextValue = {
     user,

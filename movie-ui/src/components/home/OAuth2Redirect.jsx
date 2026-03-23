@@ -10,23 +10,13 @@ function OAuth2Redirect() {
   const location = useLocation()
 
   useEffect(() => {
-    const accessToken = extractUrlParameter('token')
+    const accessToken = new URLSearchParams(location.search).get('token')
     if (accessToken) {
-      handleLogin(accessToken)
+      const data = parseJwt(accessToken)
+      userLogin({ data, accessToken })
       setRedirectTo('/')
     }
-  }, [])
-
-  const extractUrlParameter = (key) => {
-    return new URLSearchParams(location.search).get(key)
-  }
-
-  const handleLogin = (accessToken) => {
-    const data = parseJwt(accessToken)
-    const user = { data, accessToken }
-
-    userLogin(user)
-  }
+  }, [location.search, userLogin])
 
   return <Navigate to={redirectTo} />
 }

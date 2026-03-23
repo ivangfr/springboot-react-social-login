@@ -26,6 +26,7 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint src"
   }
 }

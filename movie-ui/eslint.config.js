@@ -21,6 +21,10 @@ export default [
         localStorage: 'readonly',
         fetch: 'readonly',
         process: 'readonly',
+        btoa: 'readonly',
+        URLSearchParams: 'readonly',
+        URL: 'readonly',
+        location: 'readonly',
       },
     },
     settings: {
@@ -29,6 +33,10 @@ export default [
     rules: {
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 ]

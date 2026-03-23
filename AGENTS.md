@@ -79,7 +79,16 @@ npm test -- src/components/home/Login.test.jsx
 
 # Run tests matching a name pattern
 npm test -- --reporter=verbose Login
+
+# Lint source files
+npm run lint
+
+# Lint and auto-fix safe issues
+npm run lint -- --fix
 ```
+
+> ESLint is configured via `eslint.config.js` (flat config) using `@eslint/js` recommended as a base,
+> plus `eslint-plugin-react` and `eslint-plugin-react-hooks`. No Prettier config exists.
 
 ---
 
@@ -189,6 +198,7 @@ Group and order imports as follows (blank line between groups):
 - All components are **function components** — no class components.
 - Props are destructured inline in the function signature for presentational components.
 - Context: `createContext()` + a `useX()` custom hook exported from the same file.
+- All functions exposed via React context must be wrapped in `useCallback` with correct dependency arrays to maintain stable references across renders and prevent infinite loops in consumers that list them as `useEffect` dependencies.
 - One default export per file, matching the component name.
 
 ### Error Handling
@@ -212,7 +222,7 @@ Group and order imports as follows (blank line between groups):
 - Unit tests: `@ExtendWith(MockitoExtension.class)` + Mockito mocks.
 - Controller slice tests: `@WebMvcTest` + `MockMvc`. Every controller test also adds `@Import(SecurityConfig.class)` to load the security filter chain.
 - Use AssertJ (`assertThat(...)`) for assertions.
-- `MovieApiApplicationTests` uses `@SpringBootTest(webEnvironment = NONE)` with `@MockitoBean` for all infrastructure beans — it is fully active (not `@Disabled`).
+- `MovieApiApplicationTests` uses `@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)` with `@MockitoBean` for all infrastructure beans — it is fully active (not `@Disabled`).
 - Use `@MockitoBean` (from `org.springframework.test.context.bean.override.mockito`) — this is the Spring Boot 4.x replacement for the removed `@MockBean`.
 
 ### Frontend (Vitest + React Testing Library)
