@@ -9,6 +9,8 @@ public interface UserService {
 
     long countUsers();
 
+    long countAdmins();
+
     Optional<User> getUserByUsername(String username);
 
     Optional<User> getUserByEmail(String email);

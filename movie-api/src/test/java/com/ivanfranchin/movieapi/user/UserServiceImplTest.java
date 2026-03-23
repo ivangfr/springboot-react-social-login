@@ -46,6 +46,16 @@ class UserServiceImplTest {
     }
 
     @Test
+    void countAdmins_delegatesToRepository() {
+        when(userRepository.countByRole("ADMIN")).thenReturn(2L);
+
+        long count = userService.countAdmins();
+
+        assertThat(count).isEqualTo(2L);
+        verify(userRepository).countByRole("ADMIN");
+    }
+
+    @Test
     void getUserByUsername_exists_returnsOptional() {
         User user = createUser("alice");
         when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));

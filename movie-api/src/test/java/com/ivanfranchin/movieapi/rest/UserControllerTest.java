@@ -6,10 +6,10 @@ import com.ivanfranchin.movieapi.security.SecurityConfig;
 import com.ivanfranchin.movieapi.security.TokenProvider;
 import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
 import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
+import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.user.UserNotFoundException;
 import com.ivanfranchin.movieapi.user.UserService;
-import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -86,8 +86,8 @@ class UserControllerTest {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void getUsers_asAdmin_returns200() throws Exception {
-        User alice = createUser("alice");
-        User bob = createUser("bob");
+        User alice = createUser("alice", "USER");
+        User bob = createUser("bob", "USER");
         when(userService.getUsers()).thenReturn(List.of(alice, bob));
 
         mockMvc.perform(get("/api/users"))
@@ -112,7 +112,7 @@ class UserControllerTest {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void getUser_asAdmin_exists_returns200() throws Exception {
-        User alice = createUser("alice");
+        User alice = createUser("alice", "USER");
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(alice);
 
         mockMvc.perform(get("/api/users/alice"))
@@ -138,13 +138,44 @@ class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
     void deleteUser_asAdmin_exists_returns204() throws Exception {
-        User alice = createUser("alice");
+        CustomUserDetails adminDetails = CustomUserDetails.ofLocalUser(
+                1L, "admin", "encoded", "Admin User", "admin@example.com",
+                List.of(new SimpleGrantedAuthority(SecurityConfig.ADMIN)));
+        User alice = createUser("alice", "USER");
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(alice);
+        when(userService.countAdmins()).thenReturn(2L);
 
-        mockMvc.perform(delete("/api/users/alice"))
+        mockMvc.perform(delete("/api/users/alice")
+                        .with(SecurityMockMvcRequestPostProcessors.user(adminDetails)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteUser_returns400WhenAdminDeletesOwnAccount() throws Exception {
+        CustomUserDetails adminDetails = CustomUserDetails.ofLocalUser(
+                1L, "admin", "encoded", "Admin User", "admin@example.com",
+                List.of(new SimpleGrantedAuthority(SecurityConfig.ADMIN)));
+        User adminUser = createUser("admin", SecurityConfig.ADMIN);
+        when(userService.validateAndGetUserByUsername("admin")).thenReturn(adminUser);
+
+        mockMvc.perform(delete("/api/users/admin")
+                        .with(SecurityMockMvcRequestPostProcessors.user(adminDetails)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deleteUser_returns400WhenDeletingLastAdmin() throws Exception {
+        CustomUserDetails adminDetails = CustomUserDetails.ofLocalUser(
+                1L, "admin", "encoded", "Admin User", "admin@example.com",
+                List.of(new SimpleGrantedAuthority(SecurityConfig.ADMIN)));
+        User otherAdmin = createUser("other-admin", SecurityConfig.ADMIN);
+        when(userService.validateAndGetUserByUsername("other-admin")).thenReturn(otherAdmin);
+        when(userService.countAdmins()).thenReturn(1L);
+
+        mockMvc.perform(delete("/api/users/other-admin")
+                        .with(SecurityMockMvcRequestPostProcessors.user(adminDetails)))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -170,8 +201,8 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    private User createUser(String username) {
+    private User createUser(String username, String role) {
         return new User(username, "encoded-password", username + " Name",
-                username + "@example.com", "USER", null, OAuth2Provider.LOCAL, null);
+                username + "@example.com", role, null, OAuth2Provider.LOCAL, null);
     }
 }

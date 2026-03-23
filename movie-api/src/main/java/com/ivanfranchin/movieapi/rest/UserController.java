@@ -2,6 +2,9 @@ package com.ivanfranchin.movieapi.rest;
 
 import com.ivanfranchin.movieapi.rest.dto.UserDto;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
+import com.ivanfranchin.movieapi.security.SecurityConfig;
+import com.ivanfranchin.movieapi.user.User;
+import com.ivanfranchin.movieapi.user.UserDeletionNotAllowedException;
 import com.ivanfranchin.movieapi.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -49,7 +52,15 @@ public class UserController {
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{username}")
-    public void deleteUser(@PathVariable String username) {
-        userService.deleteUser(userService.validateAndGetUserByUsername(username));
+    public void deleteUser(@PathVariable String username,
+                           @AuthenticationPrincipal CustomUserDetails currentUser) {
+        User user = userService.validateAndGetUserByUsername(username);
+        if (currentUser.getUsername().equals(username)) {
+            throw new UserDeletionNotAllowedException("You cannot delete your own account");
+        }
+        if (SecurityConfig.ADMIN.equals(user.getRole()) && userService.countAdmins() == 1) {
+            throw new UserDeletionNotAllowedException("Cannot delete the last admin account");
+        }
+        userService.deleteUser(user);
     }
 }
