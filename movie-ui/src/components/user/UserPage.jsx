@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container } from '@mantine/core'
 import MovieList from './MovieList'
 import { useAuth } from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
@@ -17,9 +17,10 @@ function UserPage() {
 
   useEffect(() => {
     handleGetMovies()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleInputChange = (e, { name, value }) => {
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
     if (name === 'movieTextSearch') {
       setMovieTextSearch(value)
     }
@@ -53,7 +54,7 @@ function UserPage() {
   }
 
   return (
-    <Container>
+    <Container p='md'>
       <MovieList
         isMoviesLoading={isMoviesLoading}
         movieTextSearch={movieTextSearch}

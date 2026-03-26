@@ -4,6 +4,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    open-in-view: false
   datasource:
     url: jdbc:postgresql://localhost:5432/moviedb
     username: postgres

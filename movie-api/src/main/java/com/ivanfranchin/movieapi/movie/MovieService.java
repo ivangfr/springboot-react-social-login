@@ -6,6 +6,8 @@ public interface MovieService {
 
     List<Movie> getMovies();
 
+    long countMovies();
+
     List<Movie> getMoviesContainingText(String text);
 
     Movie validateAndGetMovie(String imdb);

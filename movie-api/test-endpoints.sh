@@ -85,5 +85,5 @@ printf "%25s | %13s | %11s | %12s |\n" "GET /api/movies" ${movie_get_movies[with
 printf "%25s | %13s | %11s | %12s |\n" "POST /api/movies" ${movie_create_movie[without_creds]} ${movie_create_movie[user_creds]} ${movie_create_movie[admin_creds]}
 printf "%25s | %13s | %11s | %12s |\n" "DELETE /api/movies/abc" ${movie_delete_movie[without_creds]} ${movie_delete_movie[user_creds]} ${movie_delete_movie[admin_creds]}
 printf "%72s\n" "------------------------------------------------------------------------"
-printf " [200] Success -  [201] Created -  [401] Unauthorized -  [403] Forbidden"
+printf " [200] Success -  [201] Created -  [204] No Content -  [401] Unauthorized -  [403] Forbidden"
 printf "\n"

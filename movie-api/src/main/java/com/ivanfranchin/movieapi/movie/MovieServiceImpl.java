@@ -17,6 +17,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public long countMovies() {
+        return movieRepository.count();
+    }
+
+    @Override
     public List<Movie> getMoviesContainingText(String text) {
         return movieRepository.findByImdbContainingOrTitleContainingIgnoreCaseOrderByTitle(text, text);
     }

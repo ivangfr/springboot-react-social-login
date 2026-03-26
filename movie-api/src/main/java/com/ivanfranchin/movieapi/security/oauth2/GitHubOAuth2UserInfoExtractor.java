@@ -7,22 +7,22 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.List;
 
 @Service
 public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     @Override
     public CustomUserDetails extractUserInfo(OAuth2User oAuth2User) {
-        CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.setUsername(retrieveAttr("login", oAuth2User));
-        customUserDetails.setName(retrieveAttr("name", oAuth2User));
-        customUserDetails.setEmail(retrieveAttr("email", oAuth2User));
-        customUserDetails.setAvatarUrl(retrieveAttr("avatar_url", oAuth2User));
-        customUserDetails.setProvider(OAuth2Provider.GITHUB);
-        customUserDetails.setAttributes(oAuth2User.getAttributes());
-        customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(SecurityConfig.USER)));
-        return customUserDetails;
+        return CustomUserDetails.ofOAuth2User(
+                retrieveAttr("login", oAuth2User),
+                retrieveAttr("name", oAuth2User),
+                retrieveAttr("email", oAuth2User),
+                retrieveAttr("avatar_url", oAuth2User),
+                OAuth2Provider.GITHUB,
+                List.of(new SimpleGrantedAuthority(SecurityConfig.USER)),
+                oAuth2User.getAttributes()
+        );
     }
 
     @Override

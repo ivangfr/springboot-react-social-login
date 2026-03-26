@@ -5,14 +5,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.1</version>
+        <version>4.0.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.ivanfranchin</groupId>
     <artifactId>movie-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>movie-api</name>
-    <description>Demo project for Spring Boot</description>
+	<name/>
+	<description/>
     <url/>
     <licenses>
         <license/>
@@ -29,7 +29,7 @@
     <properties>
         <java.version>25</java.version>
         <jjwt.version>0.13.0</jjwt.version>
-        <springdoc-openapi.version>3.0.1</springdoc-openapi.version>
+        <springdoc-openapi.version>3.0.2</springdoc-openapi.version>
     </properties>
     <dependencies>
         <dependency>

@@ -1,9 +1,9 @@
 package com.ivanfranchin.movieapi.rest;
 
 import com.ivanfranchin.movieapi.movie.Movie;
+import com.ivanfranchin.movieapi.movie.MovieService;
 import com.ivanfranchin.movieapi.rest.dto.CreateMovieRequest;
 import com.ivanfranchin.movieapi.rest.dto.MovieDto;
-import com.ivanfranchin.movieapi.movie.MovieService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ivanfranchin.movieapi.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
@@ -37,22 +36,21 @@ public class MovieController {
         List<Movie> movies = (text == null) ? movieService.getMovies() : movieService.getMoviesContainingText(text);
         return movies.stream()
                 .map(MovieDto::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MovieDto createMovie(@Valid @RequestBody CreateMovieRequest createMovieRequest) {
-        Movie movie = Movie.from(createMovieRequest);
+        Movie movie = createMovieRequest.toDomain();
         return MovieDto.from(movieService.saveMovie(movie));
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{imdb}")
-    public MovieDto deleteMovie(@PathVariable String imdb) {
-        Movie movie = movieService.validateAndGetMovie(imdb);
-        movieService.deleteMovie(movie);
-        return MovieDto.from(movie);
+    public void deleteMovie(@PathVariable String imdb) {
+        movieService.deleteMovie(movieService.validateAndGetMovie(imdb));
     }
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Tab } from 'semantic-ui-react'
+import { Tabs, Box, LoadingOverlay } from '@mantine/core'
+import { IconUsers, IconVideo } from '@tabler/icons-react'
 import UserTable from './UserTable'
 import MovieTable from './MovieTable'
 
@@ -8,11 +8,16 @@ function AdminTab(props) {
   const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
   const { isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch, handleAddMovie, handleDeleteMovie, handleSearchMovie } = props
 
-  const panes = [
-    {
-      menuItem: { key: 'users', icon: 'users', content: 'Users' },
-      render: () => (
-        <Tab.Pane loading={isUsersLoading}>
+  return (
+    <Tabs defaultValue='users'>
+      <Tabs.List>
+        <Tabs.Tab value='users' leftSection={<IconUsers size={16} />}>Users</Tabs.Tab>
+        <Tabs.Tab value='movies' leftSection={<IconVideo size={16} />}>Movies</Tabs.Tab>
+      </Tabs.List>
+
+      <Tabs.Panel value='users' pt='md'>
+        <Box pos='relative'>
+          <LoadingOverlay visible={isUsersLoading} />
           <UserTable
             users={users}
             userUsernameSearch={userUsernameSearch}
@@ -20,13 +25,12 @@ function AdminTab(props) {
             handleDeleteUser={handleDeleteUser}
             handleSearchUser={handleSearchUser}
           />
-        </Tab.Pane>
-      )
-    },
-    {
-      menuItem: { key: 'movies', icon: 'video camera', content: 'Movies' },
-      render: () => (
-        <Tab.Pane loading={isMoviesLoading}>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value='movies' pt='md'>
+        <Box pos='relative'>
+          <LoadingOverlay visible={isMoviesLoading} />
           <MovieTable
             movies={movies}
             movieImdb={movieImdb}
@@ -38,13 +42,9 @@ function AdminTab(props) {
             handleDeleteMovie={handleDeleteMovie}
             handleSearchMovie={handleSearchMovie}
           />
-        </Tab.Pane>
-      )
-    }
-  ]
-
-  return (
-    <Tab menu={{ attached: 'top' }} panes={panes} />
+        </Box>
+      </Tabs.Panel>
+    </Tabs>
   )
 }
 

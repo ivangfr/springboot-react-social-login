@@ -46,6 +46,7 @@ coverage/
 
 # production
 build/
+dist/
 
 # misc
 .env.local

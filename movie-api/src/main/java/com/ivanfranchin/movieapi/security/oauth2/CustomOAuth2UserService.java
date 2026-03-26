@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -28,35 +27,33 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        Optional<OAuth2UserInfoExtractor> oAuth2UserInfoExtractorOptional = oAuth2UserInfoExtractors.stream()
-                .filter(oAuth2UserInfoExtractor -> oAuth2UserInfoExtractor.accepts(userRequest))
-                .findFirst();
-        if (oAuth2UserInfoExtractorOptional.isEmpty()) {
-            throw new InternalAuthenticationServiceException("The OAuth2 provider is not supported yet");
-        }
+        CustomUserDetails customUserDetails = oAuth2UserInfoExtractors.stream()
+                .filter(extractor -> extractor.accepts(userRequest))
+                .findFirst()
+                .orElseThrow(() -> new InternalAuthenticationServiceException("The OAuth2 provider is not supported yet"))
+                .extractUserInfo(oAuth2User);
 
-        CustomUserDetails customUserDetails = oAuth2UserInfoExtractorOptional.get().extractUserInfo(oAuth2User);
         User user = upsertUser(customUserDetails);
-        customUserDetails.setId(user.getId());
-        return customUserDetails;
+        return customUserDetails.withId(user.getId());
     }
 
     private User upsertUser(CustomUserDetails customUserDetails) {
-        Optional<User> userOptional = userService.getUserByUsername(customUserDetails.getUsername());
-        User user;
-        if (userOptional.isEmpty()) {
-            user = new User();
-            user.setUsername(customUserDetails.getUsername());
-            user.setName(customUserDetails.getName());
-            user.setEmail(customUserDetails.getEmail());
-            user.setImageUrl(customUserDetails.getAvatarUrl());
-            user.setProvider(customUserDetails.getProvider());
-            user.setRole(SecurityConfig.USER);
-        } else {
-            user = userOptional.get();
-            user.setEmail(customUserDetails.getEmail());
-            user.setImageUrl(customUserDetails.getAvatarUrl());
-        }
+        User user = userService.getUserByUsername(customUserDetails.getUsername())
+                .map(existing -> {
+                    existing.setEmail(customUserDetails.getEmail());
+                    existing.setImageUrl(customUserDetails.getAvatarUrl());
+                    return existing;
+                })
+                .orElseGet(() -> {
+                    User newUser = new User();
+                    newUser.setUsername(customUserDetails.getUsername());
+                    newUser.setName(customUserDetails.getName());
+                    newUser.setEmail(customUserDetails.getEmail());
+                    newUser.setImageUrl(customUserDetails.getAvatarUrl());
+                    newUser.setProvider(customUserDetails.getProvider());
+                    newUser.setRole(SecurityConfig.USER);
+                    return newUser;
+                });
         return userService.saveUser(user);
     }
 }

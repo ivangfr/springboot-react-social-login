@@ -8,5 +8,5 @@ public record SignUpRequest(
         @Schema(example = "user3") @NotBlank String username,
         @Schema(example = "user3") @NotBlank String password,
         @Schema(example = "User3") @NotBlank String name,
-        @Schema(example = "user3@mycompany.com") @Email String email) {
+        @Schema(example = "user3@mycompany.com") @NotBlank @Email String email) {
 }
