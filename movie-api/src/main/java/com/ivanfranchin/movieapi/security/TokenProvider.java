@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +43,7 @@ public class TokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-        byte[] signingKey = jwtSecret.getBytes();
+        byte[] signingKey = jwtSecret.getBytes(StandardCharsets.UTF_8);
 
         Instant now = Instant.now();
 
@@ -66,7 +67,7 @@ public class TokenProvider {
 
     public Optional<Jws<Claims>> validateTokenAndGetJws(String token) {
         try {
-            byte[] signingKey = jwtSecret.getBytes();
+            byte[] signingKey = jwtSecret.getBytes(StandardCharsets.UTF_8);
 
             Jws<Claims> jws = Jwts.parser()
                     .verifyWith(Keys.hmacShaKeyFor(signingKey))

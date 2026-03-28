@@ -47,7 +47,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private Optional<String> getJwtFromRequest(HttpServletRequest request) {
         String tokenHeader = request.getHeader(TOKEN_HEADER);
         if (StringUtils.hasText(tokenHeader) && tokenHeader.startsWith(TOKEN_PREFIX)) {
-            return Optional.of(tokenHeader.replace(TOKEN_PREFIX, ""));
+            return Optional.of(tokenHeader.substring(TOKEN_PREFIX.length()));
         }
         return Optional.empty();
     }
