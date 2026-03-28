@@ -1,9 +1,10 @@
 package com.ivanfranchin.movieapi.rest.dto;
 
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
+import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.user.User;
 
-public record UserDto(Long id, String username, String name, String email, String role) {
+public record UserDto(Long id, String username, String name, String email, Role role) {
 
     public static UserDto from(User user) {
         return new UserDto(
@@ -21,7 +22,10 @@ public record UserDto(Long id, String username, String name, String email, Strin
                 user.getUsername(),
                 user.getName(),
                 user.getEmail(),
-                user.getAuthorities().iterator().next().getAuthority()
+                user.getAuthorities().stream()
+                        .findFirst()
+                        .map(a -> Role.valueOf(a.getAuthority()))
+                        .orElse(null)
         );
     }
 }

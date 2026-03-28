@@ -2,7 +2,7 @@ package com.ivanfranchin.movieapi.rest;
 
 import com.ivanfranchin.movieapi.rest.dto.UserDto;
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
-import com.ivanfranchin.movieapi.security.SecurityConfig;
+import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.user.UserDeletionNotAllowedException;
 import com.ivanfranchin.movieapi.user.UserService;
@@ -58,7 +58,7 @@ public class UserController {
         if (currentUser.getUsername().equals(username)) {
             throw new UserDeletionNotAllowedException("You cannot delete your own account");
         }
-        if (SecurityConfig.ADMIN.equals(user.getRole()) && userService.countAdmins() == 1) {
+        if (Role.ADMIN == user.getRole() && userService.countAdmins() == 1) {
             throw new UserDeletionNotAllowedException("Cannot delete the last admin account");
         }
         userService.deleteUser(user);

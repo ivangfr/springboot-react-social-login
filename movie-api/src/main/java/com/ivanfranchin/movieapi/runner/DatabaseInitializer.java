@@ -2,7 +2,7 @@ package com.ivanfranchin.movieapi.runner;
 
 import com.ivanfranchin.movieapi.movie.Movie;
 import com.ivanfranchin.movieapi.movie.MovieService;
-import com.ivanfranchin.movieapi.security.SecurityConfig;
+import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.user.UserService;
@@ -37,8 +37,8 @@ public class DatabaseInitializer implements CommandLineRunner {
     }
 
     private List<User> getUsers() {
-        return List.of(new User("admin", "admin", "Admin", "admin@mycompany.com", SecurityConfig.ADMIN, null, OAuth2Provider.LOCAL, "1"),
-                new User("user", "user", "User", "user@mycompany.com", SecurityConfig.USER, null, OAuth2Provider.LOCAL, "2"));
+        return List.of(new User("admin", "admin", "Admin", "admin@mycompany.com", Role.ADMIN, null, OAuth2Provider.LOCAL, "1"),
+                new User("user", "user", "User", "user@mycompany.com", Role.USER, null, OAuth2Provider.LOCAL, "2"));
     }
 
     private List<Movie> getMovies() {

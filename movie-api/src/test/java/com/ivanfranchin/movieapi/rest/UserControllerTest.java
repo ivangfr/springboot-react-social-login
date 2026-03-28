@@ -2,6 +2,7 @@ package com.ivanfranchin.movieapi.rest;
 
 import com.ivanfranchin.movieapi.security.CustomUserDetails;
 import com.ivanfranchin.movieapi.security.CustomUserDetailsService;
+import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.security.SecurityConfig;
 import com.ivanfranchin.movieapi.security.TokenProvider;
 import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
@@ -86,8 +87,8 @@ class UserControllerTest {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void getUsers_asAdmin_returns200() throws Exception {
-        User alice = createUser("alice", "USER");
-        User bob = createUser("bob", "USER");
+        User alice = createUser("alice", Role.USER);
+        User bob = createUser("bob", Role.USER);
         when(userService.getUsers()).thenReturn(List.of(alice, bob));
 
         mockMvc.perform(get("/api/users"))
@@ -112,7 +113,7 @@ class UserControllerTest {
     @Test
     @WithMockUser(authorities = "ADMIN")
     void getUser_asAdmin_exists_returns200() throws Exception {
-        User alice = createUser("alice", "USER");
+        User alice = createUser("alice", Role.USER);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(alice);
 
         mockMvc.perform(get("/api/users/alice"))
@@ -141,8 +142,8 @@ class UserControllerTest {
     void deleteUser_asAdmin_exists_returns204() throws Exception {
         CustomUserDetails adminDetails = CustomUserDetails.ofLocalUser(
                 1L, "admin", "encoded", "Admin User", "admin@example.com",
-                List.of(new SimpleGrantedAuthority(SecurityConfig.ADMIN)));
-        User alice = createUser("alice", "USER");
+                List.of(new SimpleGrantedAuthority(Role.ADMIN.name())));
+        User alice = createUser("alice", Role.USER);
         when(userService.validateAndGetUserByUsername("alice")).thenReturn(alice);
         when(userService.countAdmins()).thenReturn(2L);
 
@@ -155,8 +156,8 @@ class UserControllerTest {
     void deleteUser_returns400WhenAdminDeletesOwnAccount() throws Exception {
         CustomUserDetails adminDetails = CustomUserDetails.ofLocalUser(
                 1L, "admin", "encoded", "Admin User", "admin@example.com",
-                List.of(new SimpleGrantedAuthority(SecurityConfig.ADMIN)));
-        User adminUser = createUser("admin", SecurityConfig.ADMIN);
+                List.of(new SimpleGrantedAuthority(Role.ADMIN.name())));
+        User adminUser = createUser("admin", Role.ADMIN);
         when(userService.validateAndGetUserByUsername("admin")).thenReturn(adminUser);
 
         mockMvc.perform(delete("/api/users/admin")
@@ -168,8 +169,8 @@ class UserControllerTest {
     void deleteUser_returns400WhenDeletingLastAdmin() throws Exception {
         CustomUserDetails adminDetails = CustomUserDetails.ofLocalUser(
                 1L, "admin", "encoded", "Admin User", "admin@example.com",
-                List.of(new SimpleGrantedAuthority(SecurityConfig.ADMIN)));
-        User otherAdmin = createUser("other-admin", SecurityConfig.ADMIN);
+                List.of(new SimpleGrantedAuthority(Role.ADMIN.name())));
+        User otherAdmin = createUser("other-admin", Role.ADMIN);
         when(userService.validateAndGetUserByUsername("other-admin")).thenReturn(otherAdmin);
         when(userService.countAdmins()).thenReturn(1L);
 
@@ -201,7 +202,7 @@ class UserControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
-    private User createUser(String username, String role) {
+    private User createUser(String username, Role role) {
         return new User(username, "encoded-password", username + " Name",
                 username + "@example.com", role, null, OAuth2Provider.LOCAL, null);
     }

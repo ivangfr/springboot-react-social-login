@@ -22,9 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
-    public static final String ADMIN = "ADMIN";
-    public static final String USER = "USER";
-
     private final CustomOAuth2UserService customOauth2UserService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
@@ -38,10 +35,10 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(ADMIN, USER)
-                        .requestMatchers("/api/movies", "/api/movies/**").hasAnyAuthority(ADMIN)
-                        .requestMatchers("/api/users", "/api/users/**").hasAnyAuthority(ADMIN)
+                        .requestMatchers(HttpMethod.GET, "/api/movies", "/api/movies/**").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/users/me").hasAnyAuthority(Role.ADMIN.name(), Role.USER.name())
+                        .requestMatchers("/api/movies", "/api/movies/**").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/users", "/api/users/**").hasAnyAuthority(Role.ADMIN.name())
                         .requestMatchers("/public/**", "/auth/**", "/oauth2/**").permitAll()
                         .requestMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated())

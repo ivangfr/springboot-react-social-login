@@ -1,5 +1,6 @@
 package com.ivanfranchin.movieapi.user;
 
+import com.ivanfranchin.movieapi.security.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +20,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     List<User> findAllByOrderByUsername();
 
-    long countByRole(String role);
+    long countByRole(Role role);
 }

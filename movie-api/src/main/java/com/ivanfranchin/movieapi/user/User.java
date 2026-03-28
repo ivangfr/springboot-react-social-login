@@ -1,5 +1,6 @@
 package com.ivanfranchin.movieapi.user;
 
+import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,7 +30,10 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
@@ -37,7 +41,7 @@ public class User {
 
     private String providerId;
 
-    public User(String username, String password, String name, String email, String role, String imageUrl, OAuth2Provider provider, String providerId) {
+    public User(String username, String password, String name, String email, Role role, String imageUrl, OAuth2Provider provider, String providerId) {
         this.username = username;
         this.password = password;
         this.name = name;

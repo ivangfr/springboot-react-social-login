@@ -1,5 +1,6 @@
 package com.ivanfranchin.movieapi.user;
 
+import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,12 +48,12 @@ class UserServiceImplTest {
 
     @Test
     void countAdmins_delegatesToRepository() {
-        when(userRepository.countByRole("ADMIN")).thenReturn(2L);
+        when(userRepository.countByRole(Role.ADMIN)).thenReturn(2L);
 
         long count = userService.countAdmins();
 
         assertThat(count).isEqualTo(2L);
-        verify(userRepository).countByRole("ADMIN");
+        verify(userRepository).countByRole(Role.ADMIN);
     }
 
     @Test
@@ -140,6 +141,6 @@ class UserServiceImplTest {
 
     private User createUser(String username) {
         return new User(username, "encoded-password", username + " Name",
-                username + "@example.com", "USER", null, OAuth2Provider.LOCAL, null);
+                username + "@example.com", Role.USER, null, OAuth2Provider.LOCAL, null);
     }
 }

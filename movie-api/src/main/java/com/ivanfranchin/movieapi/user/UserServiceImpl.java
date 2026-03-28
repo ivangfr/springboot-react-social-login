@@ -1,6 +1,6 @@
 package com.ivanfranchin.movieapi.user;
 
-import com.ivanfranchin.movieapi.security.SecurityConfig;
+import com.ivanfranchin.movieapi.security.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long countAdmins() {
-        return userRepository.countByRole(SecurityConfig.ADMIN);
+        return userRepository.countByRole(Role.ADMIN);
     }
 
     @Override
