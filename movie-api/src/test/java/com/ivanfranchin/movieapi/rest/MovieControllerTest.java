@@ -92,6 +92,17 @@ class MovieControllerTest {
 
     @Test
     @WithMockUser(authorities = "ADMIN")
+    void getMovies_withBlankText_returnsAllMovies() throws Exception {
+        when(movieService.getMovies()).thenReturn(List.of(createMovie("tt001", "Alpha")));
+
+        mockMvc.perform(get("/api/movies").param("text", "  "))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].imdb").value("tt001"))
+                .andExpect(jsonPath("$[0].title").value("Alpha"));
+    }
+
+    @Test
+    @WithMockUser(authorities = "ADMIN")
     void createMovie_asAdmin_returns201() throws Exception {
         Movie movie = createMovie("tt001", "Alpha");
         when(movieService.saveMovie(any())).thenReturn(movie);
