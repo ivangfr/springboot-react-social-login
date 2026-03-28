@@ -24,11 +24,15 @@ import java.util.UUID;
 @Component
 public class TokenProvider {
 
+    public static final String TOKEN_TYPE = "JWT";
+    public static final String TOKEN_ISSUER = "movie-api";
+    public static final String TOKEN_AUDIENCE = "movie-app";
+
     @Value("${app.jwt.secret}")
     private String jwtSecret;
 
     @Value("${app.jwt.expiration.minutes}")
-    private Long jwtExpirationMinutes;
+    private long jwtExpirationMinutes;
 
     public String generate(Authentication authentication) {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
@@ -83,8 +87,4 @@ public class TokenProvider {
         }
         return Optional.empty();
     }
-
-    public static final String TOKEN_TYPE = "JWT";
-    public static final String TOKEN_ISSUER = "order-api";
-    public static final String TOKEN_AUDIENCE = "order-app";
 }

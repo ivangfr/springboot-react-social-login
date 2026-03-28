@@ -204,6 +204,6 @@ class UserControllerTest {
 
     private User createUser(String username, Role role) {
         return new User(username, "encoded-password", username + " Name",
-                username + "@example.com", role, null, OAuth2Provider.LOCAL, null);
+                username + "@example.com", role, null, OAuth2Provider.LOCAL);
     }
 }

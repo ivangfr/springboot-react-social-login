@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 @Getter
@@ -28,7 +29,7 @@ public class CustomUserDetails implements OAuth2User, UserDetails {
     public static CustomUserDetails ofLocalUser(Long id, String username, String password,
             String name, String email,
             Collection<? extends GrantedAuthority> authorities) {
-        return new CustomUserDetails(id, username, password, name, email, null, null, authorities, null);
+        return new CustomUserDetails(id, username, password, name, email, null, null, authorities, Collections.emptyMap());
     }
 
     public static CustomUserDetails ofOAuth2User(String username, String name, String email,

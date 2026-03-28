@@ -45,7 +45,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
   | `GET /api/users/{username}`                                   | Yes     | `ADMIN`         |
   | `DELETE /api/users/{username}`                                | Yes     | `ADMIN`         |
   | `GET /api/movies [?text]`                                     | Yes     | `ADMIN`, `USER` |
-  | `POST /api/movies -d {"imdb","description"}`                  | Yes     | `ADMIN`         |
+  | `POST /api/movies -d {"imdb","title","poster"[opt]}`          | Yes     | `ADMIN`         |
   | `DELETE /api/movies/{imdb}`                                   | Yes     | `ADMIN`         |
 
 - ### movie-ui

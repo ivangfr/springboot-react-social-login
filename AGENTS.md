@@ -7,7 +7,7 @@ This file documents conventions, commands, and patterns for agentic coding agent
 ## Project Overview
 
 Full-stack social login application:
-- **Backend:** `movie-api/` — Spring Boot 4.0.3, Java 25, PostgreSQL
+- **Backend:** `movie-api/` — Spring Boot 4.0.5, Java 25, PostgreSQL
 - **Frontend:** `movie-ui/` — React 19, Vite + Vitest, JavaScript (no TypeScript)
 - **Infrastructure:** Docker Compose (PostgreSQL 18.0)
 

@@ -141,6 +141,6 @@ class UserServiceImplTest {
 
     private User createUser(String username) {
         return new User(username, "encoded-password", username + " Name",
-                username + "@example.com", Role.USER, null, OAuth2Provider.LOCAL, null);
+                username + "@example.com", Role.USER, null, OAuth2Provider.LOCAL);
     }
 }

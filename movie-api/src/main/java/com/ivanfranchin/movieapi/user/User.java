@@ -2,6 +2,7 @@ package com.ivanfranchin.movieapi.user;
 
 import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,22 +27,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String username;
     private String password;
+
+    @Column(nullable = false)
     private String name;
+
+    // @Column(nullable = false)
+    // It cannot be `nullable = false` because social login users may not have an email
     private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     private String imageUrl;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OAuth2Provider provider;
 
-    private String providerId;
-
-    public User(String username, String password, String name, String email, Role role, String imageUrl, OAuth2Provider provider, String providerId) {
+    public User(String username, String password, String name, String email, Role role, String imageUrl, OAuth2Provider provider) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -49,6 +56,5 @@ public class User {
         this.role = role;
         this.imageUrl = imageUrl;
         this.provider = provider;
-        this.providerId = providerId;
     }
 }

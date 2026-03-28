@@ -23,6 +23,8 @@ public class Movie {
     private String title;
 
     private String poster;
+
+    @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
     public Movie(String imdb, String title, String poster) {

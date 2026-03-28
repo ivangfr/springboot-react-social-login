@@ -32,6 +32,6 @@ public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     private String retrieveAttr(String attr, OAuth2User oAuth2User) {
         Object attribute = oAuth2User.getAttributes().get(attr);
-        return attribute == null ? "" : attribute.toString();
+        return attribute == null ? null : attribute.toString();
     }
 }

@@ -33,7 +33,7 @@ public class MovieController {
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping
     public List<MovieDto> getMovies(@RequestParam(value = "text", required = false) String text) {
-        List<Movie> movies = (text == null) ? movieService.getMovies() : movieService.getMoviesContainingText(text);
+        List<Movie> movies = (text == null || text.isBlank()) ? movieService.getMovies() : movieService.getMoviesContainingText(text);
         return movies.stream()
                 .map(MovieDto::from)
                 .toList();

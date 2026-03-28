@@ -7,13 +7,15 @@ import java.time.format.DateTimeFormatter;
 
 public record MovieDto(String imdb, String title, String poster, String createdAt) {
 
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.systemDefault());
+
     public static MovieDto from(Movie movie) {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.systemDefault());
         return new MovieDto(
                 movie.getImdb(),
                 movie.getTitle(),
                 movie.getPoster(),
-                movie.getCreatedAt() != null ? formatter.format(movie.getCreatedAt()) : null
+                movie.getCreatedAt() != null ? FORMATTER.format(movie.getCreatedAt()) : null
         );
     }
 }

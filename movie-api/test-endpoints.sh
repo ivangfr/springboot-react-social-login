@@ -1,5 +1,10 @@
 #!/usr/bin/env zsh
 
+if ! command -v jq &>/dev/null; then
+  printf 'error: jq is required but not found in PATH. Install it (e.g. brew install jq) and re-run.\n' >&2
+  exit 1
+fi
+
 typeset -A public_number_of_users
 typeset -A public_number_of_movies
 
