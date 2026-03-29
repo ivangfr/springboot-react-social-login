@@ -1,8 +1,9 @@
 services:
 
   postgres:
-    image: 'postgres:18.0'
+    image: 'postgres:18.3'
     container_name: 'postgres'
+    restart: unless-stopped
     ports:
       - '5432:5432'
     environment:
@@ -10,4 +11,4 @@ services:
       - 'POSTGRES_PASSWORD=postgres'
       - 'POSTGRES_USER=postgres'
     healthcheck:
-      test: 'pg_isready -U postgres'
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "moviedb"]
