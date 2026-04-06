@@ -14,16 +14,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
+class UserServiceTest {
 
     @Mock
     UserRepository userRepository;
 
     @InjectMocks
-    UserServiceImpl userService;
+    UserService userService;
 
     @Test
     void getUsers_returnsAllUsers() {
@@ -34,6 +35,7 @@ class UserServiceImplTest {
 
         assertThat(result).isEqualTo(users);
         verify(userRepository).findAllByOrderByUsername();
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -44,6 +46,7 @@ class UserServiceImplTest {
 
         assertThat(count).isEqualTo(3L);
         verify(userRepository).count();
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -54,6 +57,7 @@ class UserServiceImplTest {
 
         assertThat(count).isEqualTo(2L);
         verify(userRepository).countByRole(Role.ADMIN);
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -65,6 +69,7 @@ class UserServiceImplTest {
 
         assertThat(result).contains(user);
         verify(userRepository).findByUsername("alice");
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -76,6 +81,7 @@ class UserServiceImplTest {
 
         assertThat(result).contains(user);
         verify(userRepository).findByEmail("alice@example.com");
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -86,6 +92,7 @@ class UserServiceImplTest {
 
         assertThat(result).isTrue();
         verify(userRepository).existsByUsername("alice");
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -96,6 +103,7 @@ class UserServiceImplTest {
 
         assertThat(result).isFalse();
         verify(userRepository).existsByEmail("nobody@example.com");
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -107,6 +115,7 @@ class UserServiceImplTest {
 
         assertThat(result).isEqualTo(user);
         verify(userRepository).findByUsername("alice");
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -117,6 +126,7 @@ class UserServiceImplTest {
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessageContaining("ghost");
         verify(userRepository).findByUsername("ghost");
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -128,6 +138,7 @@ class UserServiceImplTest {
 
         assertThat(result).isEqualTo(user);
         verify(userRepository).save(user);
+        verifyNoMoreInteractions(userRepository);
     }
 
     @Test
@@ -137,6 +148,7 @@ class UserServiceImplTest {
         userService.deleteUser(user);
 
         verify(userRepository).delete(user);
+        verifyNoMoreInteractions(userRepository);
     }
 
     private User createUser(String username) {

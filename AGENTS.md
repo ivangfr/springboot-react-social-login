@@ -115,8 +115,7 @@ Group and order imports as follows (blank line between groups):
 |---|---|---|
 | JPA entities | `PascalCase`, no suffix | `User`, `Movie` |
 | Repositories | `PascalCase` + `Repository` | `MovieRepository` |
-| Service interfaces | `PascalCase` + `Service` | `MovieService` |
-| Service implementations | interface name + `Impl` | `MovieServiceImpl` |
+| Services | `PascalCase` + `Service` | `MovieService`, `UserService` |
 | REST controllers | domain + `Controller` | `MovieController` |
 | Request DTOs (records) | action + domain + `Request` | `CreateMovieRequest` |
 | Response DTOs (records) | domain + `Dto` / `Response` | `MovieDto`, `AuthResponse` |
@@ -141,7 +140,7 @@ Group and order imports as follows (blank line between groups):
 - Domain mapping: `public DomainObject toDomain()` instance method on the record.
 
 ### Package Structure
-- Domain packages co-locate entity, repository, service interface, impl, and exceptions: `movie/`, `user/`.
+- Domain packages co-locate entity, repository, service, and exceptions: `movie/`, `user/`.
 - REST layer is in `rest/` with a `dto/` sub-package.
 - Cross-cutting concerns live in `security/`, `config/`, `runner/`.
 - Note: `CorsConfig` lives in `security/`, not `config/`, because it is tightly coupled to the security filter chain.
@@ -224,6 +223,7 @@ Group and order imports as follows (blank line between groups):
 - Use AssertJ (`assertThat(...)`) for assertions.
 - `MovieApiApplicationTests` uses `@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)` with `@MockitoBean` for all infrastructure beans — it is fully active (not `@Disabled`).
 - Use `@MockitoBean` (from `org.springframework.test.context.bean.override.mockito`) — this is the Spring Boot 4.x replacement for the removed `@MockBean`.
+- Service unit tests should include `verifyNoMoreInteractions()` after `verify()` calls to ensure no unexpected mock interactions occur.
 
 ### Frontend (Vitest + React Testing Library)
 - Test runner: **Vitest** (`vitest run`), jsdom environment, globals mode.

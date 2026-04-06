@@ -12,16 +12,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MovieServiceImplTest {
+class MovieServiceTest {
 
     @Mock
     MovieRepository movieRepository;
 
     @InjectMocks
-    MovieServiceImpl movieService;
+    MovieService movieService;
 
     @Test
     void getMovies_returnsAllMovies() {
@@ -32,6 +33,7 @@ class MovieServiceImplTest {
 
         assertThat(result).isEqualTo(movies);
         verify(movieRepository).findAllByOrderByTitle();
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -44,6 +46,7 @@ class MovieServiceImplTest {
 
         assertThat(result).isEqualTo(movies);
         verify(movieRepository).findByImdbContainingOrTitleContainingIgnoreCaseOrderByTitle("rocky", "rocky");
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -54,6 +57,7 @@ class MovieServiceImplTest {
 
         assertThat(count).isEqualTo(5L);
         verify(movieRepository).count();
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -65,6 +69,7 @@ class MovieServiceImplTest {
 
         assertThat(result).isEqualTo(movie);
         verify(movieRepository).findById("tt001");
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -75,6 +80,7 @@ class MovieServiceImplTest {
                 .isInstanceOf(MovieNotFoundException.class)
                 .hasMessageContaining("tt999");
         verify(movieRepository).findById("tt999");
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -86,6 +92,7 @@ class MovieServiceImplTest {
 
         assertThat(result).isEqualTo(movie);
         verify(movieRepository).save(movie);
+        verifyNoMoreInteractions(movieRepository);
     }
 
     @Test
@@ -95,6 +102,7 @@ class MovieServiceImplTest {
         movieService.deleteMovie(movie);
 
         verify(movieRepository).delete(movie);
+        verifyNoMoreInteractions(movieRepository);
     }
 
     private Movie createMovie(String imdb, String title) {

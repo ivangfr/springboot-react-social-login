@@ -1,27 +1,56 @@
 package com.ivanfranchin.movieapi.user;
 
+import com.ivanfranchin.movieapi.security.Role;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService {
+@RequiredArgsConstructor
+@Service
+public class UserService {
 
-    List<User> getUsers();
+    private final UserRepository userRepository;
 
-    long countUsers();
+    public List<User> getUsers() {
+        return userRepository.findAllByOrderByUsername();
+    }
 
-    long countAdmins();
+    public long countUsers() {
+        return userRepository.count();
+    }
 
-    Optional<User> getUserByUsername(String username);
+    public long countAdmins() {
+        return userRepository.countByRole(Role.ADMIN);
+    }
 
-    Optional<User> getUserByEmail(String email);
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 
-    boolean hasUserWithUsername(String username);
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
-    boolean hasUserWithEmail(String email);
+    public boolean hasUserWithUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 
-    User validateAndGetUserByUsername(String username);
+    public boolean hasUserWithEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 
-    User saveUser(User user);
+    public User validateAndGetUserByUsername(String username) {
+        return getUserByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException("User with username %s not found".formatted(username)));
+    }
 
-    void deleteUser(User user);
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(User user) {
+        userRepository.delete(user);
+    }
 }

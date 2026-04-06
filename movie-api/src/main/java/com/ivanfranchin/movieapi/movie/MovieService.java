@@ -1,18 +1,38 @@
 package com.ivanfranchin.movieapi.movie;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-public interface MovieService {
+@RequiredArgsConstructor
+@Service
+public class MovieService {
 
-    List<Movie> getMovies();
+    private final MovieRepository movieRepository;
 
-    long countMovies();
+    public List<Movie> getMovies() {
+        return movieRepository.findAllByOrderByTitle();
+    }
 
-    List<Movie> getMoviesContainingText(String text);
+    public long countMovies() {
+        return movieRepository.count();
+    }
 
-    Movie validateAndGetMovie(String imdb);
+    public List<Movie> getMoviesContainingText(String text) {
+        return movieRepository.findByImdbContainingOrTitleContainingIgnoreCaseOrderByTitle(text, text);
+    }
 
-    Movie saveMovie(Movie movie);
+    public Movie validateAndGetMovie(String imdb) {
+        return movieRepository.findById(imdb)
+                .orElseThrow(() -> new MovieNotFoundException("Movie with imdb %s not found".formatted(imdb)));
+    }
 
-    void deleteMovie(Movie movie);
+    public Movie saveMovie(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    public void deleteMovie(Movie movie) {
+        movieRepository.delete(movie);
+    }
 }
