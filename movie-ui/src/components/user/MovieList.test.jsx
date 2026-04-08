@@ -1,95 +1,83 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '../../test-utils'
-import userEvent from '@testing-library/user-event'
+import { screen, fireEvent } from '@testing-library/react'
+import { render } from '../../test-utils'
 import MovieList from './MovieList'
-
-const baseProps = {
-  isMoviesLoading: false,
-  movieTextSearch: '',
-  movies: [],
-  handleInputChange: vi.fn(),
-  handleSearchMovie: vi.fn(),
-}
 
 const sampleMovies = [
   { imdb: 'tt0133093', title: 'The Matrix', poster: 'https://example.com/matrix.jpg' },
   { imdb: 'tt0109830', title: 'Forrest Gump', poster: '' },
 ]
 
+function makeProps(overrides = {}) {
+  return {
+    isMoviesLoading: false,
+    movieTextSearch: '',
+    movies: [],
+    handleInputChange: vi.fn(),
+    handleSearchMovie: vi.fn(),
+    ...overrides,
+  }
+}
+
 describe('MovieList', () => {
-  beforeEach(() => {
-    vi.resetAllMocks()
+  it('shows skeleton cards when isMoviesLoading is true', () => {
+    render(<MovieList {...makeProps({ isMoviesLoading: true })} />)
+    expect(screen.queryByText('The Matrix')).not.toBeInTheDocument()
+    expect(screen.queryByText('No Movie')).not.toBeInTheDocument()
   })
 
-  describe('loading state', () => {
-    it('renders skeleton cards when isMoviesLoading is true', () => {
-      render(<MovieList {...baseProps} isMoviesLoading={true} />)
-      // Skeleton cards — there should be 3 of them (no movie title text)
-      expect(screen.queryByText('The Matrix')).not.toBeInTheDocument()
-      expect(screen.queryByText('No Movie')).not.toBeInTheDocument()
-    })
+  it('shows "No Movie" when movies array is empty and not loading', () => {
+    render(<MovieList {...makeProps({ movies: [] })} />)
+    expect(screen.getByText('No Movie')).toBeInTheDocument()
   })
 
-  describe('empty state', () => {
-    it('shows "No Movie" when movies array is empty and not loading', () => {
-      render(<MovieList {...baseProps} movies={[]} />)
-      expect(screen.getByText('No Movie')).toBeInTheDocument()
-    })
-
-    it('does not render movie cards in empty state', () => {
-      render(<MovieList {...baseProps} movies={[]} />)
-      expect(screen.queryByText('The Matrix')).not.toBeInTheDocument()
-    })
+  it('does not render movie cards in empty state', () => {
+    render(<MovieList {...makeProps({ movies: [] })} />)
+    expect(screen.queryByText('The Matrix')).not.toBeInTheDocument()
   })
 
-  describe('with movies', () => {
-    it('renders a card for each movie', () => {
-      render(<MovieList {...baseProps} movies={sampleMovies} />)
-      expect(screen.getByText('The Matrix')).toBeInTheDocument()
-      expect(screen.getByText('Forrest Gump')).toBeInTheDocument()
-    })
-
-    it('renders the IMDB id for each movie', () => {
-      render(<MovieList {...baseProps} movies={sampleMovies} />)
-      expect(screen.getByText('tt0133093')).toBeInTheDocument()
-      expect(screen.getByText('tt0109830')).toBeInTheDocument()
-    })
-
-    it('renders the Movies title heading', () => {
-      render(<MovieList {...baseProps} movies={sampleMovies} />)
-      expect(screen.getByRole('heading', { name: /movies/i })).toBeInTheDocument()
-    })
+  it('renders a card for each movie', () => {
+    render(<MovieList {...makeProps({ movies: sampleMovies })} />)
+    expect(screen.getByText('The Matrix')).toBeInTheDocument()
+    expect(screen.getByText('Forrest Gump')).toBeInTheDocument()
   })
 
-  describe('search', () => {
-    it('renders the search input', () => {
-      render(<MovieList {...baseProps} />)
-      expect(screen.getByPlaceholderText(/search by imdb or title/i)).toBeInTheDocument()
-    })
+  it('renders the IMDB id for each movie', () => {
+    render(<MovieList {...makeProps({ movies: sampleMovies })} />)
+    expect(screen.getByText('tt0133093')).toBeInTheDocument()
+    expect(screen.getByText('tt0109830')).toBeInTheDocument()
+  })
 
-    it('calls handleSearchMovie when the search form is submitted', () => {
-      const handleSearchMovie = vi.fn()
-      render(<MovieList {...baseProps} handleSearchMovie={handleSearchMovie} />)
+  it('renders the Movies title heading', () => {
+    render(<MovieList {...makeProps({ movies: sampleMovies })} />)
+    expect(screen.getByRole('heading', { name: /movies/i })).toBeInTheDocument()
+  })
 
-      const form = screen.getByPlaceholderText(/search by imdb or title/i).closest('form')
-      fireEvent.submit(form)
+  it('renders the search input', () => {
+    render(<MovieList {...makeProps()} />)
+    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toBeInTheDocument()
+  })
 
-      expect(handleSearchMovie).toHaveBeenCalledTimes(1)
-    })
+  it('calls handleSearchMovie when the search form is submitted', () => {
+    const handleSearchMovie = vi.fn()
+    render(<MovieList {...makeProps({ handleSearchMovie })} />)
 
-    it('calls handleInputChange when user types in the search field', async () => {
-      const handleInputChange = vi.fn()
-      const user = userEvent.setup()
-      render(<MovieList {...baseProps} handleInputChange={handleInputChange} />)
+    const form = screen.getByPlaceholderText(/search by imdb or title/i).closest('form')
+    fireEvent.submit(form)
 
-      await user.type(screen.getByPlaceholderText(/search by imdb or title/i), 'mat')
+    expect(handleSearchMovie).toHaveBeenCalledTimes(1)
+  })
 
-      expect(handleInputChange).toHaveBeenCalled()
-    })
+  it('calls handleInputChange when user types in the search field', () => {
+    const handleInputChange = vi.fn()
+    render(<MovieList {...makeProps({ handleInputChange })} />)
 
-    it('displays the current search term in the input', () => {
-      render(<MovieList {...baseProps} movieTextSearch='matrix' />)
-      expect(screen.getByPlaceholderText(/search by imdb or title/i)).toHaveValue('matrix')
-    })
+    fireEvent.change(screen.getByPlaceholderText(/search by imdb or title/i), { target: { value: 'mat' } })
+
+    expect(handleInputChange).toHaveBeenCalled()
+  })
+
+  it('displays the current search term in the input', () => {
+    render(<MovieList {...makeProps({ movieTextSearch: 'matrix' })} />)
+    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toHaveValue('matrix')
   })
 })

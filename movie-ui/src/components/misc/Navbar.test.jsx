@@ -1,16 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent } from '../../test-utils'
+import { screen, fireEvent } from '@testing-library/react'
+import { render, makeAdminUser, makeRegularUser, seedLocalStorage } from '../../test-utils'
 import { AppShell } from '@mantine/core'
 import Navbar from './Navbar'
 
-function makeUser({ role = 'USER', name = 'Test User', exp = Math.floor(Date.now() / 1000) + 3600 } = {}) {
-  return {
-    data: { exp, name, rol: [role] },
-    accessToken: 'mock-token',
-  }
-}
-
-// Navbar uses AppShell.Header which requires an AppShell ancestor
 function renderNavbar() {
   return render(
     <AppShell header={{ height: 60 }}>
@@ -19,96 +11,85 @@ function renderNavbar() {
   )
 }
 
-describe('Navbar', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    vi.resetAllMocks()
+beforeEach(() => {
+  localStorage.clear()
+})
+
+describe('Navbar — unauthenticated', () => {
+  it('shows Login and Sign Up links', () => {
+    renderNavbar()
+    expect(screen.getByText('Login')).toBeInTheDocument()
+    expect(screen.getByText('Sign Up')).toBeInTheDocument()
   })
 
-  describe('unauthenticated state', () => {
-    it('shows Login and Sign Up buttons', () => {
-      renderNavbar()
-      expect(screen.getByRole('link', { name: /login/i })).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: /sign up/i })).toBeInTheDocument()
-    })
-
-    it('shows Home link and Movie-UI brand', () => {
-      renderNavbar()
-      expect(screen.getByText('Movie-UI')).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument()
-    })
-
-    it('does not show AdminPage or UserPage links', () => {
-      renderNavbar()
-      expect(screen.queryByRole('link', { name: /adminpage/i })).not.toBeInTheDocument()
-      expect(screen.queryByRole('link', { name: /userpage/i })).not.toBeInTheDocument()
-    })
-
-    it('does not show greeting or Logout button', () => {
-      renderNavbar()
-      expect(screen.queryByText(/hi /i)).not.toBeInTheDocument()
-      expect(screen.queryByRole('link', { name: /logout/i })).not.toBeInTheDocument()
-    })
+  it('does not show Logout button', () => {
+    renderNavbar()
+    expect(screen.queryByText('Logout')).not.toBeInTheDocument()
   })
 
-  describe('authenticated as ADMIN', () => {
-    beforeEach(() => {
-      localStorage.setItem('user', JSON.stringify(makeUser({ role: 'ADMIN', name: 'Admin User' })))
-    })
-
-    it('shows AdminPage link', () => {
-      renderNavbar()
-      expect(screen.getByRole('link', { name: /adminpage/i })).toBeInTheDocument()
-    })
-
-    it('does not show UserPage link', () => {
-      renderNavbar()
-      expect(screen.queryByRole('link', { name: /userpage/i })).not.toBeInTheDocument()
-    })
-
-    it('shows greeting with the user name', () => {
-      renderNavbar()
-      expect(screen.getByText('Hi Admin User')).toBeInTheDocument()
-    })
-
-    it('shows Logout button and hides Login/Sign Up', () => {
-      renderNavbar()
-      expect(screen.getByRole('link', { name: /logout/i })).toBeInTheDocument()
-      expect(screen.queryByRole('link', { name: /login/i })).not.toBeInTheDocument()
-      expect(screen.queryByRole('link', { name: /sign up/i })).not.toBeInTheDocument()
-    })
+  it('does not show AdminPage or UserPage links', () => {
+    renderNavbar()
+    expect(screen.queryByText('AdminPage')).not.toBeInTheDocument()
+    expect(screen.queryByText('UserPage')).not.toBeInTheDocument()
   })
 
-  describe('authenticated as USER', () => {
-    beforeEach(() => {
-      localStorage.setItem('user', JSON.stringify(makeUser({ role: 'USER', name: 'Regular User' })))
-    })
+  it('shows Home link and Movie-UI brand', () => {
+    renderNavbar()
+    expect(screen.getByText('Movie-UI')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /home/i })).toBeInTheDocument()
+  })
+})
 
-    it('shows UserPage link', () => {
-      renderNavbar()
-      expect(screen.getByRole('link', { name: /userpage/i })).toBeInTheDocument()
-    })
+describe('Navbar — admin user', () => {
+  beforeEach(() => seedLocalStorage(makeAdminUser()))
 
-    it('does not show AdminPage link', () => {
-      renderNavbar()
-      expect(screen.queryByRole('link', { name: /adminpage/i })).not.toBeInTheDocument()
-    })
-
-    it('shows greeting with the user name', () => {
-      renderNavbar()
-      expect(screen.getByText('Hi Regular User')).toBeInTheDocument()
-    })
+  it('shows AdminPage link', () => {
+    renderNavbar()
+    expect(screen.getByText('AdminPage')).toBeInTheDocument()
   })
 
-  describe('Logout behaviour', () => {
-    it('clicking Logout removes user from localStorage', () => {
-      localStorage.setItem('user', JSON.stringify(makeUser({ name: 'Admin User', role: 'ADMIN' })))
-      renderNavbar()
+  it('does not show UserPage link', () => {
+    renderNavbar()
+    expect(screen.queryByText('UserPage')).not.toBeInTheDocument()
+  })
 
-      const logoutBtn = screen.getByRole('link', { name: /logout/i })
-      fireEvent.click(logoutBtn)
+  it('shows greeting with user name and Logout button', () => {
+    renderNavbar()
+    expect(screen.getByText(/Admin User/)).toBeInTheDocument()
+    expect(screen.getByText('Logout')).toBeInTheDocument()
+  })
 
-      expect(localStorage.getItem('user')).toBeNull()
-    })
+  it('does not show Login or Sign Up links', () => {
+    renderNavbar()
+    expect(screen.queryByText('Login')).not.toBeInTheDocument()
+    expect(screen.queryByText('Sign Up')).not.toBeInTheDocument()
+  })
+})
+
+describe('Navbar — regular user', () => {
+  beforeEach(() => seedLocalStorage(makeRegularUser()))
+
+  it('shows UserPage link', () => {
+    renderNavbar()
+    expect(screen.getByText('UserPage')).toBeInTheDocument()
+  })
+
+  it('does not show AdminPage link', () => {
+    renderNavbar()
+    expect(screen.queryByText('AdminPage')).not.toBeInTheDocument()
+  })
+
+  it('shows greeting with the user name', () => {
+    renderNavbar()
+    expect(screen.getByText('Hi Bob')).toBeInTheDocument()
+  })
+})
+
+describe('Navbar — logout', () => {
+  it('removes user from localStorage when Logout is clicked', () => {
+    seedLocalStorage(makeRegularUser())
+    renderNavbar()
+    fireEvent.click(screen.getByText('Logout'))
+    expect(localStorage.getItem('user')).toBeNull()
   })
 })

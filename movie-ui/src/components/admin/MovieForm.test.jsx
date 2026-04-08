@@ -1,87 +1,71 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '../../test-utils'
+import { screen, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { render } from '../../test-utils'
 import MovieForm from './MovieForm'
 
-function renderMovieForm(props = {}) {
-  const defaults = {
+function makeProps(overrides = {}) {
+  return {
     movieImdb: '',
     movieTitle: '',
     moviePoster: '',
     handleInputChange: vi.fn(),
     handleAddMovie: vi.fn(),
+    ...overrides,
   }
-  return render(<MovieForm {...defaults} {...props} />)
 }
 
 describe('MovieForm', () => {
-  beforeEach(() => {
-    vi.resetAllMocks()
-  })
-
   it('renders IMDB, Title, and Poster inputs', () => {
-    renderMovieForm()
+    render(<MovieForm {...makeProps()} />)
     expect(screen.getByPlaceholderText(/imdb/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/title/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/poster/i)).toBeInTheDocument()
   })
 
-  it('Create button is disabled when both imdb and title are empty', () => {
-    renderMovieForm({ movieImdb: '', movieTitle: '' })
+  it('disables Create button when both imdb and title are empty', () => {
+    render(<MovieForm {...makeProps({ movieImdb: '', movieTitle: '' })} />)
     expect(screen.getByRole('button', { name: /create/i })).toBeDisabled()
   })
 
-  it('Create button is disabled when imdb is empty but title is filled', () => {
-    renderMovieForm({ movieImdb: '', movieTitle: 'Some Title' })
+  it('disables Create button when imdb is empty but title is filled', () => {
+    render(<MovieForm {...makeProps({ movieImdb: '', movieTitle: 'Some Title' })} />)
     expect(screen.getByRole('button', { name: /create/i })).toBeDisabled()
   })
 
-  it('Create button is disabled when title is empty but imdb is filled', () => {
-    renderMovieForm({ movieImdb: 'tt1234567', movieTitle: '' })
+  it('disables Create button when title is empty but imdb is filled', () => {
+    render(<MovieForm {...makeProps({ movieImdb: 'tt1234567', movieTitle: '' })} />)
     expect(screen.getByRole('button', { name: /create/i })).toBeDisabled()
   })
 
-  it('Create button is disabled when imdb is whitespace only', () => {
-    renderMovieForm({ movieImdb: '   ', movieTitle: 'Some Title' })
+  it('disables Create button when imdb is whitespace only', () => {
+    render(<MovieForm {...makeProps({ movieImdb: '   ', movieTitle: 'Some Title' })} />)
     expect(screen.getByRole('button', { name: /create/i })).toBeDisabled()
   })
 
-  it('Create button is enabled when both imdb and title are provided', () => {
-    renderMovieForm({ movieImdb: 'tt1234567', movieTitle: 'The Matrix' })
+  it('enables Create button when both imdb and title are provided', () => {
+    render(<MovieForm {...makeProps({ movieImdb: 'tt1234567', movieTitle: 'The Matrix' })} />)
     expect(screen.getByRole('button', { name: /create/i })).not.toBeDisabled()
   })
 
-  it('calls handleAddMovie when form is submitted with valid data', async () => {
+  it('calls handleAddMovie when form is submitted with valid data', () => {
     const handleAddMovie = vi.fn()
-    const user = userEvent.setup()
-
-    renderMovieForm({ movieImdb: 'tt1234567', movieTitle: 'The Matrix', handleAddMovie })
-
-    await user.click(screen.getByRole('button', { name: /create/i }))
-
+    render(<MovieForm {...makeProps({ movieImdb: 'tt1234567', movieTitle: 'The Matrix', handleAddMovie })} />)
+    fireEvent.submit(screen.getByRole('button', { name: /create/i }).closest('form'))
     expect(handleAddMovie).toHaveBeenCalledTimes(1)
   })
 
   it('does not call handleAddMovie when button is disabled', async () => {
     const handleAddMovie = vi.fn()
     const user = userEvent.setup()
-
-    renderMovieForm({ movieImdb: '', movieTitle: '', handleAddMovie })
-
-    // Button is disabled — click should not fire the handler
+    render(<MovieForm {...makeProps({ movieImdb: '', movieTitle: '', handleAddMovie })} />)
     await user.click(screen.getByRole('button', { name: /create/i }))
-
     expect(handleAddMovie).not.toHaveBeenCalled()
   })
 
-  it('calls handleInputChange when user types in IMDB field', async () => {
+  it('calls handleInputChange when user types in IMDB field', () => {
     const handleInputChange = vi.fn()
-    const user = userEvent.setup()
-
-    renderMovieForm({ handleInputChange })
-
-    await user.type(screen.getByPlaceholderText(/imdb/i), 'tt')
-
-    expect(handleInputChange).toHaveBeenCalled()
+    render(<MovieForm {...makeProps({ handleInputChange })} />)
+    fireEvent.change(screen.getByPlaceholderText(/imdb/i), { target: { value: 'tt' } })
+    expect(handleInputChange).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,72 +1,57 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { screen, waitFor } from '@testing-library/react'
+import { render } from '../../test-utils'
 import Home from './Home'
 import { movieApi } from '../misc/MovieApi'
 
-vi.mock('../misc/MovieApi', () => ({
-  movieApi: {
-    numberOfUsers: vi.fn(),
-    numberOfMovies: vi.fn(),
-  },
-}))
+vi.mock('../misc/MovieApi')
+
+beforeEach(() => {
+  vi.clearAllMocks()
+  localStorage.clear()
+})
 
 describe('Home', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    vi.resetAllMocks()
-  })
-
-  it('fetches and displays the number of users and movies', async () => {
-    movieApi.numberOfUsers.mockResolvedValue({ data: 42 })
-    movieApi.numberOfMovies.mockResolvedValue({ data: 17 })
+  it('renders user and movie counts after data loads', async () => {
+    movieApi.numberOfUsers.mockResolvedValue({ data: 5 })
+    movieApi.numberOfMovies.mockResolvedValue({ data: 12 })
 
     render(<Home />)
 
     await waitFor(() => {
-      expect(screen.getByText('42')).toBeInTheDocument()
-      expect(screen.getByText('17')).toBeInTheDocument()
+      expect(screen.getByText('5')).toBeInTheDocument()
+      expect(screen.getByText('12')).toBeInTheDocument()
     })
 
     expect(screen.getByText('Users')).toBeInTheDocument()
     expect(screen.getByText('Movies')).toBeInTheDocument()
   })
 
-  it('displays zero counts initially while loading', () => {
-    // Never resolves during this check
-    movieApi.numberOfUsers.mockReturnValue(new Promise(() => {}))
-    movieApi.numberOfMovies.mockReturnValue(new Promise(() => {}))
-
-    render(<Home />)
-
-    // Initial state: counts are 0
-    expect(screen.getByText('Users')).toBeInTheDocument()
-    expect(screen.getByText('Movies')).toBeInTheDocument()
-  })
-
-  it('still renders the page structure when API calls fail', async () => {
+  it('shows 0 counts when API calls fail', async () => {
     movieApi.numberOfUsers.mockRejectedValue(new Error('Network error'))
     movieApi.numberOfMovies.mockRejectedValue(new Error('Network error'))
 
     render(<Home />)
 
     await waitFor(() => {
-      expect(movieApi.numberOfUsers).toHaveBeenCalled()
+      const zeros = screen.getAllByText('0')
+      expect(zeros.length).toBeGreaterThanOrEqual(2)
     })
-
-    // Page structure should still be rendered even after error
-    expect(screen.getByText('Users')).toBeInTheDocument()
-    expect(screen.getByText('Movies')).toBeInTheDocument()
   })
 
-  it('calls numberOfUsers and numberOfMovies on mount', async () => {
-    movieApi.numberOfUsers.mockResolvedValue({ data: 5 })
-    movieApi.numberOfMovies.mockResolvedValue({ data: 10 })
+  it('shows the loading overlay while fetching and hides it after', async () => {
+    let resolveUsers, resolveMovies
+    movieApi.numberOfUsers.mockReturnValue(new Promise(r => { resolveUsers = r }))
+    movieApi.numberOfMovies.mockReturnValue(new Promise(r => { resolveMovies = r }))
 
-    render(<Home />)
+    const { container } = render(<Home />)
 
-    await waitFor(() => {
-      expect(movieApi.numberOfUsers).toHaveBeenCalledTimes(1)
-      expect(movieApi.numberOfMovies).toHaveBeenCalledTimes(1)
-    })
+    expect(container.querySelector('.mantine-LoadingOverlay-root')).toBeInTheDocument()
+
+    resolveUsers({ data: 5 })
+    resolveMovies({ data: 12 })
+    await waitFor(() => expect(container.querySelector('.mantine-LoadingOverlay-root')).not.toBeInTheDocument())
+
+    expect(screen.getByText('5')).toBeInTheDocument()
+    expect(screen.getByText('12')).toBeInTheDocument()
   })
 })

@@ -1,15 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { parseJwt, getSocialLoginUrl, handleLogError } from './Helpers'
 
-// In test env NODE_ENV === 'test', config resolves to prod URLs
 const API_BASE_URL = 'https://mybeapp.herokuapp.com'
 const OAUTH2_REDIRECT_URI = 'https://myfeapp.herokuapp.com/oauth2/redirect'
 
-// Helper: build a real base64url-encoded JWT payload
 function makeToken(payload) {
   const json = JSON.stringify(payload)
   const base64 = btoa(json)
-  // A minimal valid-looking JWT: header.payload.signature
   return `header.${base64}.signature`
 }
 
@@ -41,16 +37,12 @@ describe('parseJwt', () => {
 describe('getSocialLoginUrl', () => {
   it('returns correct github OAuth2 URL', () => {
     const url = getSocialLoginUrl('github')
-    expect(url).toBe(
-      `${API_BASE_URL}/oauth2/authorization/github?redirect_uri=${OAUTH2_REDIRECT_URI}`
-    )
+    expect(url).toBe(`${API_BASE_URL}/oauth2/authorization/github?redirect_uri=${OAUTH2_REDIRECT_URI}`)
   })
 
   it('returns correct google OAuth2 URL', () => {
     const url = getSocialLoginUrl('google')
-    expect(url).toBe(
-      `${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${OAUTH2_REDIRECT_URI}`
-    )
+    expect(url).toBe(`${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${OAUTH2_REDIRECT_URI}`)
   })
 })
 

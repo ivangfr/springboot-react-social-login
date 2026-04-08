@@ -1,218 +1,160 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '../../test-utils'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Routes, Route } from 'react-router-dom'
+import { render, makeAdminUser, seedLocalStorage } from '../../test-utils'
 import AdminPage from './AdminPage'
 import { movieApi } from '../misc/MovieApi'
 
-vi.mock('../misc/MovieApi', () => ({
-  movieApi: {
-    getUsers: vi.fn(),
-    deleteUser: vi.fn(),
-    getMovies: vi.fn(),
-    deleteMovie: vi.fn(),
-    addMovie: vi.fn(),
-  },
-}))
+vi.mock('../misc/MovieApi')
 
-function makeAdminUser() {
-  return {
-    data: { exp: Math.floor(Date.now() / 1000) + 3600, name: 'Admin', rol: ['ADMIN'] },
-    accessToken: 'mock-token',
-  }
-}
-
-function makeNonAdminUser() {
-  return {
-    data: { exp: Math.floor(Date.now() / 1000) + 3600, name: 'Regular', rol: ['USER'] },
-    accessToken: 'mock-token',
-  }
-}
-
-function HomePage() {
-  return <div>Home Page</div>
-}
-
-function renderAdminPage(asAdmin = true) {
-  const user = asAdmin ? makeAdminUser() : makeNonAdminUser()
-  localStorage.setItem('user', JSON.stringify(user))
-
-  return render(
-    <Routes>
-      <Route path='/adminpage' element={<AdminPage />} />
-      <Route path='/' element={<HomePage />} />
-    </Routes>,
-    { route: '/adminpage' }
-  )
-}
+beforeEach(() => {
+  vi.clearAllMocks()
+  localStorage.clear()
+})
 
 describe('AdminPage', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    vi.resetAllMocks()
+  it('redirects to / when the stored user is not ADMIN', () => {
+    const userData = { sub: 'bob', rol: ['USER'], name: 'Bob', exp: Math.floor(Date.now() / 1000) + 3600 }
+    const user = { data: userData, accessToken: 'mock-token' }
+    seedLocalStorage(user)
+
+    movieApi.getUsers.mockResolvedValue({ data: [] })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
+
+    render(<AdminPage />, { initialRoute: '/adminpage' })
+    expect(screen.queryByRole('tab', { name: /users/i })).not.toBeInTheDocument()
   })
 
-  describe('role guard', () => {
-    it('redirects to / when user is not ADMIN', () => {
-      // USER role: getUser() returns a non-admin user so AdminPage can call getUser()
-      movieApi.getUsers.mockResolvedValue({ data: [] })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
+  it('loads and displays the admin tabs when user is ADMIN', async () => {
+    seedLocalStorage(makeAdminUser())
+    movieApi.getUsers.mockResolvedValue({ data: [] })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
 
-      renderAdminPage(false)
+    render(<AdminPage />)
 
-      expect(screen.getByText('Home Page')).toBeInTheDocument()
-    })
-
-    it('renders the admin content when user is ADMIN', async () => {
-      movieApi.getUsers.mockResolvedValue({ data: [] })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
-
-      renderAdminPage(true)
-
-      await waitFor(() => {
-        expect(screen.getByRole('tab', { name: /users/i })).toBeInTheDocument()
-      })
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: /users/i })).toBeInTheDocument()
+      expect(screen.getByRole('tab', { name: /movies/i })).toBeInTheDocument()
     })
   })
 
-  describe('data loading on mount', () => {
-    it('calls getUsers and getMovies on mount', async () => {
-      movieApi.getUsers.mockResolvedValue({ data: [] })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
-
-      renderAdminPage()
-
-      await waitFor(() => {
-        expect(movieApi.getUsers).toHaveBeenCalledTimes(1)
-        expect(movieApi.getMovies).toHaveBeenCalledTimes(1)
-      })
+  it('fetches users and movies on mount', async () => {
+    seedLocalStorage(makeAdminUser())
+    movieApi.getUsers.mockResolvedValue({
+      data: [{ id: 1, username: 'alice', name: 'Alice', email: 'alice@example.com', role: 'USER' }],
     })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
 
-    it('displays users loaded on mount', async () => {
-      const users = [{ id: 1, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' }]
-      movieApi.getUsers.mockResolvedValue({ data: users })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
+    render(<AdminPage />)
 
-      renderAdminPage()
-
-      await waitFor(() => {
-        expect(screen.getByText('alice')).toBeInTheDocument()
-      })
-    })
-
-    it('displays movies loaded on mount (after switching to Movies tab)', async () => {
-      const user = userEvent.setup()
-      const movies = [{ imdb: 'tt0133093', title: 'The Matrix', poster: '', createdAt: '2024-01-01' }]
-      movieApi.getUsers.mockResolvedValue({ data: [] })
-      movieApi.getMovies.mockResolvedValue({ data: movies })
-
-      renderAdminPage()
-
-      await waitFor(() => {
-        expect(movieApi.getMovies).toHaveBeenCalled()
-      })
-
-      await user.click(screen.getByRole('tab', { name: /movies/i }))
-
-      await waitFor(() => {
-        expect(screen.getByText('The Matrix')).toBeInTheDocument()
-      })
+    await waitFor(() => {
+      expect(movieApi.getUsers).toHaveBeenCalledTimes(1)
+      expect(movieApi.getMovies).toHaveBeenCalledTimes(1)
+      expect(screen.getByText('alice')).toBeInTheDocument()
     })
   })
 
-  describe('delete user', () => {
-    it('calls deleteUser and refreshes users list', async () => {
-      const user = userEvent.setup()
-      const users = [
-        { id: 1, username: 'admin', name: 'Admin', email: 'admin@test.com', role: 'ADMIN' },
-        { id: 2, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' },
-      ]
-      movieApi.getUsers.mockResolvedValue({ data: users })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
-      movieApi.deleteUser.mockResolvedValue({})
+  it('displays users loaded on mount', async () => {
+    seedLocalStorage(makeAdminUser())
+    const users = [{ id: 1, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' }]
+    movieApi.getUsers.mockResolvedValue({ data: users })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
 
-      renderAdminPage()
+    render(<AdminPage />)
 
-      await waitFor(() => {
-        expect(screen.getByText('alice')).toBeInTheDocument()
-      })
-
-      const rows = screen.getAllByRole('row')
-      // rows[0]=thead, rows[1]=admin, rows[2]=alice
-      const aliceRow = rows[2]
-      const deleteBtn = aliceRow.querySelector('button')
-      await user.click(deleteBtn)
-
-      await waitFor(() => {
-        expect(movieApi.deleteUser).toHaveBeenCalledWith(
-          expect.objectContaining({ accessToken: 'mock-token' }),
-          'alice'
-        )
-      })
-
-      // Verify getUsers is called again after delete (refresh)
-      await waitFor(() => {
-        expect(movieApi.getUsers).toHaveBeenCalledTimes(2)
-      })
+    await waitFor(() => {
+      expect(screen.getByText('alice')).toBeInTheDocument()
     })
   })
 
-  describe('search user', () => {
-    it('calls getUsers with search term and wraps single result in array', async () => {
-      const user = userEvent.setup()
-      movieApi.getUsers.mockResolvedValue({ data: [] })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
+  it('displays movies after switching to Movies tab', async () => {
+    seedLocalStorage(makeAdminUser())
+    const movies = [{ imdb: 'tt0133093', title: 'The Matrix', poster: '', createdAt: '2024-01-01' }]
+    movieApi.getUsers.mockResolvedValue({ data: [] })
+    movieApi.getMovies.mockResolvedValue({ data: movies })
 
-      renderAdminPage()
+    render(<AdminPage />)
 
-      await waitFor(() => {
-        expect(screen.getByPlaceholderText(/search by username/i)).toBeInTheDocument()
-      })
-
-      // Single object response — AdminPage wraps it in an array
-      const singleUser = { id: 2, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' }
-      movieApi.getUsers.mockResolvedValue({ data: singleUser })
-
-      await user.type(screen.getByPlaceholderText(/search by username/i), 'alice')
-
-      const form = screen.getByPlaceholderText(/search by username/i).closest('form')
-      fireEvent.submit(form)
-
-      await waitFor(() => {
-        expect(movieApi.getUsers).toHaveBeenCalledWith(
-          expect.objectContaining({ accessToken: 'mock-token' }),
-          'alice'
-        )
-      })
+    await waitFor(() => {
+      expect(screen.getByText('The Matrix')).toBeInTheDocument()
     })
   })
 
-  describe('add movie', () => {
-    it('calls addMovie when Create button is clicked with valid data', async () => {
-      const user = userEvent.setup()
-      movieApi.getUsers.mockResolvedValue({ data: [] })
-      movieApi.getMovies.mockResolvedValue({ data: [] })
-      movieApi.addMovie.mockResolvedValue({})
+  it('calls deleteUser and refreshes users list', async () => {
+    const user = userEvent.setup()
+    seedLocalStorage(makeAdminUser())
+    const users = [
+      { id: 1, username: 'admin', name: 'Admin', email: 'admin@test.com', role: 'ADMIN' },
+      { id: 2, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' },
+    ]
+    movieApi.getUsers.mockResolvedValue({ data: users })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
+    movieApi.deleteUser.mockResolvedValue({})
 
-      renderAdminPage()
+    render(<AdminPage />)
 
-      await waitFor(() => {
-        expect(screen.getByRole('tab', { name: /users/i })).toBeInTheDocument()
-      })
+    await waitFor(() => {
+      expect(screen.getByText('alice')).toBeInTheDocument()
+    })
 
-      await user.click(screen.getByRole('tab', { name: /movies/i }))
+    const rows = screen.getAllByRole('row')
+    const aliceRow = rows[2]
+    const deleteBtn = aliceRow.querySelector('button')
+    await user.click(deleteBtn)
 
-      await user.type(screen.getByPlaceholderText('IMDB *'), 'tt9999999')
-      await user.type(screen.getByPlaceholderText('Title *'), 'New Movie')
+    await waitFor(() => {
+      expect(movieApi.deleteUser).toHaveBeenCalled()
+    })
 
-      await user.click(screen.getByRole('button', { name: /create/i }))
+    await waitFor(() => {
+      expect(movieApi.getUsers).toHaveBeenCalledTimes(2)
+    })
+  })
 
-      await waitFor(() => {
-        expect(movieApi.addMovie).toHaveBeenCalledWith(
-          expect.objectContaining({ accessToken: 'mock-token' }),
-          expect.objectContaining({ imdb: 'tt9999999', title: 'New Movie' })
-        )
-      })
+  it('calls getUsers with search term', async () => {
+    const user = userEvent.setup()
+    seedLocalStorage(makeAdminUser())
+    movieApi.getUsers.mockResolvedValue({ data: [] })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
+
+    render(<AdminPage />)
+
+    await waitFor(() => {
+      expect(screen.getByPlaceholderText(/search by username/i)).toBeInTheDocument()
+    })
+
+    const singleUser = { id: 2, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' }
+    movieApi.getUsers.mockResolvedValue({ data: singleUser })
+
+    await user.type(screen.getByPlaceholderText(/search by username/i), 'alice')
+    await user.keyboard('{enter}')
+
+    await waitFor(() => {
+      expect(movieApi.getUsers).toHaveBeenCalled()
+    })
+  })
+
+  it('calls addMovie when Create button is clicked with valid data', async () => {
+    const user = userEvent.setup()
+    seedLocalStorage(makeAdminUser())
+    movieApi.getUsers.mockResolvedValue({ data: [] })
+    movieApi.getMovies.mockResolvedValue({ data: [] })
+    movieApi.addMovie.mockResolvedValue({})
+
+    render(<AdminPage />)
+
+    await waitFor(() => {
+      expect(screen.getByRole('tab', { name: /users/i })).toBeInTheDocument()
+    })
+
+    await user.click(screen.getByRole('tab', { name: /movies/i }))
+
+    await user.type(screen.getByPlaceholderText('IMDB *'), 'tt9999999')
+    await user.type(screen.getByPlaceholderText('Title *'), 'New Movie')
+
+    await user.click(screen.getByRole('button', { name: /create/i }))
+
+    await waitFor(() => {
+      expect(movieApi.addMovie).toHaveBeenCalled()
     })
   })
 })

@@ -1,13 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, waitFor } from '../../test-utils'
+import { screen, waitFor } from '@testing-library/react'
+import { render, makeToken } from '../../test-utils'
 import { Routes, Route } from 'react-router-dom'
 import OAuth2Redirect from './OAuth2Redirect'
-
-// Build a minimal valid JWT: header.base64(payload).sig
-function makeToken(payload = {}) {
-  const defaults = { sub: 'user1', exp: Math.floor(Date.now() / 1000) + 3600, name: 'Alice', rol: ['USER'] }
-  return `header.${btoa(JSON.stringify({ ...defaults, ...payload }))}.sig`
-}
 
 function HomePage() {
   return <div>Home Page</div>
@@ -17,8 +11,6 @@ function LoginPage() {
   return <div>Login Page</div>
 }
 
-// Render OAuth2Redirect at /oauth2/redirect with optional search params.
-// Also mount / and /login routes so Navigate can resolve.
 function renderOAuth2Redirect(search = '') {
   return render(
     <Routes>
@@ -30,14 +22,13 @@ function renderOAuth2Redirect(search = '') {
   )
 }
 
-describe('OAuth2Redirect', () => {
-  beforeEach(() => {
-    localStorage.clear()
-    vi.resetAllMocks()
-  })
+beforeEach(() => {
+  localStorage.clear()
+})
 
+describe('OAuth2Redirect', () => {
   it('navigates to / and stores user when a valid token is in the URL', async () => {
-    const token = makeToken({ name: 'Alice', rol: ['USER'] })
+    const token = makeToken({ sub: 'alice', name: 'Alice', rol: ['USER'], exp: Math.floor(Date.now() / 1000) + 3600 })
 
     renderOAuth2Redirect(`?token=${token}`)
 
@@ -68,7 +59,7 @@ describe('OAuth2Redirect', () => {
   })
 
   it('stores the correct accessToken in localStorage', async () => {
-    const token = makeToken({ name: 'Bob', rol: ['ADMIN'] })
+    const token = makeToken({ sub: 'admin', name: 'Bob', rol: ['ADMIN'], exp: Math.floor(Date.now() / 1000) + 3600 })
 
     renderOAuth2Redirect(`?token=${token}`)
 

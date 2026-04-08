@@ -25,6 +25,12 @@ export default [
         URLSearchParams: 'readonly',
         URL: 'readonly',
         location: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        vi: 'readonly',
       },
     },
     settings: {
