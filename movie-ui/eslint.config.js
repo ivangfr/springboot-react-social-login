@@ -1,4 +1,5 @@
 import js from '@eslint/js'
+import globals from 'globals'
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 
@@ -15,22 +16,7 @@ export default [
         ecmaFeatures: { jsx: true },
       },
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        localStorage: 'readonly',
-        fetch: 'readonly',
-        process: 'readonly',
-        btoa: 'readonly',
-        URLSearchParams: 'readonly',
-        URL: 'readonly',
-        location: 'readonly',
-        describe: 'readonly',
-        it: 'readonly',
-        expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        vi: 'readonly',
+        ...globals.browser,
       },
     },
     settings: {
@@ -42,7 +28,23 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
       'react-hooks/purity': 'off',
-      'react-hooks/set-state-in-effect': 'off',
+    },
+  },
+  {
+    files: ['**/*.test.{js,jsx}', '**/setupTests.js'],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        describe: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        vi: 'readonly',
+      },
     },
   },
 ]
