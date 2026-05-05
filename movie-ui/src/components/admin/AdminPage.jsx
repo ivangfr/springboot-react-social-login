@@ -107,7 +107,11 @@ function AdminPage() {
       return
     }
 
-    const movie = { imdb: trimmedImdb, title: trimmedTitle, poster: trimmedPoster }
+    const movie = {
+      imdb: trimmedImdb,
+      title: trimmedTitle,
+      poster: trimmedPoster
+    }
 
     try {
       await movieApi.addMovie(user, movie)

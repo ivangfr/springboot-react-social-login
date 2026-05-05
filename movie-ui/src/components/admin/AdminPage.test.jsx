@@ -13,7 +13,12 @@ beforeEach(() => {
 
 describe('AdminPage', () => {
   it('redirects to / when the stored user is not ADMIN', () => {
-    const userData = { sub: 'bob', rol: ['USER'], name: 'Bob', exp: Math.floor(Date.now() / 1000) + 3600 }
+    const userData = {
+      sub: 'bob',
+      rol: ['USER'],
+      name: 'Bob',
+      exp: Math.floor(Date.now() / 1000) + 3600
+    }
     const user = { data: userData, accessToken: 'mock-token' }
     seedLocalStorage(user)
 
@@ -21,7 +26,9 @@ describe('AdminPage', () => {
     movieApi.getMovies.mockResolvedValue({ data: [] })
 
     render(<AdminPage />, { initialRoute: '/adminpage' })
-    expect(screen.queryByRole('tab', { name: /users/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('tab', { name: /users/i })
+    ).not.toBeInTheDocument()
   })
 
   it('loads and displays the admin tabs when user is ADMIN', async () => {
@@ -40,7 +47,15 @@ describe('AdminPage', () => {
   it('fetches users and movies on mount', async () => {
     seedLocalStorage(makeAdminUser())
     movieApi.getUsers.mockResolvedValue({
-      data: [{ id: 1, username: 'alice', name: 'Alice', email: 'alice@example.com', role: 'USER' }],
+      data: [
+        {
+          id: 1,
+          username: 'alice',
+          name: 'Alice',
+          email: 'alice@example.com',
+          role: 'USER'
+        }
+      ]
     })
     movieApi.getMovies.mockResolvedValue({ data: [] })
 
@@ -55,7 +70,15 @@ describe('AdminPage', () => {
 
   it('displays users loaded on mount', async () => {
     seedLocalStorage(makeAdminUser())
-    const users = [{ id: 1, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' }]
+    const users = [
+      {
+        id: 1,
+        username: 'alice',
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'USER'
+      }
+    ]
     movieApi.getUsers.mockResolvedValue({ data: users })
     movieApi.getMovies.mockResolvedValue({ data: [] })
 
@@ -68,7 +91,14 @@ describe('AdminPage', () => {
 
   it('displays movies after switching to Movies tab', async () => {
     seedLocalStorage(makeAdminUser())
-    const movies = [{ imdb: 'tt0133093', title: 'The Matrix', poster: '', createdAt: '2024-01-01' }]
+    const movies = [
+      {
+        imdb: 'tt0133093',
+        title: 'The Matrix',
+        poster: '',
+        createdAt: '2024-01-01'
+      }
+    ]
     movieApi.getUsers.mockResolvedValue({ data: [] })
     movieApi.getMovies.mockResolvedValue({ data: movies })
 
@@ -83,8 +113,20 @@ describe('AdminPage', () => {
     const user = userEvent.setup()
     seedLocalStorage(makeAdminUser())
     const users = [
-      { id: 1, username: 'admin', name: 'Admin', email: 'admin@test.com', role: 'ADMIN' },
-      { id: 2, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' },
+      {
+        id: 1,
+        username: 'admin',
+        name: 'Admin',
+        email: 'admin@test.com',
+        role: 'ADMIN'
+      },
+      {
+        id: 2,
+        username: 'alice',
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'USER'
+      }
     ]
     movieApi.getUsers.mockResolvedValue({ data: users })
     movieApi.getMovies.mockResolvedValue({ data: [] })
@@ -119,10 +161,18 @@ describe('AdminPage', () => {
     render(<AdminPage />)
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/search by username/i)).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText(/search by username/i)
+      ).toBeInTheDocument()
     })
 
-    const singleUser = { id: 2, username: 'alice', name: 'Alice', email: 'alice@test.com', role: 'USER' }
+    const singleUser = {
+      id: 2,
+      username: 'alice',
+      name: 'Alice',
+      email: 'alice@test.com',
+      role: 'USER'
+    }
     movieApi.getUsers.mockResolvedValue({ data: singleUser })
 
     await user.type(screen.getByPlaceholderText(/search by username/i), 'alice')

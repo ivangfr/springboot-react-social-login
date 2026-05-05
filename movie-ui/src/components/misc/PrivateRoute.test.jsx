@@ -1,5 +1,10 @@
 import { screen } from '@testing-library/react'
-import { render, makeRegularUser, makeExpiredUser, seedLocalStorage } from '../../test-utils'
+import {
+  render,
+  makeRegularUser,
+  makeExpiredUser,
+  seedLocalStorage
+} from '../../test-utils'
 import { Routes, Route } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute'
 
@@ -14,7 +19,14 @@ function LoginPage() {
 function renderPrivateRoute(initialRoute = '/protected') {
   return render(
     <Routes>
-      <Route path='/protected' element={<PrivateRoute><ProtectedContent /></PrivateRoute>} />
+      <Route
+        path='/protected'
+        element={
+          <PrivateRoute>
+            <ProtectedContent />
+          </PrivateRoute>
+        }
+      />
       <Route path='/login' element={<LoginPage />} />
     </Routes>,
     { route: initialRoute }

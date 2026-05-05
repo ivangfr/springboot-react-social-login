@@ -13,13 +13,20 @@ beforeEach(() => {
 
 describe('UserPage', () => {
   it('redirects to / when the stored user is not USER role', () => {
-    const userData = { sub: 'admin', rol: ['ADMIN'], name: 'Admin', exp: Math.floor(Date.now() / 1000) + 3600 }
+    const userData = {
+      sub: 'admin',
+      rol: ['ADMIN'],
+      name: 'Admin',
+      exp: Math.floor(Date.now() / 1000) + 3600
+    }
     const user = { data: userData, accessToken: 'mock-token' }
     seedLocalStorage(user)
     movieApi.getMovies.mockResolvedValue({ data: [] })
 
     render(<UserPage />, { initialRoute: '/userpage' })
-    expect(screen.queryByRole('heading', { name: /movies/i })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: /movies/i })
+    ).not.toBeInTheDocument()
   })
 
   it('fetches and displays movies on mount', async () => {
@@ -30,7 +37,9 @@ describe('UserPage', () => {
 
     await waitFor(() => {
       expect(movieApi.getMovies).toHaveBeenCalledTimes(1)
-      expect(screen.getByRole('heading', { name: /movies/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('heading', { name: /movies/i })
+      ).toBeInTheDocument()
     })
   })
 
@@ -65,12 +74,19 @@ describe('UserPage', () => {
     render(<UserPage />)
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText(/search by imdb or title/i)).toBeInTheDocument()
+      expect(
+        screen.getByPlaceholderText(/search by imdb or title/i)
+      ).toBeInTheDocument()
     })
 
-    movieApi.getMovies.mockResolvedValue({ data: [{ imdb: 'tt0133093', title: 'The Matrix', poster: '' }] })
+    movieApi.getMovies.mockResolvedValue({
+      data: [{ imdb: 'tt0133093', title: 'The Matrix', poster: '' }]
+    })
 
-    await user.type(screen.getByPlaceholderText(/search by imdb or title/i), 'matrix')
+    await user.type(
+      screen.getByPlaceholderText(/search by imdb or title/i),
+      'matrix'
+    )
     await user.keyboard('{enter}')
 
     await waitFor(() => {
@@ -82,7 +98,9 @@ describe('UserPage', () => {
     const user = userEvent.setup()
     seedLocalStorage(makeRegularUser())
     movieApi.getMovies
-      .mockResolvedValueOnce({ data: [{ imdb: 'tt0133093', title: 'The Matrix', poster: '' }] })
+      .mockResolvedValueOnce({
+        data: [{ imdb: 'tt0133093', title: 'The Matrix', poster: '' }]
+      })
       .mockRejectedValueOnce(new Error('Network error'))
 
     render(<UserPage />)
@@ -91,7 +109,10 @@ describe('UserPage', () => {
       expect(screen.getByText('The Matrix')).toBeInTheDocument()
     })
 
-    await user.type(screen.getByPlaceholderText(/search by imdb or title/i), 'xyz')
+    await user.type(
+      screen.getByPlaceholderText(/search by imdb or title/i),
+      'xyz'
+    )
     await user.keyboard('{enter}')
 
     await waitFor(() => {

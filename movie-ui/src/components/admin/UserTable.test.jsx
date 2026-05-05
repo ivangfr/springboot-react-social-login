@@ -3,8 +3,20 @@ import { render } from '../../test-utils'
 import UserTable from './UserTable'
 
 const mockUsers = [
-  { id: 1, username: 'admin', name: 'Admin', email: 'admin@example.com', role: 'ADMIN' },
-  { id: 2, username: 'bob', name: 'Bob', email: 'bob@example.com', role: 'USER' },
+  {
+    id: 1,
+    username: 'admin',
+    name: 'Admin',
+    email: 'admin@example.com',
+    role: 'ADMIN'
+  },
+  {
+    id: 2,
+    username: 'bob',
+    name: 'Bob',
+    email: 'bob@example.com',
+    role: 'USER'
+  }
 ]
 
 function makeProps(overrides = {}) {
@@ -14,7 +26,7 @@ function makeProps(overrides = {}) {
     handleInputChange: vi.fn(),
     handleDeleteUser: vi.fn(),
     handleSearchUser: vi.fn(),
-    ...overrides,
+    ...overrides
   }
 }
 
@@ -65,13 +77,17 @@ describe('UserTable', () => {
 
   it('renders the search input', () => {
     render(<UserTable {...makeProps()} />)
-    expect(screen.getByPlaceholderText(/search by username/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/search by username/i)
+    ).toBeInTheDocument()
   })
 
   it('calls handleSearchUser when search form is submitted', () => {
     const handleSearchUser = vi.fn()
     render(<UserTable {...makeProps({ handleSearchUser })} />)
-    fireEvent.submit(screen.getByPlaceholderText(/search by username/i).closest('form'))
+    fireEvent.submit(
+      screen.getByPlaceholderText(/search by username/i).closest('form')
+    )
     expect(handleSearchUser).toHaveBeenCalledTimes(1)
   })
 })

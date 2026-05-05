@@ -5,9 +5,13 @@ import { AuthProvider } from './components/context/AuthContext'
 
 export function makeToken(payload) {
   const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '')
   const body = btoa(JSON.stringify(payload))
-    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '')
   return `${header}.${body}.fakesig`
 }
 
@@ -15,7 +19,12 @@ const futureExp = () => Math.floor(Date.now() / 1000) + 3600
 const expiredExp = () => Math.floor(Date.now() / 1000) - 3600
 
 export function makeAdminUser() {
-  const data = { sub: 'admin', rol: ['ADMIN'], name: 'Admin User', exp: futureExp() }
+  const data = {
+    sub: 'admin',
+    rol: ['ADMIN'],
+    name: 'Admin User',
+    exp: futureExp()
+  }
   return { data, accessToken: makeToken(data) }
 }
 

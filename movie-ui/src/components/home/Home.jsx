@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { SimpleGrid, Paper, Text, Container, Box, LoadingOverlay } from '@mantine/core'
+import {
+  SimpleGrid,
+  Paper,
+  Text,
+  Container,
+  Box,
+  LoadingOverlay
+} from '@mantine/core'
 import { IconUsers, IconDeviceLaptop } from '@tabler/icons-react'
 import { movieApi } from '../misc/MovieApi'
 import { handleLogError } from '../misc/Helpers'
@@ -37,12 +44,16 @@ function Home() {
         <SimpleGrid cols={{ base: 1, sm: 2 }}>
           <Paper withBorder p='xl' radius='md' ta='center'>
             <IconUsers size={32} color='gray' />
-            <Text size='3rem' fw={700}>{numberOfUsers}</Text>
+            <Text size='3rem' fw={700}>
+              {numberOfUsers}
+            </Text>
             <Text c='dimmed'>Users</Text>
           </Paper>
           <Paper withBorder p='xl' radius='md' ta='center'>
             <IconDeviceLaptop size={32} color='gray' />
-            <Text size='3rem' fw={700}>{numberOfMovies}</Text>
+            <Text size='3rem' fw={700}>
+              {numberOfMovies}
+            </Text>
             <Text c='dimmed'>Movies</Text>
           </Paper>
         </SimpleGrid>

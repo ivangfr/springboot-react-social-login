@@ -19,7 +19,7 @@ function makeProps(overrides = {}) {
     handleDeleteMovie: vi.fn(),
     handleSearchMovie: vi.fn(),
     handleInputChange: vi.fn(),
-    ...overrides,
+    ...overrides
   }
 }
 
@@ -32,7 +32,9 @@ describe('AdminTab', () => {
 
   it('shows the Users tab panel by default', () => {
     render(<AdminTab {...makeProps()} />)
-    expect(screen.getByPlaceholderText(/search by username/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/search by username/i)
+    ).toBeInTheDocument()
   })
 
   it('shows "No user" in the Users panel by default when users array is empty', () => {
@@ -41,7 +43,15 @@ describe('AdminTab', () => {
   })
 
   it('shows user rows in the Users panel when users are provided', () => {
-    const users = [{ id: 1, username: 'alice', name: 'Alice', email: 'alice@example.com', role: 'USER' }]
+    const users = [
+      {
+        id: 1,
+        username: 'alice',
+        name: 'Alice',
+        email: 'alice@example.com',
+        role: 'USER'
+      }
+    ]
     render(<AdminTab {...makeProps({ users })} />)
     expect(screen.getByText('alice')).toBeInTheDocument()
   })
@@ -49,7 +59,9 @@ describe('AdminTab', () => {
   it('switches to the Movies tab panel when Movies tab is clicked', () => {
     render(<AdminTab {...makeProps()} />)
     screen.getByRole('tab', { name: /movies/i }).click()
-    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/search by imdb or title/i)
+    ).toBeInTheDocument()
   })
 
   it('shows "No movie" in the Movies panel when movies array is empty', () => {
@@ -59,7 +71,14 @@ describe('AdminTab', () => {
   })
 
   it('shows movie rows in the Movies panel when movies are provided', () => {
-    const movies = [{ imdb: 'tt0133093', title: 'The Matrix', poster: '', createdAt: '2024-01-01' }]
+    const movies = [
+      {
+        imdb: 'tt0133093',
+        title: 'The Matrix',
+        poster: '',
+        createdAt: '2024-01-01'
+      }
+    ]
     render(<AdminTab {...makeProps({ movies })} />)
     screen.getByRole('tab', { name: /movies/i }).click()
     expect(screen.getByText('The Matrix')).toBeInTheDocument()

@@ -1,7 +1,23 @@
 import { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
-import { Button, TextInput, PasswordInput, Paper, Stack, Alert, Divider, Anchor, Center, Box } from '@mantine/core'
-import { IconBrandGithubFilled, IconBrandGoogleFilled, IconBrandFacebookFilled, IconBrandInstagramFilled } from '@tabler/icons-react'
+import {
+  Button,
+  TextInput,
+  PasswordInput,
+  Paper,
+  Stack,
+  Alert,
+  Divider,
+  Anchor,
+  Center,
+  Box
+} from '@mantine/core'
+import {
+  IconBrandGithubFilled,
+  IconBrandGoogleFilled,
+  IconBrandFacebookFilled,
+  IconBrandInstagramFilled
+} from '@tabler/icons-react'
 import { useAuth } from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
 import { parseJwt, getSocialLoginUrl, handleLogError } from '../misc/Helpers'
@@ -62,13 +78,17 @@ function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <Button type='submit' color='grape' fullWidth size='md'>Login</Button>
+              <Button type='submit' color='grape' fullWidth size='md'>
+                Login
+              </Button>
             </Stack>
           </Paper>
         </form>
         <Paper withBorder p='sm' radius='md' mt='sm' ta='center' shadow='sm'>
           Don&apos;t have an account?{' '}
-          <Anchor component={NavLink} to='/signup'>Sign Up</Anchor>
+          <Anchor component={NavLink} to='/signup'>
+            Sign Up
+          </Anchor>
         </Paper>
         {isError && (
           <Alert color='red' variant='light'>
@@ -84,7 +104,12 @@ function Login() {
             href={getSocialLoginUrl('github')}
             variant='outline'
             color='dark'
-            style={{ flex: 1, flexDirection: 'column', height: 'auto', padding: '8px 4px' }}
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              height: 'auto',
+              padding: '8px 4px'
+            }}
           >
             <IconBrandGithubFilled size={20} />
             <span>Github</span>
@@ -94,7 +119,12 @@ function Login() {
             href={getSocialLoginUrl('google')}
             variant='outline'
             color='dark'
-            style={{ flex: 1, flexDirection: 'column', height: 'auto', padding: '8px 4px' }}
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              height: 'auto',
+              padding: '8px 4px'
+            }}
           >
             <IconBrandGoogleFilled size={20} />
             <span>Google</span>
@@ -102,7 +132,12 @@ function Login() {
           <Button
             variant='outline'
             color='dark'
-            style={{ flex: 1, flexDirection: 'column', height: 'auto', padding: '8px 4px' }}
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              height: 'auto',
+              padding: '8px 4px'
+            }}
             disabled
           >
             <IconBrandFacebookFilled size={20} />
@@ -111,7 +146,12 @@ function Login() {
           <Button
             variant='outline'
             color='dark'
-            style={{ flex: 1, flexDirection: 'column', height: 'auto', padding: '8px 4px' }}
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              height: 'auto',
+              padding: '8px 4px'
+            }}
             disabled
           >
             <IconBrandInstagramFilled size={20} />

@@ -1,5 +1,10 @@
 import { screen, fireEvent } from '@testing-library/react'
-import { render, makeAdminUser, makeRegularUser, seedLocalStorage } from '../../test-utils'
+import {
+  render,
+  makeAdminUser,
+  makeRegularUser,
+  seedLocalStorage
+} from '../../test-utils'
 import { AppShell } from '@mantine/core'
 import Navbar from './Navbar'
 

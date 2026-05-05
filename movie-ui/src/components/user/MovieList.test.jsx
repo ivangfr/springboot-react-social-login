@@ -3,8 +3,12 @@ import { render } from '../../test-utils'
 import MovieList from './MovieList'
 
 const sampleMovies = [
-  { imdb: 'tt0133093', title: 'The Matrix', poster: 'https://example.com/matrix.jpg' },
-  { imdb: 'tt0109830', title: 'Forrest Gump', poster: '' },
+  {
+    imdb: 'tt0133093',
+    title: 'The Matrix',
+    poster: 'https://example.com/matrix.jpg'
+  },
+  { imdb: 'tt0109830', title: 'Forrest Gump', poster: '' }
 ]
 
 function makeProps(overrides = {}) {
@@ -14,7 +18,7 @@ function makeProps(overrides = {}) {
     movies: [],
     handleInputChange: vi.fn(),
     handleSearchMovie: vi.fn(),
-    ...overrides,
+    ...overrides
   }
 }
 
@@ -54,14 +58,18 @@ describe('MovieList', () => {
 
   it('renders the search input', () => {
     render(<MovieList {...makeProps()} />)
-    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/search by imdb or title/i)
+    ).toBeInTheDocument()
   })
 
   it('calls handleSearchMovie when the search form is submitted', () => {
     const handleSearchMovie = vi.fn()
     render(<MovieList {...makeProps({ handleSearchMovie })} />)
 
-    const form = screen.getByPlaceholderText(/search by imdb or title/i).closest('form')
+    const form = screen
+      .getByPlaceholderText(/search by imdb or title/i)
+      .closest('form')
     fireEvent.submit(form)
 
     expect(handleSearchMovie).toHaveBeenCalledTimes(1)
@@ -71,13 +79,17 @@ describe('MovieList', () => {
     const handleInputChange = vi.fn()
     render(<MovieList {...makeProps({ handleInputChange })} />)
 
-    fireEvent.change(screen.getByPlaceholderText(/search by imdb or title/i), { target: { value: 'mat' } })
+    fireEvent.change(screen.getByPlaceholderText(/search by imdb or title/i), {
+      target: { value: 'mat' }
+    })
 
     expect(handleInputChange).toHaveBeenCalled()
   })
 
   it('displays the current search term in the input', () => {
     render(<MovieList {...makeProps({ movieTextSearch: 'matrix' })} />)
-    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toHaveValue('matrix')
+    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toHaveValue(
+      'matrix'
+    )
   })
 })

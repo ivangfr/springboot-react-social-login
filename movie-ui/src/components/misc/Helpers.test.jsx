@@ -37,12 +37,16 @@ describe('parseJwt', () => {
 describe('getSocialLoginUrl', () => {
   it('returns correct github OAuth2 URL', () => {
     const url = getSocialLoginUrl('github')
-    expect(url).toBe(`${API_BASE_URL}/oauth2/authorization/github?redirect_uri=${OAUTH2_REDIRECT_URI}`)
+    expect(url).toBe(
+      `${API_BASE_URL}/oauth2/authorization/github?redirect_uri=${OAUTH2_REDIRECT_URI}`
+    )
   })
 
   it('returns correct google OAuth2 URL', () => {
     const url = getSocialLoginUrl('google')
-    expect(url).toBe(`${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${OAUTH2_REDIRECT_URI}`)
+    expect(url).toBe(
+      `${API_BASE_URL}/oauth2/authorization/google?redirect_uri=${OAUTH2_REDIRECT_URI}`
+    )
   })
 })
 

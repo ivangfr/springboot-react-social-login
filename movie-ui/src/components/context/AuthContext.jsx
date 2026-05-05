@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback
+} from 'react'
 
 const AuthContext = createContext()
 
@@ -34,7 +40,7 @@ function AuthProvider({ children }) {
     return true
   }, [userLogout])
 
-  const userLogin = useCallback(user => {
+  const userLogin = useCallback((user) => {
     localStorage.setItem('user', JSON.stringify(user))
     setUser(user)
   }, [])
@@ -44,13 +50,11 @@ function AuthProvider({ children }) {
     getUser,
     userIsAuthenticated,
     userLogin,
-    userLogout,
+    userLogout
   }
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   )
 }
 

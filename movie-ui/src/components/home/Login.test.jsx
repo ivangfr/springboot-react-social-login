@@ -1,6 +1,11 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { render, makeRegularUser, seedLocalStorage, makeToken } from '../../test-utils'
+import {
+  render,
+  makeRegularUser,
+  seedLocalStorage,
+  makeToken
+} from '../../test-utils'
 import { Routes, Route } from 'react-router-dom'
 import Login from './Login'
 import { movieApi } from '../misc/MovieApi'
@@ -54,8 +59,15 @@ describe('Login', () => {
 
   it('calls userLogin and clears fields on successful authentication', async () => {
     const futureExp = Math.floor(Date.now() / 1000) + 3600
-    const payload = { sub: 'alice', rol: ['USER'], name: 'Alice', exp: futureExp }
-    movieApi.authenticate.mockResolvedValue({ data: { accessToken: makeToken(payload) } })
+    const payload = {
+      sub: 'alice',
+      rol: ['USER'],
+      name: 'Alice',
+      exp: futureExp
+    }
+    movieApi.authenticate.mockResolvedValue({
+      data: { accessToken: makeToken(payload) }
+    })
 
     renderLogin()
 

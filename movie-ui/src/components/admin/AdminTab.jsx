@@ -5,14 +5,34 @@ import MovieTable from './MovieTable'
 
 function AdminTab(props) {
   const { handleInputChange } = props
-  const { isUsersLoading, users, userUsernameSearch, handleDeleteUser, handleSearchUser } = props
-  const { isMoviesLoading, movies, movieImdb, movieTitle, moviePoster, movieTextSearch, handleAddMovie, handleDeleteMovie, handleSearchMovie } = props
+  const {
+    isUsersLoading,
+    users,
+    userUsernameSearch,
+    handleDeleteUser,
+    handleSearchUser
+  } = props
+  const {
+    isMoviesLoading,
+    movies,
+    movieImdb,
+    movieTitle,
+    moviePoster,
+    movieTextSearch,
+    handleAddMovie,
+    handleDeleteMovie,
+    handleSearchMovie
+  } = props
 
   return (
     <Tabs defaultValue='users'>
       <Tabs.List>
-        <Tabs.Tab value='users' leftSection={<IconUsers size={16} />}>Users</Tabs.Tab>
-        <Tabs.Tab value='movies' leftSection={<IconVideo size={16} />}>Movies</Tabs.Tab>
+        <Tabs.Tab value='users' leftSection={<IconUsers size={16} />}>
+          Users
+        </Tabs.Tab>
+        <Tabs.Tab value='movies' leftSection={<IconVideo size={16} />}>
+          Movies
+        </Tabs.Tab>
       </Tabs.List>
 
       <Tabs.Panel value='users' pt='md'>

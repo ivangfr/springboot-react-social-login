@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class UserDeletionNotAllowedException extends RuntimeException {
 
-    public UserDeletionNotAllowedException(String message) {
-        super(message);
-    }
+  public UserDeletionNotAllowedException(String message) {
+    super(message);
+  }
 }

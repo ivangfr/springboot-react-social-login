@@ -1,10 +1,21 @@
 import { TextInput, Button, Group } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
 
-function MovieForm({ movieImdb, movieTitle, moviePoster, handleInputChange, handleAddMovie }) {
+function MovieForm({
+  movieImdb,
+  movieTitle,
+  moviePoster,
+  handleInputChange,
+  handleAddMovie
+}) {
   const createBtnDisabled = movieImdb.trim() === '' || movieTitle.trim() === ''
   return (
-    <form onSubmit={(e) => { e.preventDefault(); handleAddMovie() }}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        handleAddMovie()
+      }}
+    >
       <Group gap='sm' wrap='wrap'>
         <TextInput
           name='movieImdb'

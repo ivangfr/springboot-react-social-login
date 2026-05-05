@@ -1,158 +1,163 @@
 package com.ivanfranchin.movieapi.user;
 
-import com.ivanfranchin.movieapi.security.Role;
-import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.ivanfranchin.movieapi.security.Role;
+import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock
-    UserRepository userRepository;
+  @Mock UserRepository userRepository;
 
-    @InjectMocks
-    UserService userService;
+  @InjectMocks UserService userService;
 
-    @Test
-    void getUsers_returnsAllUsers() {
-        List<User> users = List.of(createUser("alice"), createUser("bob"));
-        when(userRepository.findAllByOrderByUsername()).thenReturn(users);
+  @Test
+  void getUsers_returnsAllUsers() {
+    List<User> users = List.of(createUser("alice"), createUser("bob"));
+    when(userRepository.findAllByOrderByUsername()).thenReturn(users);
 
-        List<User> result = userService.getUsers();
+    List<User> result = userService.getUsers();
 
-        assertThat(result).isEqualTo(users);
-        verify(userRepository).findAllByOrderByUsername();
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).isEqualTo(users);
+    verify(userRepository).findAllByOrderByUsername();
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void countUsers_returnsCount() {
-        when(userRepository.count()).thenReturn(3L);
+  @Test
+  void countUsers_returnsCount() {
+    when(userRepository.count()).thenReturn(3L);
 
-        long count = userService.countUsers();
+    long count = userService.countUsers();
 
-        assertThat(count).isEqualTo(3L);
-        verify(userRepository).count();
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(count).isEqualTo(3L);
+    verify(userRepository).count();
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void countAdmins_delegatesToRepository() {
-        when(userRepository.countByRole(Role.ADMIN)).thenReturn(2L);
+  @Test
+  void countAdmins_delegatesToRepository() {
+    when(userRepository.countByRole(Role.ADMIN)).thenReturn(2L);
 
-        long count = userService.countAdmins();
+    long count = userService.countAdmins();
 
-        assertThat(count).isEqualTo(2L);
-        verify(userRepository).countByRole(Role.ADMIN);
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(count).isEqualTo(2L);
+    verify(userRepository).countByRole(Role.ADMIN);
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void getUserByUsername_exists_returnsOptional() {
-        User user = createUser("alice");
-        when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));
+  @Test
+  void getUserByUsername_exists_returnsOptional() {
+    User user = createUser("alice");
+    when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));
 
-        Optional<User> result = userService.getUserByUsername("alice");
+    Optional<User> result = userService.getUserByUsername("alice");
 
-        assertThat(result).contains(user);
-        verify(userRepository).findByUsername("alice");
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).contains(user);
+    verify(userRepository).findByUsername("alice");
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void getUserByEmail_exists_returnsOptional() {
-        User user = createUser("alice");
-        when(userRepository.findByEmail("alice@example.com")).thenReturn(Optional.of(user));
+  @Test
+  void getUserByEmail_exists_returnsOptional() {
+    User user = createUser("alice");
+    when(userRepository.findByEmail("alice@example.com")).thenReturn(Optional.of(user));
 
-        Optional<User> result = userService.getUserByEmail("alice@example.com");
+    Optional<User> result = userService.getUserByEmail("alice@example.com");
 
-        assertThat(result).contains(user);
-        verify(userRepository).findByEmail("alice@example.com");
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).contains(user);
+    verify(userRepository).findByEmail("alice@example.com");
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void hasUserWithUsername_returnsTrue() {
-        when(userRepository.existsByUsername("alice")).thenReturn(true);
+  @Test
+  void hasUserWithUsername_returnsTrue() {
+    when(userRepository.existsByUsername("alice")).thenReturn(true);
 
-        boolean result = userService.hasUserWithUsername("alice");
+    boolean result = userService.hasUserWithUsername("alice");
 
-        assertThat(result).isTrue();
-        verify(userRepository).existsByUsername("alice");
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).isTrue();
+    verify(userRepository).existsByUsername("alice");
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void hasUserWithEmail_returnsFalse() {
-        when(userRepository.existsByEmail("nobody@example.com")).thenReturn(false);
+  @Test
+  void hasUserWithEmail_returnsFalse() {
+    when(userRepository.existsByEmail("nobody@example.com")).thenReturn(false);
 
-        boolean result = userService.hasUserWithEmail("nobody@example.com");
+    boolean result = userService.hasUserWithEmail("nobody@example.com");
 
-        assertThat(result).isFalse();
-        verify(userRepository).existsByEmail("nobody@example.com");
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).isFalse();
+    verify(userRepository).existsByEmail("nobody@example.com");
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void validateAndGetUserByUsername_exists_returnsUser() {
-        User user = createUser("alice");
-        when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));
+  @Test
+  void validateAndGetUserByUsername_exists_returnsUser() {
+    User user = createUser("alice");
+    when(userRepository.findByUsername("alice")).thenReturn(Optional.of(user));
 
-        User result = userService.validateAndGetUserByUsername("alice");
+    User result = userService.validateAndGetUserByUsername("alice");
 
-        assertThat(result).isEqualTo(user);
-        verify(userRepository).findByUsername("alice");
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).isEqualTo(user);
+    verify(userRepository).findByUsername("alice");
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void validateAndGetUserByUsername_notFound_throwsUserNotFoundException() {
-        when(userRepository.findByUsername("ghost")).thenReturn(Optional.empty());
+  @Test
+  void validateAndGetUserByUsername_notFound_throwsUserNotFoundException() {
+    when(userRepository.findByUsername("ghost")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.validateAndGetUserByUsername("ghost"))
-                .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining("ghost");
-        verify(userRepository).findByUsername("ghost");
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThatThrownBy(() -> userService.validateAndGetUserByUsername("ghost"))
+        .isInstanceOf(UserNotFoundException.class)
+        .hasMessageContaining("ghost");
+    verify(userRepository).findByUsername("ghost");
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void saveUser_delegatesToRepository() {
-        User user = createUser("alice");
-        when(userRepository.save(user)).thenReturn(user);
+  @Test
+  void saveUser_delegatesToRepository() {
+    User user = createUser("alice");
+    when(userRepository.save(user)).thenReturn(user);
 
-        User result = userService.saveUser(user);
+    User result = userService.saveUser(user);
 
-        assertThat(result).isEqualTo(user);
-        verify(userRepository).save(user);
-        verifyNoMoreInteractions(userRepository);
-    }
+    assertThat(result).isEqualTo(user);
+    verify(userRepository).save(user);
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    @Test
-    void deleteUser_delegatesToRepository() {
-        User user = createUser("alice");
+  @Test
+  void deleteUser_delegatesToRepository() {
+    User user = createUser("alice");
 
-        userService.deleteUser(user);
+    userService.deleteUser(user);
 
-        verify(userRepository).delete(user);
-        verifyNoMoreInteractions(userRepository);
-    }
+    verify(userRepository).delete(user);
+    verifyNoMoreInteractions(userRepository);
+  }
 
-    private User createUser(String username) {
-        return new User(username, "encoded-password", username + " Name",
-                username + "@example.com", Role.USER, null, OAuth2Provider.LOCAL);
-    }
+  private User createUser(String username) {
+    return new User(
+        username,
+        "encoded-password",
+        username + " Name",
+        username + "@example.com",
+        Role.USER,
+        null,
+        OAuth2Provider.LOCAL);
+  }
 }

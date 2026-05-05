@@ -3,8 +3,18 @@ import { render } from '../../test-utils'
 import MovieTable from './MovieTable'
 
 const sampleMovies = [
-  { imdb: 'tt0133093', title: 'The Matrix', poster: '', createdAt: '2024-01-01' },
-  { imdb: 'tt0109830', title: 'Forrest Gump', poster: 'https://example.com/fg.jpg', createdAt: '2024-01-02' },
+  {
+    imdb: 'tt0133093',
+    title: 'The Matrix',
+    poster: '',
+    createdAt: '2024-01-01'
+  },
+  {
+    imdb: 'tt0109830',
+    title: 'Forrest Gump',
+    poster: 'https://example.com/fg.jpg',
+    createdAt: '2024-01-02'
+  }
 ]
 
 function makeProps(overrides = {}) {
@@ -18,7 +28,7 @@ function makeProps(overrides = {}) {
     handleAddMovie: vi.fn(),
     handleDeleteMovie: vi.fn(),
     handleSearchMovie: vi.fn(),
-    ...overrides,
+    ...overrides
   }
 }
 
@@ -55,7 +65,9 @@ describe('MovieTable', () => {
 
   it('calls handleDeleteMovie with the correct imdb when delete is clicked', () => {
     const handleDeleteMovie = vi.fn()
-    render(<MovieTable {...makeProps({ movies: sampleMovies, handleDeleteMovie })} />)
+    render(
+      <MovieTable {...makeProps({ movies: sampleMovies, handleDeleteMovie })} />
+    )
 
     const rows = screen.getAllByRole('row')
     const matrixRow = rows[1]
@@ -67,14 +79,18 @@ describe('MovieTable', () => {
 
   it('renders the search input', () => {
     render(<MovieTable {...makeProps()} />)
-    expect(screen.getByPlaceholderText(/search by imdb or title/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/search by imdb or title/i)
+    ).toBeInTheDocument()
   })
 
   it('calls handleSearchMovie when the search form is submitted', () => {
     const handleSearchMovie = vi.fn()
     render(<MovieTable {...makeProps({ handleSearchMovie })} />)
 
-    const form = screen.getByPlaceholderText(/search by imdb or title/i).closest('form')
+    const form = screen
+      .getByPlaceholderText(/search by imdb or title/i)
+      .closest('form')
     fireEvent.submit(form)
 
     expect(handleSearchMovie).toHaveBeenCalledTimes(1)
@@ -84,7 +100,9 @@ describe('MovieTable', () => {
     const handleInputChange = vi.fn()
     render(<MovieTable {...makeProps({ handleInputChange })} />)
 
-    fireEvent.change(screen.getByPlaceholderText(/search by imdb or title/i), { target: { value: 'mat' } })
+    fireEvent.change(screen.getByPlaceholderText(/search by imdb or title/i), {
+      target: { value: 'mat' }
+    })
 
     expect(handleInputChange).toHaveBeenCalled()
   })
@@ -100,7 +118,11 @@ describe('MovieTable', () => {
   })
 
   it('Create button is enabled when imdb and title are provided', () => {
-    render(<MovieTable {...makeProps({ movieImdb: 'tt9999999', movieTitle: 'New Movie' })} />)
+    render(
+      <MovieTable
+        {...makeProps({ movieImdb: 'tt9999999', movieTitle: 'New Movie' })}
+      />
+    )
     expect(screen.getByRole('button', { name: /create/i })).not.toBeDisabled()
   })
 })

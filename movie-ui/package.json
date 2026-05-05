@@ -12,22 +12,26 @@
     "react-dom": "^19.2.5",
     "react-router-dom": "^7.14.2"
   },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^9.39.4",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.1.1",
-    "jsdom": "^29.1.1",
-    "vite": "^8.0.10",
-    "vitest": "^4.1.5"
-  },
-  "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "test": "vitest run",
-    "lint": "eslint src"
-  }
+    "devDependencies": {
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@testing-library/user-event": "^14.6.1",
+        "@vitejs/plugin-react": "^6.0.1",
+        "eslint": "^9.39.4",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.1.1",
+        "jsdom": "^29.1.1",
+        "prettier": "^3.8.3",
+        "vite": "^8.0.10",
+        "vitest": "^4.1.5"
+    },
+    "scripts": {
+        "start": "vite",
+        "build": "vite build",
+        "test": "vitest run",
+        "lint": "eslint src",
+        "format": "prettier --write \"src/**/*.{js,jsx}\"",
+        "format:check": "prettier --check \"src/**/*.{js,jsx}\""
+    }
 }

@@ -3,19 +3,36 @@ import { Table, ActionIcon, Image, TextInput, Grid } from '@mantine/core'
 import { IconTrash, IconSearch } from '@tabler/icons-react'
 import MovieForm from './MovieForm'
 
-function MovieTable({ movies, movieImdb, movieTitle, moviePoster, movieTextSearch, handleInputChange, handleAddMovie, handleDeleteMovie, handleSearchMovie }) {
+function MovieTable({
+  movies,
+  movieImdb,
+  movieTitle,
+  moviePoster,
+  movieTextSearch,
+  handleInputChange,
+  handleAddMovie,
+  handleDeleteMovie,
+  handleSearchMovie
+}) {
   let movieList
   if (movies.length === 0) {
     movieList = (
       <Table.Tr>
-        <Table.Td colSpan={5} ta='center'>No movie</Table.Td>
+        <Table.Td colSpan={5} ta='center'>
+          No movie
+        </Table.Td>
       </Table.Tr>
     )
   } else {
-    movieList = movies.map(movie => (
+    movieList = movies.map((movie) => (
       <Table.Tr key={movie.imdb}>
         <Table.Td>
-          <ActionIcon color='red' variant='filled' size='sm' onClick={() => handleDeleteMovie(movie.imdb)}>
+          <ActionIcon
+            color='red'
+            variant='filled'
+            size='sm'
+            onClick={() => handleDeleteMovie(movie.imdb)}
+          >
             <IconTrash size={14} />
           </ActionIcon>
         </Table.Td>
@@ -38,7 +55,12 @@ function MovieTable({ movies, movieImdb, movieTitle, moviePoster, movieTextSearc
     <Fragment>
       <Grid mb='md'>
         <Grid.Col span={{ base: 12, sm: 5 }}>
-          <form onSubmit={(e) => { e.preventDefault(); handleSearchMovie() }}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSearchMovie()
+            }}
+          >
             <TextInput
               name='movieTextSearch'
               placeholder='Search by Imdb or Title'

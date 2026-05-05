@@ -7,9 +7,9 @@ This file documents conventions, commands, and patterns for agentic coding agent
 ## Project Overview
 
 Full-stack social login application:
-- **Backend:** `movie-api/` — Spring Boot 4.0.5, Java 25, PostgreSQL
-- **Frontend:** `movie-ui/` — React 19, Vite + Vitest, JavaScript (no TypeScript)
-- **Infrastructure:** Docker Compose (PostgreSQL 18.0)
+- **Backend:** `movie-api/` — Spring Boot 4.0.6, Java 25, PostgreSQL
+- **Frontend:** `movie-ui/` — React 19, Vite 8 + Vitest 4, JavaScript (no TypeScript)
+- **Infrastructure:** Docker Compose (PostgreSQL 18.3)
 
 Default URLs: backend `http://localhost:8080`, frontend `http://localhost:3000`.
 Swagger UI: `http://localhost:8080/swagger-ui.html`.
@@ -88,7 +88,7 @@ npm run lint -- --fix
 ```
 
 > ESLint is configured via `eslint.config.js` (flat config) using `@eslint/js` recommended as a base,
-> plus `eslint-plugin-react` and `eslint-plugin-react-hooks`. No Prettier config exists.
+> plus `eslint-plugin-react` and `eslint-plugin-react-hooks`. Prettier is available via `npm run format` / `npm run format:check` (no `.prettierrc` config file; uses Prettier defaults).
 
 ---
 
@@ -98,16 +98,15 @@ npm run lint -- --fix
 - **Indentation:** 4 spaces (no tabs).
 - **Braces:** K&R style — opening brace on the same line as declaration.
 - **Blank lines:** Single blank line between methods; no trailing blank lines.
-- No Checkstyle or SpotBugs configuration is enforced — follow existing conventions.
+- Formatting is enforced via Spotless Maven plugin (v3.4.0) with Google Java Format (v1.35.0), running during `mvn verify`. No Checkstyle or SpotBugs configuration is enforced.
 
 ### Import Ordering
-Group and order imports as follows (blank line between groups):
-1. `jakarta.*`
-2. `lombok.*`
-3. `org.springframework.*`
-4. Third-party libraries (`io.*`, `com.*` non-project)
-5. `java.*`
-6. Static imports last
+Group and order imports as follows (blank line between groups), enforced by Spotless:
+1. `java.*`
+2. `jakarta.*`
+3. `org.*` (includes `org.springframework.*`, `org.projectlombok.*`, etc.)
+4. Third-party libraries (`com.*` non-project, `io.*`)
+5. Static imports last
 
 ### Naming Conventions
 
@@ -178,7 +177,7 @@ Group and order imports as follows (blank line between groups):
 - **Indentation:** 2 spaces (no tabs).
 - **Quotes:** Single quotes for all strings and imports.
 - **Semicolons:** Omitted (no semicolons at end of statements).
-- No Prettier configuration; no custom ESLint rules beyond the Vite default (ESLint flat config via `eslint.config.js` using `eslint-plugin-react` and `eslint-plugin-react-hooks`).
+- Prettier is available via `npm run format` / `npm run format:check` (no `.prettierrc` config file; uses Prettier defaults). ESLint uses flat config via `eslint.config.js` with custom rules disabling `react/prop-types`, `react-hooks/purity`, and `react/react-in-jsx-scope`.
 
 ### Naming Conventions
 

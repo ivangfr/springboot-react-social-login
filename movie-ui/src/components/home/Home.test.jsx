@@ -40,16 +40,30 @@ describe('Home', () => {
 
   it('shows the loading overlay while fetching and hides it after', async () => {
     let resolveUsers, resolveMovies
-    movieApi.numberOfUsers.mockReturnValue(new Promise(r => { resolveUsers = r }))
-    movieApi.numberOfMovies.mockReturnValue(new Promise(r => { resolveMovies = r }))
+    movieApi.numberOfUsers.mockReturnValue(
+      new Promise((r) => {
+        resolveUsers = r
+      })
+    )
+    movieApi.numberOfMovies.mockReturnValue(
+      new Promise((r) => {
+        resolveMovies = r
+      })
+    )
 
     const { container } = render(<Home />)
 
-    expect(container.querySelector('.mantine-LoadingOverlay-root')).toBeInTheDocument()
+    expect(
+      container.querySelector('.mantine-LoadingOverlay-root')
+    ).toBeInTheDocument()
 
     resolveUsers({ data: 5 })
     resolveMovies({ data: 12 })
-    await waitFor(() => expect(container.querySelector('.mantine-LoadingOverlay-root')).not.toBeInTheDocument())
+    await waitFor(() =>
+      expect(
+        container.querySelector('.mantine-LoadingOverlay-root')
+      ).not.toBeInTheDocument()
+    )
 
     expect(screen.getByText('5')).toBeInTheDocument()
     expect(screen.getByText('12')).toBeInTheDocument()

@@ -1,14 +1,15 @@
 package com.ivanfranchin.movieapi.movie;
 
+import java.time.Instant;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
 
 @Data
 @NoArgsConstructor
@@ -16,25 +17,24 @@ import java.time.Instant;
 @Table(name = "movies")
 public class Movie {
 
-    @Id
-    private String imdb;
+  @Id private String imdb;
 
-    @Column(nullable = false)
-    private String title;
+  @Column(nullable = false)
+  private String title;
 
-    private String poster;
+  private String poster;
 
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
+  @Column(nullable = false, updatable = false)
+  private Instant createdAt;
 
-    public Movie(String imdb, String title, String poster) {
-        this.imdb = imdb;
-        this.title = title;
-        this.poster = poster;
-    }
+  public Movie(String imdb, String title, String poster) {
+    this.imdb = imdb;
+    this.title = title;
+    this.poster = poster;
+  }
 
-    @PrePersist
-    public void onPrePersist() {
-        createdAt = Instant.now();
-    }
+  @PrePersist
+  public void onPrePersist() {
+    createdAt = Instant.now();
+  }
 }

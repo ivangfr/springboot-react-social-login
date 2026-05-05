@@ -1,18 +1,26 @@
 import { render, screen, waitFor, act } from '@testing-library/react'
-import { makeAdminUser, makeRegularUser, makeExpiredUser, seedLocalStorage } from '../../test-utils'
+import {
+  makeAdminUser,
+  makeRegularUser,
+  makeExpiredUser,
+  seedLocalStorage
+} from '../../test-utils'
 import { AuthProvider, useAuth } from './AuthContext'
 import { MantineProvider } from '@mantine/core'
 import { MemoryRouter } from 'react-router-dom'
 
 function AuthProbe() {
-  const { user, getUser, userIsAuthenticated, userLogin, userLogout } = useAuth()
+  const { user, getUser, userIsAuthenticated, userLogin, userLogout } =
+    useAuth()
   return (
     <div>
       <span data-testid='is-auth'>{String(userIsAuthenticated())}</span>
       <span data-testid='user-name'>{user ? user.data.name : 'none'}</span>
       <button onClick={() => userLogin(makeRegularUser())}>login</button>
       <button onClick={() => userLogout()}>logout</button>
-      <span data-testid='get-user'>{getUser() ? getUser().data.name : 'none'}</span>
+      <span data-testid='get-user'>
+        {getUser() ? getUser().data.name : 'none'}
+      </span>
     </div>
   )
 }
@@ -59,9 +67,13 @@ describe('AuthContext', () => {
 
   it('userLogin stores user and updates state', async () => {
     const { getByText, getByTestId } = renderProbe()
-    await waitFor(() => expect(getByTestId('user-name').textContent).toBe('none'))
+    await waitFor(() =>
+      expect(getByTestId('user-name').textContent).toBe('none')
+    )
 
-    await act(async () => { getByText('login').click() })
+    await act(async () => {
+      getByText('login').click()
+    })
 
     await waitFor(() => {
       expect(getByTestId('user-name').textContent).toBe('Bob')
@@ -71,9 +83,13 @@ describe('AuthContext', () => {
 
   it('userLogout removes user from localStorage and clears state', async () => {
     const { getByText, getByTestId } = renderProbe(makeRegularUser())
-    await waitFor(() => expect(getByTestId('user-name').textContent).toBe('Bob'))
+    await waitFor(() =>
+      expect(getByTestId('user-name').textContent).toBe('Bob')
+    )
 
-    await act(async () => { getByText('logout').click() })
+    await act(async () => {
+      getByText('logout').click()
+    })
 
     await waitFor(() => {
       expect(getByTestId('user-name').textContent).toBe('none')

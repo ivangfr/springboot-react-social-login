@@ -28,7 +28,12 @@ beforeEach(() => {
 
 describe('OAuth2Redirect', () => {
   it('navigates to / and stores user when a valid token is in the URL', async () => {
-    const token = makeToken({ sub: 'alice', name: 'Alice', rol: ['USER'], exp: Math.floor(Date.now() / 1000) + 3600 })
+    const token = makeToken({
+      sub: 'alice',
+      name: 'Alice',
+      rol: ['USER'],
+      exp: Math.floor(Date.now() / 1000) + 3600
+    })
 
     renderOAuth2Redirect(`?token=${token}`)
 
@@ -59,7 +64,12 @@ describe('OAuth2Redirect', () => {
   })
 
   it('stores the correct accessToken in localStorage', async () => {
-    const token = makeToken({ sub: 'admin', name: 'Bob', rol: ['ADMIN'], exp: Math.floor(Date.now() / 1000) + 3600 })
+    const token = makeToken({
+      sub: 'admin',
+      name: 'Bob',
+      rol: ['ADMIN'],
+      exp: Math.floor(Date.now() / 1000) + 3600
+    })
 
     renderOAuth2Redirect(`?token=${token}`)
 

@@ -1,6 +1,16 @@
 import { useState } from 'react'
 import { NavLink, Navigate } from 'react-router-dom'
-import { Button, TextInput, PasswordInput, Paper, Stack, Alert, Anchor, Center, Box } from '@mantine/core'
+import {
+  Button,
+  TextInput,
+  PasswordInput,
+  Paper,
+  Stack,
+  Alert,
+  Anchor,
+  Center,
+  Box
+} from '@mantine/core'
 import { useAuth } from '../context/AuthContext'
 import { movieApi } from '../misc/MovieApi'
 import { parseJwt, handleLogError } from '../misc/Helpers'
@@ -91,13 +101,17 @@ function Signup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <Button type='submit' color='grape' fullWidth>Sign Up</Button>
+              <Button type='submit' color='grape' fullWidth>
+                Sign Up
+              </Button>
             </Stack>
           </Paper>
         </form>
         <Paper withBorder p='sm' radius='md' mt='sm' ta='center' shadow='sm'>
           Already have an account?{' '}
-          <Anchor component={NavLink} to='/login'>Login</Anchor>
+          <Anchor component={NavLink} to='/login'>
+            Login
+          </Anchor>
         </Paper>
         {isError && (
           <Alert color='red' variant='light' mt='sm' icon={<IconInfoCircle />}>
