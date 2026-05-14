@@ -2,8 +2,16 @@ package com.ivanfranchin.movieapi.rest;
 
 import static com.ivanfranchin.movieapi.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEME;
 
+import com.ivanfranchin.movieapi.rest.dto.UserDto;
+import com.ivanfranchin.movieapi.security.CustomUserDetails;
+import com.ivanfranchin.movieapi.security.Role;
+import com.ivanfranchin.movieapi.user.User;
+import com.ivanfranchin.movieapi.user.UserDeletionNotAllowedException;
+import com.ivanfranchin.movieapi.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,17 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ivanfranchin.movieapi.rest.dto.UserDto;
-import com.ivanfranchin.movieapi.security.CustomUserDetails;
-import com.ivanfranchin.movieapi.security.Role;
-import com.ivanfranchin.movieapi.user.User;
-import com.ivanfranchin.movieapi.user.UserDeletionNotAllowedException;
-import com.ivanfranchin.movieapi.user.UserService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController

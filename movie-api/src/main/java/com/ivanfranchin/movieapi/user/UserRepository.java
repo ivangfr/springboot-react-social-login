@@ -1,11 +1,9 @@
 package com.ivanfranchin.movieapi.user;
 
+import com.ivanfranchin.movieapi.security.Role;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.ivanfranchin.movieapi.security.Role;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 

@@ -1,9 +1,8 @@
 package com.ivanfranchin.movieapi.rest.dto;
 
+import com.ivanfranchin.movieapi.movie.Movie;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-
-import com.ivanfranchin.movieapi.movie.Movie;
 
 public record MovieDto(String imdb, String title, String poster, String createdAt) {
 

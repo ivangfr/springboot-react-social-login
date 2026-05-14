@@ -1,5 +1,7 @@
 package com.ivanfranchin.movieapi.user;
 
+import com.ivanfranchin.movieapi.security.Role;
+import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,10 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-
-import com.ivanfranchin.movieapi.security.Role;
-import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

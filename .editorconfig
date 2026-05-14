@@ -1,0 +1,27 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{js,jsx}]
+indent_style = space
+indent_size = 2
+quote_type = single
+
+[*.{yaml,yml}]
+indent_style = space
+indent_size = 2
+
+[*.xml]
+indent_style = space
+indent_size = 4
+
+[*.properties]
+indent_style = space
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false

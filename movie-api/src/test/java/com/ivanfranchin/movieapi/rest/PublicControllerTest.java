@@ -5,13 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
-
 import com.ivanfranchin.movieapi.movie.MovieService;
 import com.ivanfranchin.movieapi.security.CustomUserDetailsService;
 import com.ivanfranchin.movieapi.security.SecurityConfig;
@@ -19,6 +12,12 @@ import com.ivanfranchin.movieapi.security.TokenProvider;
 import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
 import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
 import com.ivanfranchin.movieapi.user.UserService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(PublicController.class)
 @Import(SecurityConfig.class)

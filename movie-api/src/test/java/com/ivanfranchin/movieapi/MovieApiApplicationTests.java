@@ -1,19 +1,17 @@
 package com.ivanfranchin.movieapi;
 
-import javax.sql.DataSource;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-
 import com.ivanfranchin.movieapi.movie.MovieService;
 import com.ivanfranchin.movieapi.security.CustomUserDetailsService;
 import com.ivanfranchin.movieapi.security.TokenProvider;
 import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
 import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
 import com.ivanfranchin.movieapi.user.UserService;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class MovieApiApplicationTests {

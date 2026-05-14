@@ -1,7 +1,6 @@
 package com.ivanfranchin.movieapi.config;
 
 import java.util.Map;
-
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.error.ErrorAttributeOptions.Include;
 import org.springframework.boot.webmvc.error.DefaultErrorAttributes;

@@ -1,9 +1,8 @@
 package com.ivanfranchin.movieapi.security.oauth2;
 
+import com.ivanfranchin.movieapi.security.CustomUserDetails;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-
-import com.ivanfranchin.movieapi.security.CustomUserDetails;
 
 public interface OAuth2UserInfoExtractor {
 

@@ -7,6 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import com.ivanfranchin.movieapi.movie.MovieService;
+import com.ivanfranchin.movieapi.rest.PublicController;
+import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
+import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
+import com.ivanfranchin.movieapi.user.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -16,12 +21,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-
-import com.ivanfranchin.movieapi.movie.MovieService;
-import com.ivanfranchin.movieapi.rest.PublicController;
-import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
-import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
-import com.ivanfranchin.movieapi.user.UserService;
 
 @WebMvcTest(PublicController.class)
 @Import({SecurityConfig.class, CorsConfig.class})

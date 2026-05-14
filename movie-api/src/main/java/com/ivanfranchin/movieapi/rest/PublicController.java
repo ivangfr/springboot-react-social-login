@@ -1,13 +1,11 @@
 package com.ivanfranchin.movieapi.rest;
 
+import com.ivanfranchin.movieapi.movie.MovieService;
+import com.ivanfranchin.movieapi.user.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.ivanfranchin.movieapi.movie.MovieService;
-import com.ivanfranchin.movieapi.user.UserService;
-
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController

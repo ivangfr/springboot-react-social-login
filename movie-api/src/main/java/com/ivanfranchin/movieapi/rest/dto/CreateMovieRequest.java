@@ -1,10 +1,8 @@
 package com.ivanfranchin.movieapi.rest.dto;
 
-import jakarta.validation.constraints.NotBlank;
-
 import com.ivanfranchin.movieapi.movie.Movie;
-
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 
 public record CreateMovieRequest(
     @Schema(example = "tt0117998") @NotBlank String imdb,

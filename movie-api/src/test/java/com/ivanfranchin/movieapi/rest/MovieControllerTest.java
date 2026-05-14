@@ -8,17 +8,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
-
 import com.ivanfranchin.movieapi.movie.Movie;
 import com.ivanfranchin.movieapi.movie.MovieNotFoundException;
 import com.ivanfranchin.movieapi.movie.MovieService;
@@ -28,7 +17,15 @@ import com.ivanfranchin.movieapi.security.SecurityConfig;
 import com.ivanfranchin.movieapi.security.TokenProvider;
 import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
 import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
-
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(MovieController.class)

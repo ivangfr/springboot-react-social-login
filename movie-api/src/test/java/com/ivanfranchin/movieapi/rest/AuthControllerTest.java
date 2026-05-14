@@ -6,8 +6,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.ivanfranchin.movieapi.rest.dto.LoginRequest;
+import com.ivanfranchin.movieapi.rest.dto.SignUpRequest;
+import com.ivanfranchin.movieapi.security.SecurityConfig;
+import com.ivanfranchin.movieapi.security.TokenProvider;
+import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
+import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
+import com.ivanfranchin.movieapi.user.UserService;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -21,15 +27,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import com.ivanfranchin.movieapi.rest.dto.LoginRequest;
-import com.ivanfranchin.movieapi.rest.dto.SignUpRequest;
-import com.ivanfranchin.movieapi.security.SecurityConfig;
-import com.ivanfranchin.movieapi.security.TokenProvider;
-import com.ivanfranchin.movieapi.security.oauth2.CustomAuthenticationSuccessHandler;
-import com.ivanfranchin.movieapi.security.oauth2.CustomOAuth2UserService;
-import com.ivanfranchin.movieapi.user.UserService;
-
 import tools.jackson.databind.ObjectMapper;
 
 @WebMvcTest(AuthController.class)

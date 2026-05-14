@@ -1,20 +1,17 @@
 package com.ivanfranchin.movieapi.runner;
 
-import java.util.List;
-
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-
 import com.ivanfranchin.movieapi.movie.Movie;
 import com.ivanfranchin.movieapi.movie.MovieService;
 import com.ivanfranchin.movieapi.security.Role;
 import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import com.ivanfranchin.movieapi.user.User;
 import com.ivanfranchin.movieapi.user.UserService;
-
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor

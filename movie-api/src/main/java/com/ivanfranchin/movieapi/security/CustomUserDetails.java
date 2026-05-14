@@ -1,18 +1,15 @@
 package com.ivanfranchin.movieapi.security;
 
+import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
-import com.ivanfranchin.movieapi.security.oauth2.OAuth2Provider;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
