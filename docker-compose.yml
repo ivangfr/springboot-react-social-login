@@ -12,3 +12,6 @@ services:
       - 'POSTGRES_USER=postgres'
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "moviedb"]
+      interval: 3s
+      timeout: 3s
+      retries: 5

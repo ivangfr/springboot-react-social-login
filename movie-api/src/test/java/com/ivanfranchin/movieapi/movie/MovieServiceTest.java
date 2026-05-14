@@ -11,16 +11,18 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@Import(MovieService.class)
 class MovieServiceTest {
 
-  @Mock MovieRepository movieRepository;
+  @MockitoBean MovieRepository movieRepository;
 
-  @InjectMocks MovieService movieService;
+  @Autowired MovieService movieService;
 
   @Test
   void getMovies_returnsAllMovies() {
