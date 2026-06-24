@@ -273,7 +273,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## How to optimize GIFs and PNGs in documentation folder
 
-\[**Medium**\] [**How I Reduce GIF and Screenshot Sizes for My Technical Articles on macOS**](https://medium.com/itnext/how-i-reduce-gif-and-screenshot-sizes-for-my-technical-articles-on-macos-7fea331afc68)
+\[**Medium**\]: [**How I Reduce GIF and Screenshot Sizes for My Technical Articles on macOS**](https://medium.com/itnext/how-i-reduce-gif-and-screenshot-sizes-for-my-technical-articles-on-macos-7fea331afc68)
 
 ## Support
 
