@@ -18,9 +18,9 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - \[**Medium**\] [**Building a Web Chat with Social Login using Spring Boot: Introduction**](https://medium.com/@ivangfr/building-a-web-chat-with-social-login-using-spring-boot-introduction-644702e6be8e)
 - \[**Medium**\] [**Building a Single Spring Boot App with Keycloak or Okta as IdP: Introduction**](https://medium.com/@ivangfr/building-a-single-spring-boot-app-with-keycloak-or-okta-as-idp-introduction-2814a4829aed)
 
-## Project Diagram
+## Project Overview
 
-![project-diagram](documentation/project-diagram.png)
+![project-overview](documentation/project-overview.png)
 
 ## Applications
 
