@@ -9,6 +9,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/moviedb
     username: postgres
     password: postgres
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: false
   security:
     oauth2:
       client:

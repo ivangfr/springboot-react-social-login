@@ -165,10 +165,6 @@ Group and order imports as follows (blank line between groups), enforced by Spot
   - `CustomUserDetails.ofOAuth2User(username, name, email, avatarUrl, provider, authorities, attributes)` — for OAuth2 extractors.
 - Use `customUserDetails.withId(id)` to copy an OAuth2 principal and set the resolved DB id after the user upsert in `CustomOAuth2UserService`.
 
-### Jackson / ObjectMapper
-- Uses `tools.jackson.databind.*` (Jackson 3.x, packaged under `tools.jackson`).
-- `ObjectMapperConfig` registers a `JsonMapper` bean (`tools.jackson.databind.json.JsonMapper`) built with `JsonMapper.builder()`, not a raw `ObjectMapper`.
-
 ---
 
 ## Frontend Code Style (JavaScript / React)

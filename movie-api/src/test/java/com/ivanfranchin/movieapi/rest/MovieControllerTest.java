@@ -26,7 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @WebMvcTest(MovieController.class)
 @Import(SecurityConfig.class)
@@ -34,7 +34,7 @@ class MovieControllerTest {
 
   @Autowired MockMvc mockMvc;
 
-  @Autowired ObjectMapper objectMapper;
+  @Autowired JsonMapper jsonMapper;
 
   @MockitoBean MovieService movieService;
 
@@ -106,7 +106,7 @@ class MovieControllerTest {
         .perform(
             post("/api/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.imdb").value("tt001"))
         .andExpect(jsonPath("$.title").value("Alpha"));
@@ -120,7 +120,7 @@ class MovieControllerTest {
         .perform(
             post("/api/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isForbidden());
   }
 
@@ -131,7 +131,7 @@ class MovieControllerTest {
         .perform(
             post("/api/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isUnauthorized());
   }
 
@@ -143,7 +143,7 @@ class MovieControllerTest {
         .perform(
             post("/api/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
   }
 
@@ -155,7 +155,7 @@ class MovieControllerTest {
         .perform(
             post("/api/movies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(jsonMapper.writeValueAsString(request)))
         .andExpect(status().isBadRequest());
   }
 
