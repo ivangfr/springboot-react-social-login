@@ -30,8 +30,7 @@
         <java.version>25</java.version>
         <jjwt.version>0.13.0</jjwt.version>
         <springdoc-openapi.version>3.0.3</springdoc-openapi.version>
-        <spotless.version>3.4.0</spotless.version>
-        <google-java-format.version>1.35.0</google-java-format.version>
+        <spotless.version>3.8.0</spotless.version>
     </properties>
     <dependencies>
         <dependency>
@@ -142,7 +141,6 @@
                 <configuration>
                     <java>
                         <googleJavaFormat>
-                            <version>${google-java-format.version}</version>
                             <style>GOOGLE</style>
                         </googleJavaFormat>
                         <removeUnusedImports />
@@ -155,7 +153,7 @@
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <phase>verify</phase>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
             </plugin>
