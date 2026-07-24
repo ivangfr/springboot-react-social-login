@@ -243,7 +243,7 @@ In the **Medium** article, [**Implementing Social Login in a Spring Boot and Rea
 
 ## Code Formatting
 
-- **Spring Boot module** (`movie-api`): Code is formatted using [Spotless](https://github.com/diffplug/spotless) with [Google Java Format](https://github.com/google/google-java-format).
+- **Spring Boot module** (`movie-api`): Code is formatted using [Spotless](https://github.com/diffplug/spotless/tree/main/plugin-maven) with [Google Java Format](https://github.com/google/google-java-format).
 
   To check or apply formatting, make sure you are inside the module folder and run the following command:
 
